@@ -1,6 +1,6 @@
 package payload.response
 
-import payload.incoming.common.User
+import payload.response.common.User
 
 data class Auctions(val auctions: List<Auction>) {
 	data class Auction(
