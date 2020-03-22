@@ -66,7 +66,9 @@ object WarframeMarket : Endpoint(null) {
 		object items : Endpoint(WarframeMarket), Get<Items> {
 			override suspend fun get() = httpClient.get<PayloadContainer<Items>>(createRequestBuilder(url)).payload
 
-			class URL_NAME(override val pathName: String) : Endpoint(items), Get<Item> {
+			class ITEM(url_name: String) : Endpoint(items), Get<Item> {
+				override val pathName = url_name
+
 				override suspend fun get() = httpClient.get<PayloadContainer<Item>>(createRequestBuilder(url)).payload
 
 				val orders = Orders(this)
@@ -112,7 +114,9 @@ object WarframeMarket : Endpoint(null) {
 
 				override suspend fun create(payload: OrderCreation) = httpClient.post<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-				class ORDER_ID(override val pathName: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<OrderDeletionConfirmation> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<OrderDeletionConfirmation> {
+					override val pathName = order_id
+
 					override suspend fun update(payload: OrderUpdate) = httpClient.put<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
 					override suspend fun delete() = httpClient.delete<PayloadContainer<OrderDeletionConfirmation>>(createRequestBuilder(url)).payload
@@ -122,7 +126,9 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			class USERNAME(override val pathName: String) : Endpoint(profile), Get<ProfilePublic> {
+			class USER(username: String) : Endpoint(profile), Get<ProfilePublic> {
+				override val pathName = username
+
 				override suspend fun get() = httpClient.get<PayloadContainer<ProfilePublic>>(createRequestBuilder(url)).payload
 
 				val achievements = Achievements(this)
@@ -142,9 +148,9 @@ object WarframeMarket : Endpoint(null) {
 				class Review(parent: Endpoint?) : Endpoint(parent), Create<ReviewCreation, ReviewCreationConfirmation> {
 					override suspend fun create(payload: ReviewCreation) = httpClient.post<PayloadContainer<ReviewCreationConfirmation>>(createRequestBuilder(url, payload)).payload
 
-					fun REVIEW_ID(review_id: String) = REVIEW_ID(review_id, this)
+					fun REVIEW(review_id: String) = REVIEW(review_id, this)
 
-					class REVIEW_ID(override val pathName: String, parent: Endpoint?) : Endpoint(parent), Update<ReviewUpdate, ReviewUpdateConfirmation>, Delete<ReviewDeletionConfirmation> {
+					class REVIEW(override val pathName: String, parent: Endpoint?) : Endpoint(parent), Update<ReviewUpdate, ReviewUpdateConfirmation>, Delete<ReviewDeletionConfirmation> {
 						override suspend fun update(payload: ReviewUpdate) = httpClient.put<PayloadContainer<ReviewUpdateConfirmation>>(createRequestBuilder(url, payload)).payload
 
 						override suspend fun delete() = httpClient.delete<PayloadContainer<ReviewDeletionConfirmation>>(createRequestBuilder(url)).payload
