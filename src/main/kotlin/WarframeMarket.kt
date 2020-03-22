@@ -15,9 +15,9 @@ import payload.response.*
 import payload.response.common.Order
 import java.net.URL
 
-//class names intentionally violate naming convention to represent the api structure
+//naming conventions are intentionally violated to represent the api (it is case sensitive)
 //also helps with disambiguation between endpoints and payload types
-@Suppress("ClassName", "unused")
+@Suppress("ClassName", "unused", "FunctionName")
 object WarframeMarket : Endpoint(null) {
 	override val url = "https://api.warframe.market/v1"
 	var language = "en"
@@ -56,10 +56,12 @@ object WarframeMarket : Endpoint(null) {
 				httpClient.post<PayloadContainer<ProfilePrivate>>(createRequestBuilder("$url/signin", payload)).payload
 				jwt = httpClient.cookies("$url/signin").find { it.name == "JWT" }!!.value
 			}
+
 			suspend fun signOut(): Unit { //returns a profile with all values null
 				httpClient.get<HttpResponse>("$url/signout")
 				jwt = ""
 			}
+
 			suspend fun register(): Nothing = TODO()
 		}
 
@@ -121,7 +123,6 @@ object WarframeMarket : Endpoint(null) {
 
 					override suspend fun delete() = httpClient.delete<PayloadContainer<OrderDeletionConfirmation>>(createRequestBuilder(url)).payload
 
-					//this one has a weird url, therefore implemented manually
 					suspend fun close() = httpClient.put<PayloadContainer<OrderCloseConfirmation>>(createRequestBuilder(orders.url + "/close/" + pathName)).payload
 				}
 			}
@@ -166,37 +167,40 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 		}
-
+		//TODO
 		object settings : Endpoint(WarframeMarket) {
-			//TODO
-//		object accounts : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
-//			override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//			override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
-//		}
+//			object accounts : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
+//				override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
 //
-//		object ads : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
-//			override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//			override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
-//		}
-//
-//		object notifications : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
-//			override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//			override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
-//
-//			object push : Endpoint(settings), Create<RequestPayload, ResponsePayload>, Delete<ResponsePayload> {
-//				override suspend fun create(payload: RequestPayload) = httpClient.post<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//				override suspend fun delete() = httpClient.delete<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//				override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
 //			}
-//		}
 //
-//		object subscription : Endpoint(settings), Get<ResponsePayload> {
-//			override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//		}
+//			object ads : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
+//				override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
 //
-//		object verification : Endpoint(settings), Get<ResponsePayload> {
-//			override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
-//			//TODO: patch
-//		}
+//				override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
+//			}
+//
+//			object notifications : Endpoint(settings), Get<ResponsePayload>, Update<RequestPayload, ResponsePayload> {
+//				override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//
+//				override suspend fun update(payload: RequestPayload) = httpClient.put<PayloadContainer<ResponsePayload>>(createRequestBuilder(url, payload)).payload
+//
+//				object push : Endpoint(settings), Create<RequestPayload, ResponsePayload>, Delete<ResponsePayload> {
+//					override suspend fun create(payload: RequestPayload) = httpClient.post<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//
+//					override suspend fun delete() = httpClient.delete<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//				}
+//			}
+//
+//			object subscription : Endpoint(settings), Get<ResponsePayload> {
+//				override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//			}
+//
+//			object verification : Endpoint(settings), Get<ResponsePayload> {
+//				override suspend fun get() = httpClient.get<PayloadContainer<ResponsePayload>>(createRequestBuilder(url)).payload
+//				//TODO: patch
+//			}
 		}
 
 		object statistics : Endpoint(WarframeMarket), Get<Nothing> {
