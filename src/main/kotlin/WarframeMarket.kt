@@ -181,9 +181,5 @@ object WarframeMarket : Endpoint(null) {
 				suspend fun patch(payload: VerificationPatch) = httpClient.patch<PayloadContainer<VerificationPatchConfirmation>>(createRequestBuilder(url, payload)).payload
 			}
 		}
-
-		object statistics : Endpoint(WarframeMarket), Get<Nothing> {
-			override suspend fun get() = error("this endpoint is currently out of service. Blame KycKyc")
-		}
 	}
 }
