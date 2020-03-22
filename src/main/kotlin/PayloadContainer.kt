@@ -1,0 +1,1 @@
+data class PayloadContainer<PayloadType>(val payload: PayloadType)
