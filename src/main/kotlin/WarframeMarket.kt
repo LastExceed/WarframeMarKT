@@ -107,7 +107,7 @@ object WarframeMarket : Endpoint(null) {
 				}
 
 				object avatar : Endpoint(customization), Create<Nothing, ProfilePrivate> {
-					override suspend fun create(payload: Nothing) = TODO("not implemented")
+					override suspend fun create(payload: Nothing) = TODO() //body is a binary image
 				}
 			}
 
