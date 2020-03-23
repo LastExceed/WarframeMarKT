@@ -4,6 +4,7 @@ import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
+import payload.PayloadContainer
 
 interface Requestable {
 	val url: String
