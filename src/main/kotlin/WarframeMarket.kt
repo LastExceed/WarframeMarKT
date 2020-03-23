@@ -52,23 +52,23 @@ object WarframeMarket : Endpoint(null) {
 		object auctions : Endpoint(v1), Get<Auctions> {
 			override suspend fun get() = httpClient.get<PayloadContainer<Auctions>>(url).payload
 
-			object create : Endpoint(auctions), Create<AuctionCreation, AuctionContainer> {
-				override suspend fun create(payload: AuctionCreation) =
-					httpClient.post<PayloadContainer<AuctionContainer>>(createRequestBuilder(url, payload)).payload
+			object create : Endpoint(auctions), Create<AuctionCreate, Auction> {
+				override suspend fun create(payload: AuctionCreate) =
+					httpClient.post<PayloadContainer<Auction>>(createRequestBuilder(url, payload)).payload
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<Bids>, Update<AuctionUpdate, AuctionContainer> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<Bids>, Update<AuctionUpdate, Auction> {
 					override val pathName = auction_id
 
 					//TODO: get a single auction. done on site via include
 					override suspend fun get() = httpClient.get<PayloadContainer<Bids>>(url).payload
 
 					override suspend fun update(payload: AuctionUpdate) =
-						httpClient.put<PayloadContainer<AuctionContainer>>(createRequestBuilder(url, payload)).payload
+						httpClient.put<PayloadContainer<Auction>>(createRequestBuilder(url, payload)).payload
 
 					suspend fun close() =
-						httpClient.put<PayloadContainer<ClosedAuction>>(createRequestBuilder("$url/close")).payload
+						httpClient.put<PayloadContainer<AuctionClosed>>(createRequestBuilder("$url/close")).payload
 
 				}
 			}
@@ -112,25 +112,25 @@ object WarframeMarket : Endpoint(null) {
 			object chats : Endpoint(im), Get<Chats> {
 				override suspend fun get() = httpClient.get<PayloadContainer<Chats>>(createRequestBuilder(url)).payload
 
-				class CHAT(chat_id: String) : Endpoint(chats), Get<List<Chats.Chat.Message>>, Delete<DeletedChat> {
+				class CHAT(chat_id: String) : Endpoint(chats), Get<List<Chats.Chat.Message>>, Delete<ChatDeleted> {
 					override val pathName = chat_id
 
 					override suspend fun get() = httpClient.get<PayloadContainer<List<Chats.Chat.Message>>>(createRequestBuilder(url)).payload
 
-					override suspend fun delete() = httpClient.delete<PayloadContainer<DeletedChat>>(createRequestBuilder(url)).payload
+					override suspend fun delete() = httpClient.delete<PayloadContainer<ChatDeleted>>(createRequestBuilder(url)).payload
 				}
 			}
 
-			object ignore : Endpoint(im), Get<List<User>>, Create<IgnoreCreation, CreatedIgnore> {
+			object ignore : Endpoint(im), Get<List<User>>, Create<IgnoreCreate, IgnoreCreated> {
 				override suspend fun get() = httpClient.get<PayloadContainer<List<User>>>(createRequestBuilder(url)).payload
 
-				override suspend fun create(payload: IgnoreCreation) =
-					httpClient.post<PayloadContainer<CreatedIgnore>>(createRequestBuilder(url, payload)).payload
+				override suspend fun create(payload: IgnoreCreate) =
+					httpClient.post<PayloadContainer<IgnoreCreated>>(createRequestBuilder(url, payload)).payload
 
-				class IGNORE(user_id: String) : Endpoint(im), Delete<DeletedIgnore> {
+				class IGNORE(user_id: String) : Endpoint(im), Delete<IgnoreDeleted> {
 					override val pathName = user_id
 
-					override suspend fun delete() = httpClient.delete<PayloadContainer<DeletedIgnore>>(createRequestBuilder(url)).payload
+					override suspend fun delete() = httpClient.delete<PayloadContainer<IgnoreDeleted>>(createRequestBuilder(url)).payload
 				}
 			}
 		}
@@ -166,9 +166,9 @@ object WarframeMarket : Endpoint(null) {
 		}
 
 		object tools : Endpoint(v1) {
-			object ducats : Endpoint(tools), Get<Ducanator> {
+			object ducats : Endpoint(tools), Get<Ducats> {
 				override suspend fun get() =
-					httpClient.get<PayloadContainer<Ducanator>>(createRequestBuilder(url)).payload
+					httpClient.get<PayloadContainer<Ducats>>(createRequestBuilder(url)).payload
 			}
 		}
 
@@ -191,24 +191,24 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreation, Order> {
+			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreate, Order> {
 				override suspend fun get() =
 					httpClient.get<PayloadContainer<OwnOrders>>(createRequestBuilder(url)).payload
 
-				override suspend fun create(payload: OrderCreation) =
+				override suspend fun create(payload: OrderCreate) =
 					httpClient.post<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<DeletedOrder> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<OrderDeleted> {
 					override val pathName = order_id
 
 					override suspend fun update(payload: OrderUpdate) =
 						httpClient.put<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
 					override suspend fun delete() =
-						httpClient.delete<PayloadContainer<DeletedOrder>>(createRequestBuilder(url)).payload
+						httpClient.delete<PayloadContainer<OrderDeleted>>(createRequestBuilder(url)).payload
 
 					suspend fun close() =
-						httpClient.put<PayloadContainer<ClosedOrder>>(createRequestBuilder(orders.url + "/close/" + pathName)).payload
+						httpClient.put<PayloadContainer<OrderClosed>>(createRequestBuilder(orders.url + "/close/" + pathName)).payload
 				}
 			}
 
@@ -235,20 +235,20 @@ object WarframeMarket : Endpoint(null) {
 				}
 
 				class Review internal constructor(parent: Endpoint?) : Endpoint(parent),
-					Create<ReviewCreation, CreatedReview> {
-					override suspend fun create(payload: ReviewCreation) =
-						httpClient.post<PayloadContainer<CreatedReview>>(createRequestBuilder(url, payload)).payload
+					Create<ReviewCreate, ReviewCreated> {
+					override suspend fun create(payload: ReviewCreate) =
+						httpClient.post<PayloadContainer<ReviewCreated>>(createRequestBuilder(url, payload)).payload
 
 					fun REVIEW(review_id: String) = REVIEW(review_id, this)
 
 					class REVIEW internal constructor(override val pathName: String, parent: Endpoint?) :
 						Endpoint(parent),
-						Update<ReviewUpdate, UpdatedReview>, Delete<ReviewDeletion> {
+						Update<ReviewUpdate, ReviewUpdated>, Delete<ReviewDeleted> {
 						override suspend fun update(payload: ReviewUpdate) =
-							httpClient.put<PayloadContainer<UpdatedReview>>(createRequestBuilder(url, payload)).payload
+							httpClient.put<PayloadContainer<ReviewUpdated>>(createRequestBuilder(url, payload)).payload
 
 						override suspend fun delete() =
-							httpClient.delete<PayloadContainer<ReviewDeletion>>(createRequestBuilder(url)).payload
+							httpClient.delete<PayloadContainer<ReviewDeleted>>(createRequestBuilder(url)).payload
 					}
 				}
 
@@ -266,8 +266,8 @@ object WarframeMarket : Endpoint(null) {
 
 		object settings : Endpoint(v1) {
 			object notifications : Endpoint(settings) {
-				object push : Endpoint(settings), Create<PushNotification, String>, Delete<String> {
-					override suspend fun create(payload: PushNotification) =
+				object push : Endpoint(settings), Create<PushNotificationCreate, String>, Delete<String> {
+					override suspend fun create(payload: PushNotificationCreate) =
 						httpClient.post<PayloadContainer<String>>(createRequestBuilder(url)).payload
 
 					override suspend fun delete() =
@@ -277,7 +277,7 @@ object WarframeMarket : Endpoint(null) {
 
 			object verification : Endpoint(settings) {
 				suspend fun patch(payload: VerificationPatch) =
-					httpClient.patch<PayloadContainer<VerificationPatchResult>>(
+					httpClient.patch<PayloadContainer<VerificationPatched>>(
 						createRequestBuilder(
 							url,
 							payload

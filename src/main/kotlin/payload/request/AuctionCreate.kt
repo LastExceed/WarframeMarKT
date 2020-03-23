@@ -1,6 +1,6 @@
 package payload.request
 
-data class AuctionCreation(
+data class AuctionCreate(
 	val starting_price: Int,
 	val buyout_price: Int?,
 	val minimal_reputation: Int,

@@ -1,6 +1,6 @@
 package payload.response
 
-data class Ducanator private constructor(
+data class Ducats private constructor(
 	val previous_hour: List<Entry>,
 	val previous_day: List<Entry>
 ) {

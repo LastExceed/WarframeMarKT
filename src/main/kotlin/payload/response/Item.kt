@@ -1,7 +1,7 @@
 package payload.response
 
-data class Item private constructor(val item: ItemInfo) {
-	data class ItemInfo(
+data class Item private constructor(val item: Item) {
+	data class Item(
 		var items_in_set: List<SetItem>,
 		var id: String
 	) {

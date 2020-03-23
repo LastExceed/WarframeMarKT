@@ -1,6 +1,6 @@
 package payload.request
 
-data class ReviewCreation(
+data class ReviewCreate(
 	val text: String,
 	val review_type: Int
 )
