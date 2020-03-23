@@ -58,11 +58,10 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<Bids>, Update<AuctionUpdate, Auction> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<Auction>, Update<AuctionUpdate, Auction> {
 					override val pathName = auction_id
 
-					//TODO: get a single auction. done on site via include
-					override suspend fun get() = httpClient.get<PayloadContainer<Bids>>(url).payload
+					override suspend fun get() = httpClient.get<PayloadContainer<Auction>>(url).payload
 
 					override suspend fun update(payload: AuctionUpdate) =
 						httpClient.put<PayloadContainer<Auction>>(createRequestBuilder(url, payload)).payload
@@ -70,6 +69,11 @@ object WarframeMarket : Endpoint(null) {
 					suspend fun close() =
 						httpClient.put<PayloadContainer<AuctionClosed>>(createRequestBuilder("$url/close")).payload
 
+					val bids = Bids(this)
+
+					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
+						override suspend fun get() = httpClient.get<PayloadContainer<payload.response.Bids>>(url).payload
+					}
 				}
 			}
 
@@ -224,17 +228,17 @@ object WarframeMarket : Endpoint(null) {
 				val reviews = Reviews(this)
 				val statistics = Statistics(this)
 
-				class Achievements internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserAchievements> {
+				class Achievements internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserAchievements> {
 					override suspend fun get() =
 						httpClient.get<PayloadContainer<UserAchievements>>(createRequestBuilder(url)).payload
 				}
 
-				class Orders internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserOrders> {
+				class Orders internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserOrders> {
 					override suspend fun get() =
 						httpClient.get<PayloadContainer<UserOrders>>(createRequestBuilder(url)).payload
 				}
 
-				class Review internal constructor(parent: Endpoint?) : Endpoint(parent),
+				class Review internal constructor(parent: Endpoint) : Endpoint(parent),
 					Create<ReviewCreate, ReviewCreated> {
 					override suspend fun create(payload: ReviewCreate) =
 						httpClient.post<PayloadContainer<ReviewCreated>>(createRequestBuilder(url, payload)).payload
@@ -252,12 +256,12 @@ object WarframeMarket : Endpoint(null) {
 					}
 				}
 
-				class Reviews internal constructor(parent: Endpoint?) : Endpoint(parent), Get<Reviews> {
+				class Reviews internal constructor(parent: Endpoint) : Endpoint(parent), Get<Reviews> {
 					override suspend fun get() =
 						httpClient.get<PayloadContainer<Reviews>>(createRequestBuilder(url)).payload
 				}
 
-				class Statistics internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserStatistics> {
+				class Statistics internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserStatistics> {
 					override suspend fun get() =
 						httpClient.get<PayloadContainer<UserStatistics>>(createRequestBuilder(url)).payload
 				}
