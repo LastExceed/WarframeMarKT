@@ -2,7 +2,7 @@ package payload.response
 
 import payload.response.common.User
 
-data class Auctions(val auctions: List<Auction>) {
+data class Auctions private constructor(val auctions: List<Auction>) {
 	data class Auction(
 		val buyout_price: Int,
 		val minimal_reputation: Int,
@@ -23,7 +23,7 @@ data class Auctions(val auctions: List<Auction>) {
 		val is_direct_sale: Boolean,
 		val id: String
 	) {
-		data class Item(
+		data class Item private constructor(
 			val attributes: List<Attribute>,
 			val polarity: String,
 			val mod_rank: Int,
@@ -33,7 +33,7 @@ data class Auctions(val auctions: List<Auction>) {
 			val weapon_url_name: String,
 			val type: String
 		) {
-			data class Attribute(
+			data class Attribute private constructor(
 				val value: Float,
 				val positive: Boolean,
 				val url_name: String

@@ -1,6 +1,6 @@
 package payload.response.common
 
-data class Achievement(
+data class Achievement private constructor(
 	val name: String,
 	val icon: String,
 	val description: String,

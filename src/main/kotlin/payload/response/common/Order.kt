@@ -1,6 +1,6 @@
 package payload.response.common
 
-data class Order(
+data class Order private constructor(
 	val creation_date: String,
 	val id: String,
 	val last_update: String,

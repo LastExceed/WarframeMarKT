@@ -1,30 +1,14 @@
 package payload.response
 
-data class Reviews(
+import payload.response.common.Review
+
+data class Reviews private constructor(
 	val reviews: List<Review>,
 	val total_review_count: Int,
 	val own_review: Review,
 	val user: User
 ) {
-	data class Review(
-		val review_type: Int,
-		val text: String,
-		val hidden: Boolean,
-		val date: String,
-		val user_from: User? = null, //null if own_review
-		val id: String? = null //null if not own_review
-	) {
-		data class User(
-			val ingame_name: String,
-			val avatar: String?,
-			val id: String,
-			val region: String,
-			val reputation: Int,
-			val status: String?
-		)
-	}
-
-	data class User(
+	data class User private constructor(
 		val ingame_name: String,
 		val role: String,
 		val avatar: String?,

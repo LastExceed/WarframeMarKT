@@ -35,7 +35,7 @@ private suspend inline fun <reified ResponseType> HttpClient.requestUnwrapped(
 	accept(ContentType.Application.Json)
 	header("language", WarframeMarket.language)
 	header("platform", WarframeMarket.platform)
-	val token = cookies(WarframeMarket.auth.url + "/signin").find { it.name == "JWT" }!!.value
+	val token = cookies(WarframeMarket.v1.auth.url + "/signin").find { it.name == "JWT" }!!.value
 	header("Authorization", "JWT $token")
 	if (payload != null) {
 		body = payload

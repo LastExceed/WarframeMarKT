@@ -1,7 +1,7 @@
 package payload.response
 
-data class UserStatistics(val closed_orders: List<ClosedOrder>) {
-	data class ClosedOrder(
+data class UserStatistics private constructor(val closed_orders: List<ClosedOrder>) {
+	data class ClosedOrder private constructor(
 		val item: Map<String, String>,
 		val closed_date: String,
 		val region: String,

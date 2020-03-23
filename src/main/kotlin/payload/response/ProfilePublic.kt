@@ -2,8 +2,8 @@ package payload.response
 
 import payload.response.common.Achievement
 
-data class ProfilePublic(val profile: Profile) {
-	data class Profile(
+data class ProfilePublic private constructor(val profile: Profile) {
+	data class Profile private constructor(
 		val region: String,
 		val about: String,
 		val id: String,

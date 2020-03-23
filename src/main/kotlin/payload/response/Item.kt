@@ -1,11 +1,11 @@
 package payload.response
 
-data class Item(val item: ItemInfo) {
+data class Item private constructor(val item: ItemInfo) {
 	data class ItemInfo(
 		var items_in_set: List<SetItem>,
 		var id: String
 	) {
-		data class SetItem(
+		data class SetItem private constructor(
 			val set_root: Boolean,
 			val mastery_level: Int?,
 			val tradable: Boolean,
@@ -28,7 +28,7 @@ data class Item(val item: ItemInfo) {
 			val mod_max_rank: Int?,
 			val rarity: String?
 		) {
-			data class Lang(
+			data class Lang private constructor(
 				val wiki_link: String,
 				val item_name: String,
 				val description: String,
@@ -37,7 +37,7 @@ data class Item(val item: ItemInfo) {
 				val thumb: String?,
 				val icon: String?
 			) {
-				data class Drop(
+				data class Drop private constructor(
 					val name: String,
 					val link: String?
 				)

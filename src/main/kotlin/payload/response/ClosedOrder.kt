@@ -2,4 +2,4 @@ package payload.response
 
 import payload.response.common.Order
 
-data class OrderCloseConfirmation(val order: Order?)
+data class ClosedOrder private constructor(val order: Order?)

@@ -1,6 +1,6 @@
 package payload.response.common
 
-data class User(
+data class User private constructor(
 	var status: String,
 	var ingame_name: String,
 	var region: String,

@@ -1,4 +1,4 @@
-abstract class Endpoint(val parent: Endpoint?) : Requestable {
+abstract class Endpoint internal constructor(val parent: Endpoint?) : Requestable {
 	open val pathName
 		get() = this::class.simpleName!!.toLowerCase()
 

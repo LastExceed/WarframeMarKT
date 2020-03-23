@@ -1,7 +1,7 @@
 package payload.response
 
 data class ProfilePrivate(val user: Profile) {
-	data class Profile(
+	data class Profile private constructor(
 		val reputation: Int,
 		val region: String,
 		val check_code: String,
@@ -21,9 +21,8 @@ data class ProfilePrivate(val user: Profile) {
 		val linked_accounts: LinkedAccounts,
 		val written_reviews: Int,
 		val avatar: String?
-		//val achievements: List<Achievement> //TODO: does this exist?
 	) {
-		data class LinkedAccounts(
+		data class LinkedAccounts private constructor(
 			val steam_profile: Boolean,
 			val patreon_profile: Boolean,
 			val xbox_profile: Boolean

@@ -1,1 +1,1 @@
-data class PayloadContainer<PayloadType>(val payload: PayloadType)
+data class PayloadContainer<PayloadType> internal constructor(val payload: PayloadType)

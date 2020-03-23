@@ -26,6 +26,7 @@ object WarframeMarket : Endpoint(null) {
 	private val httpClient = HttpClient {
 		install(JsonFeature) {
 			serializer = JacksonSerializer()
+			//TODO: don't initialize nullable types with default value on absence
 		}
 		install(HttpCookies) {
 			storage = AcceptAllCookiesStorage()
@@ -76,17 +77,17 @@ object WarframeMarket : Endpoint(null) {
 				val orders = Orders(this)
 				val statistics = Statistics(this)
 
-				class Orders(parent: Endpoint?) : Endpoint(parent), Get<ItemOrders> {
+				class Orders internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemOrders> {
 					override suspend fun get() = httpClient.get<PayloadContainer<ItemOrders>>(createRequestBuilder(url)).payload
 
 					val top = Top(this)
 
-					class Top(parent: Endpoint?) : Endpoint(parent), Get<ItemOrdersTop> {
+					class Top internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemOrdersTop> {
 						override suspend fun get() = httpClient.get<PayloadContainer<ItemOrdersTop>>(createRequestBuilder(url)).payload
 					}
 				}
 
-				class Statistics(parent: Endpoint?) : Endpoint(parent), Get<ItemStatistics> {
+				class Statistics internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemStatistics> {
 					override suspend fun get() = httpClient.get<PayloadContainer<ItemStatistics>>(createRequestBuilder(url)).payload
 				}
 			}
@@ -116,14 +117,14 @@ object WarframeMarket : Endpoint(null) {
 
 				override suspend fun create(payload: OrderCreation) = httpClient.post<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<OrderDeletionConfirmation> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<DeletedOrder> {
 					override val pathName = order_id
 
 					override suspend fun update(payload: OrderUpdate) = httpClient.put<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-					override suspend fun delete() = httpClient.delete<PayloadContainer<OrderDeletionConfirmation>>(createRequestBuilder(url)).payload
+					override suspend fun delete() = httpClient.delete<PayloadContainer<DeletedOrder>>(createRequestBuilder(url)).payload
 
-					suspend fun close() = httpClient.put<PayloadContainer<OrderCloseConfirmation>>(createRequestBuilder(orders.url + "/close/" + pathName)).payload
+					suspend fun close() = httpClient.put<PayloadContainer<ClosedOrder>>(createRequestBuilder(orders.url + "/close/" + pathName)).payload
 				}
 			}
 
@@ -138,31 +139,31 @@ object WarframeMarket : Endpoint(null) {
 				val reviews = Reviews(this)
 				val statistics = Statistics(this)
 
-				class Achievements(parent: Endpoint?) : Endpoint(parent), Get<UserAchievements> {
+				class Achievements internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserAchievements> {
 					override suspend fun get() = httpClient.get<PayloadContainer<UserAchievements>>(createRequestBuilder(url)).payload
 				}
 
-				class Orders(parent: Endpoint?) : Endpoint(parent), Get<UserOrders> {
+				class Orders internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserOrders> {
 					override suspend fun get() = httpClient.get<PayloadContainer<UserOrders>>(createRequestBuilder(url)).payload
 				}
 
-				class Review(parent: Endpoint?) : Endpoint(parent), Create<ReviewCreation, ReviewCreationConfirmation> {
-					override suspend fun create(payload: ReviewCreation) = httpClient.post<PayloadContainer<ReviewCreationConfirmation>>(createRequestBuilder(url, payload)).payload
+				class Review internal constructor(parent: Endpoint?) : Endpoint(parent), Create<ReviewCreation, CreatedReview> {
+					override suspend fun create(payload: ReviewCreation) = httpClient.post<PayloadContainer<CreatedReview>>(createRequestBuilder(url, payload)).payload
 
 					fun REVIEW(review_id: String) = REVIEW(review_id, this)
 
-					class REVIEW(override val pathName: String, parent: Endpoint?) : Endpoint(parent), Update<ReviewUpdate, ReviewUpdateConfirmation>, Delete<ReviewDeletionConfirmation> {
-						override suspend fun update(payload: ReviewUpdate) = httpClient.put<PayloadContainer<ReviewUpdateConfirmation>>(createRequestBuilder(url, payload)).payload
+					class REVIEW internal constructor(override val pathName: String, parent: Endpoint?) : Endpoint(parent), Update<ReviewUpdate, UpdatedReview>, Delete<ReviewDeletion> {
+						override suspend fun update(payload: ReviewUpdate) = httpClient.put<PayloadContainer<UpdatedReview>>(createRequestBuilder(url, payload)).payload
 
-						override suspend fun delete() = httpClient.delete<PayloadContainer<ReviewDeletionConfirmation>>(createRequestBuilder(url)).payload
+						override suspend fun delete() = httpClient.delete<PayloadContainer<ReviewDeletion>>(createRequestBuilder(url)).payload
 					}
 				}
 
-				class Reviews(parent: Endpoint?) : Endpoint(parent), Get<Reviews> {
+				class Reviews internal constructor(parent: Endpoint?) : Endpoint(parent), Get<Reviews> {
 					override suspend fun get() = httpClient.get<PayloadContainer<Reviews>>(createRequestBuilder(url)).payload
 				}
 
-				class Statistics(parent: Endpoint?) : Endpoint(parent), Get<UserStatistics> {
+				class Statistics internal constructor(parent: Endpoint?) : Endpoint(parent), Get<UserStatistics> {
 					override suspend fun get() = httpClient.get<PayloadContainer<UserStatistics>>(createRequestBuilder(url)).payload
 				}
 			}
@@ -178,7 +179,7 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object verification : Endpoint(settings) {
-				suspend fun patch(payload: VerificationPatch) = httpClient.patch<PayloadContainer<VerificationPatchConfirmation>>(createRequestBuilder(url, payload)).payload
+				suspend fun patch(payload: VerificationPatch) = httpClient.patch<PayloadContainer<VerificationPatchResult>>(createRequestBuilder(url, payload)).payload
 			}
 		}
 	}

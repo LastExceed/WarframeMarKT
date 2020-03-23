@@ -1,10 +1,10 @@
 package payload.response
 
-data class Ducanator(
+data class Ducanator private constructor(
 	val previous_hour: List<Entry>,
 	val previous_day: List<Entry>
 ) {
-	data class Entry(
+	data class Entry private constructor(
 		val datetime: String,
 		val position_change_month: Int,
 		val position_change_week: Int,

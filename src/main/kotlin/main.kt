@@ -1,7 +1,6 @@
-suspend fun main() {
-}
+import payload.response.Item
 
-//TODO:
-//- accessibility modifiers
-//- handle null values in payloads explicitly
-//- rename confirmation payloads
+suspend fun main() {
+	val x = WarframeMarket.v1.items.ITEM("maiming_strike").get()
+	println(x.item.id)
+}
