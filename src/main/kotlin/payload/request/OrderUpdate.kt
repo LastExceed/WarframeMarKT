@@ -1,6 +1,5 @@
 package payload.request
 
-//TODO: inherit from OrderCreation ?
 data class OrderUpdate(
 	val order_id: String,
 	val visible: Boolean,
