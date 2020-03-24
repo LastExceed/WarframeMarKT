@@ -1,7 +1,6 @@
 package payload.request
 
 import enums.*
-//TODO: are these actually nullable?
 data class AuctionSearch(
 	val type: AuctionType?,
 	val weapon_url_name: ItemUrlName?,
