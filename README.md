@@ -1,5 +1,5 @@
 # WarframeMarKT
-Kotlin wrapper for `api.warframe.market/v1/`
+Kotlin wrapper for `api.warframe.market/`
 
 ## How to use
 
