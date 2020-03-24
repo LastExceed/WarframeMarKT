@@ -115,6 +115,8 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			suspend fun register(): Nothing = TODO()
+
+			suspend fun changePassword(payload: PasswordChange) = httpClient.post<PayloadContainer<String>>(createRequestBuilder(v1.url + "/settings/account/change_password", payload)).payload
 		}
 
 		object im : Endpoint(v1) {
