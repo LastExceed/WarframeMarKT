@@ -28,7 +28,7 @@ There are a few exceptions to this structure:
 - `WarframeMarket.v1.auth.signin()` instead of `WarframeMarket.v1.auth.signin.create()` (same for `signout` and `register`)
 - `WarframeMarket.v1.auth.changePassword()` instead of `WarframeMarket.v1.settings.account.change_password.create()`
 - `WarframeMarket.v1.auctions.entry.ENTRY("").close()` instead of `WarframeMarket.v1.auctions.entry.ENTRY("").close.update()`
-- `WarframeMarket.v1.profile.orders.ORDER(order_id).close()` instead of `WarframeMarket.v1.profile.orders.close.ORDER(order_id).update() //note how the arrangement changed
+- `WarframeMarket.v1.profile.orders.ORDER(order_id).close()` instead of `WarframeMarket.v1.profile.orders.close.ORDER(order_id).update()` (note how the arrangement changed)
 
 These changes were made because the code would otherwise be very confusing to someone who isn't already familiar with the API and its shenanigans.
 
@@ -84,4 +84,4 @@ api.warframe.market
                 /push                POST DELETE
             /verification            PATCH
 ```
-The API documentations provided by warframe.market or WFDC are very incomplete, of poor quality and quite outdated. Many endpoints are completely undocumented and had to be found and analyzed using browser debugging tools. For this reason there is a good chance that this list isn't exhaustive. If you find a missing endpoint, please open an issue in this repository.
+The API documentations provided by warframe.market and WFDC are incomplete, of poor quality and outdated. Many endpoints are completely undocumented and had to be found and analyzed using browser debugging tools. For this reason there is a good chance that this list isn't exhaustive. If you find a missing endpoint, please open an issue in this repository.
