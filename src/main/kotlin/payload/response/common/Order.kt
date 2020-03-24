@@ -1,17 +1,25 @@
 package payload.response.common
 
+import enums.IdOrder
+import enums.OrderType
+import enums.Platform
+import enums.Region
+import java.util.*
+
 data class Order private constructor(
-	val creation_date: String,
-	val id: String,
-	val last_update: String,
-	val order_type: String,
-	val platform: String,
+	val creation_date: Date,
+	val id: IdOrder,
+	val last_update: Date,
+	val order_type: OrderType,
+	val platform: Platform,
 	val platinum: Int,
 	val quantity: Int,
-	val region: String,
+	val region: Region,
 	val visible: Boolean,
-	val mod_rank: Int? = null, //null if not a mod
-	val item: Any? = null, //null if specified in request
-	val user: User? = null, //null if specified in request
-	val closed_date: String? = null //null if not personal order
-)
+	val mod_rank: Int? = null, //missing if not a mod
+	val item: Any? = null, //missing if specified in request
+	val user: User? = null, //missing if specified in request
+	val closed_date: String? = null //missing if not personal order
+) {
+	data class ItemId(val value: String)
+}

@@ -1,6 +1,6 @@
 package payload.request
 
-data class Credentials(
+data class SigninCredentials(
 	val email: String,
 	val password: String
 )

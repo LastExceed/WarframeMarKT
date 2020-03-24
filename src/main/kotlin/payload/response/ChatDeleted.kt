@@ -1,3 +1,5 @@
 package payload.response
 
-data class ChatDeleted private constructor(val chat_id: String)
+import enums.IdChat
+
+data class ChatDeleted private constructor(val chat_id: IdChat)

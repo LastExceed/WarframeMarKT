@@ -1,3 +1,5 @@
+import enums.Platform
+import enums.Region
 import io.ktor.client.HttpClient
 import io.ktor.client.features.cookies.AcceptAllCookiesStorage
 import io.ktor.client.features.cookies.HttpCookies
@@ -21,12 +23,14 @@ import kotlin.reflect.full.memberProperties
 @Suppress("ClassName", "unused", "FunctionName")
 object WarframeMarket : Endpoint(null) {
 	override val url = "https://api.warframe.market"
-	var language = "en"
-	var platform = "pc"
+	var language = Region.en
+	var platform = Platform.pc
 
 	private val httpClient = HttpClient {
 		install(JsonFeature) {
-			serializer = JacksonSerializer()
+			serializer = JacksonSerializer() {
+
+			}
 			//TODO: don't initialize nullable types with default value unless explicitly specified
 		}
 		install(HttpCookies) {
@@ -99,9 +103,10 @@ object WarframeMarket : Endpoint(null) {
 		}
 
 		object auth : Endpoint(v1) {
-			suspend fun signIn(payload: Credentials) {
-				httpClient.post<PayloadContainer<ProfilePrivate>>(createRequestBuilder("$url/signin", payload)).payload
+			suspend fun signIn(payload: SigninCredentials): ProfilePrivate {
+				val profile = httpClient.post<PayloadContainer<ProfilePrivate>>(createRequestBuilder("$url/signin", payload)).payload
 				jwt = httpClient.cookies("$url/signin").find { it.name == "JWT" }!!.value
+				return profile
 			}
 
 			suspend fun signOut(): Unit { //returns a profile with all values null
@@ -256,9 +261,9 @@ object WarframeMarket : Endpoint(null) {
 					}
 				}
 
-				class Reviews internal constructor(parent: Endpoint) : Endpoint(parent), Get<Reviews> {
+				class Reviews internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Reviews> {
 					override suspend fun get() =
-						httpClient.get<PayloadContainer<Reviews>>(createRequestBuilder(url)).payload
+						httpClient.get<PayloadContainer<payload.response.Reviews>>(createRequestBuilder(url)).payload
 				}
 
 				class Statistics internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserStatistics> {

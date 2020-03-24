@@ -1,3 +1,5 @@
 package payload.response
 
-data class AuctionClosed private constructor(val auction_id: String)
+import enums.IdAuction
+
+data class AuctionClosed private constructor(val auction_id: IdAuction)

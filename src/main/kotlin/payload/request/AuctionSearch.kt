@@ -1,16 +1,18 @@
 package payload.request
 
+import enums.*
+//TODO: are these actually nullable?
 data class AuctionSearch(
-	val type: String?,//riven
-	val weapon_url_name: String?,//vectis
-	val positive_stats: List<String>?,//cold_damage,damage_vs_corpus,critical_chance
-	val negative_stats: List<String>?,//magazine_capacity
-	val buyout_policy: String?,//with
-	val mastery_rank_min: Int?,//8
-	val mastery_rank_max: Int?,//13
-	val re_rolls_min: Int?,//42
-	val re_rolls_max: Int?,//69
-	val mod_rank: String?,//maxed
-	val polarity: String?,//vazarin
-	val sort_by: String?//positive_attr_asc
+	val type: AuctionType?,
+	val weapon_url_name: ItemUrlName?,
+	val positive_stats: List<RivenAttribute>?,
+	val negative_stats: List<RivenAttribute>?,
+	val buyout_policy: BuyOutPolicy?,
+	val mastery_rank_min: Int?,
+	val mastery_rank_max: Int?,
+	val re_rolls_min: Int?,
+	val re_rolls_max: Int?,
+	val mod_rank: ModRank?,
+	val polarity: Polarity?,
+	val sort_by: SortingStyle?
 )

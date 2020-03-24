@@ -1,5 +1,9 @@
 package payload.response
 
+import enums.IdSnapshot
+import enums.OrderType
+import java.util.*
+
 data class ItemStatistics private constructor(
 	val statistics_closed: Statistics<Statistics.Closed>,
 	val statistics_live: Statistics<Statistics.Live>
@@ -9,7 +13,7 @@ data class ItemStatistics private constructor(
 		val `48hours`: List<T>
 	) {
 		interface Snapshot {
-			val datetime: String
+			val datetime: Date
 			val volume: Int
 			val min_price: Float
 			val max_price: Float
@@ -17,12 +21,12 @@ data class ItemStatistics private constructor(
 			val wa_price: Float
 			val median: Float
 			val mod_rank: Int?
-			val id: String
+			val id: IdSnapshot
 			val moving_avg: Float
 		}
 
 		data class Closed private constructor(
-			override val datetime: String,
+			override val datetime: Date,
 			override val volume: Int,
 			override val min_price: Float,
 			override val max_price: Float,
@@ -30,17 +34,17 @@ data class ItemStatistics private constructor(
 			override val wa_price: Float,
 			override val median: Float,
 			override val mod_rank: Int?,
-			override val id: String,
+			override val id: IdSnapshot,
 			override val moving_avg: Float,
 
-			val open_price: Float,//closed only
-			val closed_price: Float,//closed only
-			val donch_top: Float,//closed only
-			val donch_bot: Float//closed only
+			val open_price: Float,
+			val closed_price: Float,
+			val donch_top: Float,
+			val donch_bot: Float
 		) : Snapshot
 
 		data class Live private constructor(
-			override val datetime: String,
+			override val datetime: Date,
 			override val volume: Int,
 			override val min_price: Float,
 			override val max_price: Float,
@@ -48,10 +52,10 @@ data class ItemStatistics private constructor(
 			override val wa_price: Float,
 			override val median: Float,
 			override val mod_rank: Int,
-			override val id: String,
+			override val id: IdSnapshot,
 			override val moving_avg: Float,
 
-			val order_type: String//live only
+			val order_type: OrderType
 		) : Snapshot
 	}
 }
