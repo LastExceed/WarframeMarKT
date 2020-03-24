@@ -1,9 +1,9 @@
 # WarframeMarKT
-Kotlin wrapper for `api.warframe.market/`
+Kotlin wrapper for `api.warframe.market`
 
 ## How to use
 
-Every api endpoint has a corresponding function. It's name is the request type, and it's location represents the url.
+Every API endpoint has a corresponding function. It's name is the request type, and it's location represents the URL.
 
 Example:
 ```
@@ -13,7 +13,7 @@ becomes
 ```kotlin
 WarframeMarket.v1.tools.ducats.get()
 ```
-Some endpoints have dynamic names. These are implemented using functions whose names are in ALL CAPS for clarity.
+Some endpoints have dynamic names. These are implemented using functions whose names are in ALL_CAPS for clarity.
 
 Example:
 ```
