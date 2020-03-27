@@ -7,7 +7,7 @@ import enums.Region
 import java.util.*
 
 data class Order private constructor(
-	val creation_date: Date,
+	val creation_date: Date? = null, //missing in order update response
 	val id: IdOrder,
 	val last_update: Date,
 	val order_type: OrderType,
