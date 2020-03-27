@@ -1,5 +1,5 @@
-abstract class Endpoint internal constructor(internal val parent: Endpoint?) : Requestable {
-	internal open val pathName
+abstract class Endpoint internal constructor(private val parent: Endpoint?) : Requestable {
+	protected open val pathName
 		get() = this::class.simpleName!!.toLowerCase()
 
 	override val url: String
