@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.annotation.JsonInclude
 import enums.Platform
 import enums.Region
 import io.ktor.client.HttpClient
@@ -28,8 +29,8 @@ object WarframeMarket : Endpoint(null) {
 
 	private val httpClient = HttpClient {
 		install(JsonFeature) {
-			serializer = JacksonSerializer() {
-
+			serializer = JacksonSerializer {
+				setSerializationInclusion(JsonInclude.Include.NON_NULL)
 			}
 			//TODO: don't initialize nullable types with default value unless explicitly specified
 		}
@@ -209,11 +210,11 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun create(payload: OrderCreate) =
 					httpClient.post<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, Order>, Delete<OrderDeleted> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
 					override val pathName = order_id
 
 					override suspend fun update(payload: OrderUpdate) =
-						httpClient.put<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
+						httpClient.put<PayloadContainer<OrderUpdated>>(createRequestBuilder(url, payload)).payload
 
 					override suspend fun delete() =
 						httpClient.delete<PayloadContainer<OrderDeleted>>(createRequestBuilder(url)).payload
