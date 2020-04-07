@@ -7,7 +7,7 @@ import enums.Region
 import java.util.*
 
 data class Order private constructor(
-	val creation_date: Date? = null, //missing in order update response
+	val creation_date: Date,
 	val id: IdOrder,
 	val last_update: Date,
 	val order_type: OrderType,
@@ -19,7 +19,7 @@ data class Order private constructor(
 	val mod_rank: Int? = null, //missing if not a mod
 	val item: Any? = null, //missing if specified in request
 	val user: User? = null, //missing if specified in request
-	val closed_date: String? = null //missing if not personal order
+	val closed_date: String? = null //missing if not closed
 ) {
 	data class ItemId(val value: String)
 }
