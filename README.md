@@ -1,9 +1,7 @@
 # WarframeMarKT
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT) <- click here to see how to import the latest version into your project
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT)
 
-Kotlin wrapper for `api.warframe.market`
-
-Available on MavenCentral: `com.github.lastexceed:WarframeMarKT:1.0.1`
+Asyncronous Kotlin wrapper for `api.warframe.market` using coroutines
 
 ## How to use
 
