@@ -4,3 +4,4 @@
 build/
 !src/**/build/
 !test/**/build/
+/nexus_credentials
