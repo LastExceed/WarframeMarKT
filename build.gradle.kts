@@ -7,8 +7,13 @@ plugins {
 	signing
 }
 
+val author = "LastExceed"
+val projectName = "WarframeMarKT"
+val urlGitHubUser = "github.com/$author/"
+val urlGitHubRepo = "$urlGitHubUser/$projectName"
+
 group = "com.github.lastexceed"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.5-SNAPSHOT"
 
 repositories {
 	mavenCentral()
@@ -39,62 +44,65 @@ val sourcesJar = tasks.register<Jar>("sourcesJar") {
 	archiveClassifier.set("sources")
 	from(sourceSets.main.get().allSource)
 }
+val javadocJar = tasks.register<Jar>("javadocJar") {
+	dependsOn("javadoc")
+	archiveClassifier.set("javadoc")
+	from(tasks.javadoc.get().destinationDir)
+}
 
 publishing {
 	publications {
-		create<MavenPublication>("WarframeMarKT") {
+		create<MavenPublication>(projectName) {
+			from(components["java"])
+			artifact(sourcesJar.get())
+			artifact(javadocJar.get())
 			pom {
-				name.set("$group:$name")
+				name.set("WarframeMarKT")
 				description.set("Kotlin wrapper for api.warframe.market")
-				url.set("https://github.com/LastExceed/WarframeMarKT")
+				url.set("https://$urlGitHubRepo")
 
-//				organization {
-//					name.set("com.github.lastexceed")
-//					url.set("https://github.com/LastExceed")
-//				}
-//				licenses {
-//					license {
-//						name.set("Apache License 2.0")
-//						url.set("https://github.com/doyaaaaaken/kotlin-csv/blob/master/LICENSE")
-//					}
-//				}
-//				developers {
-//					developer {
-//						name.set("LastExceed")
-//					}
-//				}
+				organization {
+					name.set(group as String)
+					url.set(urlGitHubUser)
+				}
+				licenses {
+					license {
+						name.set("MIT license")
+						url.set("https://$urlGitHubRepo/blob/master/LICENSE")
+					}
+				}
+				developers {
+					developer {
+						name.set(author)
+					}
+				}
 				scm {
-					val gitHubUrl = "github.com/LastExceed/WarframeMarKT"
-					url.set("https://$gitHubUrl")
-					connection.set("scm:git:git://$gitHubUrl.git")
-					developerConnection.set("https://$gitHubUrl")
+					url.set("https://$urlGitHubRepo")
+					connection.set("scm:git:git://$urlGitHubRepo.git")
+					developerConnection.set("https://$urlGitHubRepo")
 				}
 			}
-			//from(components["java"])
-			//artifact(sourcesJar.get())
 		}
 
 		repositories {
 			maven {
 				credentials {
-					val creds = File("nexus_credentials").readLines()
-					username = creds[0]
-					password = creds[1]
+					val sonatypeUsername: String by project
+					val sonatypePassword: String by project
+					username = sonatypeUsername
+					password = sonatypePassword
 				}
-				url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+				val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+				val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+				url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
 			}
 		}
 	}
-	//
 }
 
 signing {
-	sign(publishing.publications)
-//	setRequired {
-//		(rootProject.extra["isReleaseVersion"] as Boolean) && gradle.taskGraph.hasTask("publish")
-//	}
-//	val signingKey: String? = System.getenv("GPG_SECRET")
-//	val signingPassword: String? = System.getenv("GPG_PASSPHRASE")
-//	useInMemoryPgpKeys(signingKey, signingPassword)
-//	sign(publishing.publications["mavenJava"])
+	useGpgCmd()
+	sign(publishing.publications[projectName])
 }
+
+tasks["publish${projectName}PublicationToMavenRepository"].dependsOn(tasks["sign${projectName}Publication"])
