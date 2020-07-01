@@ -1,5 +1,9 @@
 # WarframeMarKT
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT) <- click here to see how to import the latest version into your project
+
 Kotlin wrapper for `api.warframe.market`
+
+Available on MavenCentral: `com.github.lastexceed:WarframeMarKT:1.0.1`
 
 ## How to use
 
