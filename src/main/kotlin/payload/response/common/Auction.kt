@@ -2,14 +2,15 @@ package payload.response.common
 
 import enums.IdAuction
 import enums.Platform
-import payload.common.ItemAuction
+import payload.common.AuctionItem
 import java.util.*
 
 data class Auction private constructor(
 	val buyout_price: Int,
+	val visible: Boolean,
 	val minimal_reputation: Int,
 	val note: String,
-	val item: ItemAuction,
+	val item: AuctionItem,
 	val private: Boolean,
 	val starting_price: Int,
 	val owner: User,

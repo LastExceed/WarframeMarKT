@@ -1,6 +1,6 @@
 package payload.request
 
-import payload.common.ItemAuction
+import payload.common.AuctionItem
 
 data class AuctionCreate(
 	val starting_price: Int,
@@ -8,5 +8,5 @@ data class AuctionCreate(
 	val minimal_reputation: Int,
 	val private: Boolean,
 	val note: String,
-	val item: ItemAuction
+	val item: AuctionItem
 )

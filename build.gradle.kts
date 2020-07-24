@@ -13,7 +13,7 @@ val urlGitHubUser = "github.com/$author/"
 val urlGitHubRepo = "$urlGitHubUser/$projectName"
 
 group = "com.github.lastexceed"
-version = "0.0.5-SNAPSHOT"
+version = "1.1.1"
 
 repositories {
 	mavenCentral()

@@ -26,7 +26,7 @@ interface Delete<ResponseType> : Requestable {
 	suspend fun delete(): ResponseType// = httpClient.requestUnwrapped<ResponseType>(url, HttpMethod.Delete)
 }
 
-private suspend inline fun <reified ResponseType> HttpClient.requestUnwrapped(
+suspend inline fun <reified ResponseType> HttpClient.requestUnwrapped(
 	url: String,
 	method: HttpMethod,
 	payload: Any? = null

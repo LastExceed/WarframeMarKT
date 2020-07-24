@@ -9,8 +9,7 @@ import io.ktor.client.features.json.JacksonSerializer
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.http.*
 import payload.PayloadContainer
 import payload.request.*
 import payload.response.*
@@ -77,7 +76,8 @@ object WarframeMarket : Endpoint(null) {
 					val bids = Bids(this)
 
 					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
-						override suspend fun get() = httpClient.get<PayloadContainer<payload.response.Bids>>(url).payload
+						override suspend fun get() =
+							httpClient.get<PayloadContainer<payload.response.Bids>>(url).payload
 					}
 				}
 			}
@@ -91,21 +91,27 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object search : Endpoint(auctions) {
-				suspend fun get(searchParameters: AuctionSearch) = httpClient.get<PayloadContainer<Auctions>>(url) {
-					url {
-						searchParameters::class.memberProperties.forEach { property ->
-							property.getter.call(searchParameters)?.let { value ->
-								parameter(property.name, value)
+				suspend fun get(searchParameters: AuctionSearch) =
+					httpClient.get<PayloadContainer<Auctions>>(url) {
+						url {
+							searchParameters::class.memberProperties.forEach { property ->
+								property.getter.call(searchParameters)?.let { value ->
+									parameter(property.name, value)
+								}
 							}
 						}
-					}
-				}.payload
+					}.payload
 			}
 		}
 
 		object auth : Endpoint(v1) {
 			suspend fun signIn(payload: SigninCredentials): ProfilePrivate {
-				val profile = httpClient.post<PayloadContainer<ProfilePrivate>>(createRequestBuilder("$url/signin", payload)).payload
+				val profile = httpClient.post<PayloadContainer<ProfilePrivate>>(
+					createRequestBuilder(
+						"$url/signin",
+						payload
+					)
+				).payload
 				jwt = httpClient.cookies("$url/signin").find { it.name == "JWT" }!!.value
 				return profile
 			}
@@ -117,7 +123,12 @@ object WarframeMarket : Endpoint(null) {
 
 			suspend fun register(): Nothing = TODO()
 
-			suspend fun changePassword(payload: PasswordChange) = httpClient.post<PayloadContainer<String>>(createRequestBuilder(v1.url + "/settings/account/change_password", payload)).payload
+			suspend fun changePassword(payload: PasswordChange) = httpClient.post<PayloadContainer<String>>(
+				createRequestBuilder(
+					v1.url + "/settings/account/change_password",
+					payload
+				)
+			).payload
 		}
 
 		object im : Endpoint(v1) {
@@ -127,14 +138,17 @@ object WarframeMarket : Endpoint(null) {
 				class CHAT(chat_id: String) : Endpoint(chats), Get<List<Chats.Chat.Message>>, Delete<ChatDeleted> {
 					override val pathName = chat_id
 
-					override suspend fun get() = httpClient.get<PayloadContainer<List<Chats.Chat.Message>>>(createRequestBuilder(url)).payload
+					override suspend fun get() =
+						httpClient.get<PayloadContainer<List<Chats.Chat.Message>>>(createRequestBuilder(url)).payload
 
-					override suspend fun delete() = httpClient.delete<PayloadContainer<ChatDeleted>>(createRequestBuilder(url)).payload
+					override suspend fun delete() =
+						httpClient.delete<PayloadContainer<ChatDeleted>>(createRequestBuilder(url)).payload
 				}
 			}
 
 			object ignore : Endpoint(im), Get<List<User>>, Create<IgnoreCreate, IgnoreCreated> {
-				override suspend fun get() = httpClient.get<PayloadContainer<List<User>>>(createRequestBuilder(url)).payload
+				override suspend fun get() =
+					httpClient.get<PayloadContainer<List<User>>>(createRequestBuilder(url)).payload
 
 				override suspend fun create(payload: IgnoreCreate) =
 					httpClient.post<PayloadContainer<IgnoreCreated>>(createRequestBuilder(url, payload)).payload
@@ -142,13 +156,15 @@ object WarframeMarket : Endpoint(null) {
 				class IGNORE(user_id: String) : Endpoint(im), Delete<IgnoreDeleted> {
 					override val pathName = user_id
 
-					override suspend fun delete() = httpClient.delete<PayloadContainer<IgnoreDeleted>>(createRequestBuilder(url)).payload
+					override suspend fun delete() =
+						httpClient.delete<PayloadContainer<IgnoreDeleted>>(createRequestBuilder(url)).payload
 				}
 			}
 		}
 
 		object items : Endpoint(v1), Get<Items> {
 			override suspend fun get() = httpClient.get<PayloadContainer<Items>>(createRequestBuilder(url)).payload
+			suspend fun get2() = httpClient.requestUnwrapped<Items>(url, HttpMethod.Get)
 
 			class ITEM(url_name: String) : Endpoint(items), Get<Item> {
 				override val pathName = url_name
@@ -210,7 +226,8 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun create(payload: OrderCreate) =
 					httpClient.post<PayloadContainer<Order>>(createRequestBuilder(url, payload)).payload
 
-				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>,
+					Delete<OrderDeleted> {
 					override val pathName = order_id
 
 					override suspend fun update(payload: OrderUpdate) =

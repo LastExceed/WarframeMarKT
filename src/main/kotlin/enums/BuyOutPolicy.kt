@@ -1,5 +1,6 @@
 package enums
 
 enum class BuyOutPolicy {
-	with
+	with,
+	direct
 }
