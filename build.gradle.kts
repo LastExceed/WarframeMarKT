@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") version "1.3.71"
+	kotlin("jvm") version "1.5.0"
 	application
 	`maven-publish`
 	signing
@@ -28,16 +28,8 @@ dependencies {
 		"jackson",
 		"serialization-jvm"
 	).forEach {
-		implementation("io.ktor", "ktor-client-$it", "1.3.1")
+		implementation("io.ktor", "ktor-client-$it", "1.5.4")
 	}
-}
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions.jvmTarget = "13"
-}
-
-application {
-	mainClassName = "MainKt"
 }
 
 val sourcesJar = tasks.register<Jar>("sourcesJar") {
