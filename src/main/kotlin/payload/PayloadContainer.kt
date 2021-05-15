@@ -1,3 +1,3 @@
 package payload
 
-data class PayloadContainer<PayloadType> internal constructor(val payload: PayloadType)
+data class PayloadContainer<PayloadType> public constructor(val payload: PayloadType)
