@@ -4,7 +4,9 @@ import enums.IdUser
 import enums.Region
 import enums.ResourceLocation
 import enums.Status
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class User private constructor(
 	var status: Status?,
 	var ingame_name: String,
@@ -13,5 +15,5 @@ data class User private constructor(
 	var id: IdUser,
 	var reputation: Double,
 	var last_seen: String? = null, //missing in Chats
-	var reputation_bonus: Double?
+	var reputation_bonus: Double? = null
 )

@@ -4,20 +4,22 @@ import enums.IdOrder
 import enums.OrderType
 import enums.Platform
 import enums.Region
-import java.util.*
+import kotlinx.datetime.*
+import kotlinx.serialization.*
 
+@Serializable
 data class Order private constructor(
-	val creation_date: Date,
+	val creation_date: Instant,
 	val id: IdOrder,
-	val last_update: Date,
+	val last_update: Instant,
 	val order_type: OrderType,
 	val platform: Platform,
-	val platinum: Int,
+	val platinum: Double, //sometimes there's .0 at the end. wtf KycKyc
 	val quantity: Int,
 	val region: Region,
 	val visible: Boolean,
 	val mod_rank: Int? = null, //missing if not a mod
-	val item: Any? = null, //missing if specified in request
+	val item: String? = null, //missing if specified in request
 	val user: User? = null, //missing if specified in request
 	val closed_date: String? = null //missing if not closed
 ) {

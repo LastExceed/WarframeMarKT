@@ -1,7 +1,9 @@
 package payload.request
 
 import enums.IdOrder
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class OrderUpdate(
 	val order_id: IdOrder,
 	val visible: Boolean,

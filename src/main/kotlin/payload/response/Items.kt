@@ -3,9 +3,11 @@ package payload.response
 import enums.IdItem
 import enums.ItemUrlName
 import enums.ResourceLocation
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class Items private constructor(val items: List<Item>) {
+	@Serializable
 	data class Item private constructor(
 		val url_name: ItemUrlName,
 		val id: IdItem,

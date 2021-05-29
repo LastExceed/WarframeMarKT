@@ -1,7 +1,9 @@
 package payload.response
 
 import payload.response.common.Auction
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AuctionsParticipant private constructor(
 	val auctions: List<Auction>,
 	val bids: List<Bids.Bid>

@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	kotlin("jvm") version "1.5.0"
+	kotlin("jvm") version "1.5.10"
+	kotlin("plugin.serialization") version "1.5.0"
 	application
 	`maven-publish`
 	signing
@@ -20,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	implementation(kotlin("stdlib-jdk8"))
+	implementation("org.jetbrains.kotlinx", "kotlinx-datetime", "0.2.1")
 	setOf(
 		"cio",
 		"json-jvm",

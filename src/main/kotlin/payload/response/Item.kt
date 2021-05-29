@@ -4,12 +4,17 @@ import enums.IdItem
 import enums.ItemUrlName
 import enums.Rarity
 import enums.ResourceLocation
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Item private constructor(val item: Item) {
+
+	@Serializable
 	data class Item(
 		var items_in_set: List<SetItem>,
 		var id: IdItem
 	) {
+		@Serializable
 		data class SetItem private constructor(
 			val set_root: Boolean,
 			val mastery_level: Int?,
@@ -33,6 +38,7 @@ data class Item private constructor(val item: Item) {
 			val mod_max_rank: Int?,
 			val rarity: Rarity?
 		) {
+			@Serializable
 			data class Lang private constructor(
 				val wiki_link: String,
 				val item_name: String,
@@ -42,6 +48,7 @@ data class Item private constructor(val item: Item) {
 				val thumb: ResourceLocation?,
 				val icon: ResourceLocation?
 			) {
+				@Serializable
 				data class Drop private constructor(
 					val name: String,
 					val link: String?

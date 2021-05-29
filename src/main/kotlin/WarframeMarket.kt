@@ -1,8 +1,8 @@
-import com.fasterxml.jackson.annotation.*
 import enums.*
 import io.ktor.client.HttpClient
 import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -22,10 +22,7 @@ object WarframeMarket : Endpoint(null) {
 
 	override val httpClient = HttpClient {
 		install(JsonFeature) {
-			serializer = JacksonSerializer {
-				setSerializationInclusion(JsonInclude.Include.NON_NULL)
-			}
-			//TODO: don't initialize nullable types with default value unless explicitly specified
+			serializer = KotlinxSerializer()
 		}
 		install(HttpCookies) {
 			storage = AcceptAllCookiesStorage()

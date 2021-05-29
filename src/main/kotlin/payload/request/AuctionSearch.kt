@@ -1,7 +1,9 @@
 package payload.request
 
 import enums.*
+import kotlinx.serialization.Serializable
 
+@Serializable
 abstract class AuctionSearch {
 	abstract val type: AuctionType?
 	abstract val weapon_url_name: ItemUrlName?
@@ -9,6 +11,7 @@ abstract class AuctionSearch {
 	abstract val sort_by: SortingStyle?
 }
 
+@Serializable
 data class AuctionSearchLich(
 	override val type: AuctionType?,
 	override val buyout_policy: BuyOutPolicy?,
@@ -18,6 +21,7 @@ data class AuctionSearchLich(
 	val having_ephemera: Boolean
 ) : AuctionSearch()
 
+@Serializable
 data class AuctionSearchRiven(
 	override val type: AuctionType?,
 	override val buyout_policy: BuyOutPolicy?,

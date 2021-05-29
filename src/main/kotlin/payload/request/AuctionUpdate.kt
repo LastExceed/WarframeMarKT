@@ -1,5 +1,8 @@
 package payload.request
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AuctionUpdate(
 	val starting_price: Int,
 	val buyout_price: Int?,
