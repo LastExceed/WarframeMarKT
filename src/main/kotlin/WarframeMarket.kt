@@ -111,16 +111,16 @@ object WarframeMarket : Endpoint(null) {
 				val orders = Orders(this)
 				val statistics = Statistics(this)
 
-				class Orders internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemOrders> {
+				class Orders internal constructor(parent: Endpoint) : Endpoint(parent), Get<ItemOrders> {
 					override suspend fun get() = requestUnwrapped<ItemOrders>(HttpMethod.Get)
 					val top = Top(this)
 
-					class Top internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemOrdersTop> {
+					class Top internal constructor(parent: Endpoint) : Endpoint(parent), Get<ItemOrdersTop> {
 						override suspend fun get() = requestUnwrapped<ItemOrdersTop>(HttpMethod.Get)
 					}
 				}
 
-				class Statistics internal constructor(parent: Endpoint?) : Endpoint(parent), Get<ItemStatistics> {
+				class Statistics internal constructor(parent: Endpoint) : Endpoint(parent), Get<ItemStatistics> {
 					override suspend fun get() = requestUnwrapped<ItemStatistics>(HttpMethod.Get)
 				}
 			}
@@ -179,14 +179,10 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun get() = requestUnwrapped<UserOrders>(HttpMethod.Get)
 				}
 
-				class Review internal constructor(parent: Endpoint) : Endpoint(parent),
-					Create<ReviewCreate, ReviewCreated> {
+				class Review internal constructor(parent: Endpoint) : Endpoint(parent), Create<ReviewCreate, ReviewCreated> {
 					override suspend fun create(payload: ReviewCreate) = requestUnwrapped<ReviewCreated>(HttpMethod.Post, payload)
-					fun REVIEW(review_id: String) = REVIEW(review_id, this)
 
-					class REVIEW internal constructor(override val pathName: String, parent: Endpoint?) :
-						Endpoint(parent),
-						Update<ReviewUpdate, ReviewUpdated>, Delete<ReviewDeleted> {
+					inner class REVIEW(override val pathName: String) : Endpoint(this), Update<ReviewUpdate, ReviewUpdated>, Delete<ReviewDeleted> {
 						override suspend fun update(payload: ReviewUpdate) = requestUnwrapped<ReviewUpdated>(HttpMethod.Delete, payload)
 						override suspend fun delete() = requestUnwrapped<ReviewDeleted>(HttpMethod.Delete)
 					}
