@@ -1,9 +1,12 @@
 package payload.request
 
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class SigninCredentials(
+	val auth_type: AuthType,
 	val email: String,
-	val password: String
+	val password: String,
+	val device_id: String
 )

@@ -26,7 +26,7 @@ data class Chats private constructor(val chats: List<Chat>) {
 			val send_date: Instant,
 			val chat_id: IdChat,
 			val id: IdMessage,
-			val raw_message: String
+			val raw_message: String? = null
 		)
 	}
 }

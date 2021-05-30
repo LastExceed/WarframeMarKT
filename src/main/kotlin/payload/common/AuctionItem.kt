@@ -1,25 +1,15 @@
 package payload.common
 
-import com.fasterxml.jackson.annotation.*
 import enums.*
-import kotlinx.serialization.Serializable
-
-@JsonTypeInfo(
-	use = JsonTypeInfo.Id.NAME,
-	include = JsonTypeInfo.As.PROPERTY,
-	property = "type"
-)
-@JsonSubTypes(
-	JsonSubTypes.Type(value = AuctionItemLich::class, name = "lich"),
-	JsonSubTypes.Type(value = AuctionItemRiven::class, name = "riven")
-)
+import kotlinx.serialization.*
 
 @Serializable
-abstract class AuctionItem {
+sealed class AuctionItem {
 	abstract val weapon_url_name: ItemUrlName
 }
 
 @Serializable
+@SerialName("riven")
 data class AuctionItemRiven(
 	override val weapon_url_name: ItemUrlName,
 	val name: String,//rivens and liches have random generated names
@@ -39,9 +29,11 @@ data class AuctionItemRiven(
 }
 
 @Serializable
+@SerialName("lich")
 data class AuctionItemLich(
 	override val weapon_url_name: ItemUrlName,
 	val element: Element,
 	val damage: Float,
-	val having_ephemera: Boolean
+	val having_ephemera: Boolean,
+	val quirk: String? = null //TODO: enum
 ) : AuctionItem()

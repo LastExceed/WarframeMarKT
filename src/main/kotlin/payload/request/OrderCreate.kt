@@ -10,5 +10,5 @@ data class OrderCreate(
 	val item_id: IdItem,
 	val platinum: Int,
 	val quantity: Int,
-	val mod_rank: Int? = null
+	val rank: Int? = null
 )

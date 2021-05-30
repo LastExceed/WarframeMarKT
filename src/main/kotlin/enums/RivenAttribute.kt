@@ -1,14 +1,14 @@
 package enums
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.*
 
 @Suppress("EnumEntryName")
 @Serializable
 enum class RivenAttribute {
-	@JsonProperty("base_damage_/_melee_damage")base_damage_OR_melee_damage,
-	@JsonProperty("fire_rate_/_attack_speed")`fire_rate_OR_attack_speed`,
+	@SerialName("base_damage_/_melee_damage")base_damage_OR_melee_damage,
+	@SerialName("fire_rate_/_attack_speed")`fire_rate_OR_attack_speed`,
 	ammo_maximum,
+	chance_to_gain_combo_count,//TODO: wtf KycKyc
 	chance_to_gain_extra_combo_count,
 	channeling_damage,
 	channeling_efficiency,

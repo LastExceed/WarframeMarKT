@@ -3,8 +3,6 @@ package payload.response
 import enums.*
 import kotlinx.datetime.*
 import payload.response.common.Achievement
-import payload.response.common.User
-import java.util.*
 import kotlinx.serialization.Serializable
 
 @Serializable

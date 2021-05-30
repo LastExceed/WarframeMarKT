@@ -3,12 +3,11 @@ package payload.response.common
 import enums.*
 import kotlinx.datetime.*
 import payload.common.AuctionItem
-import java.util.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Auction private constructor(
-	val buyout_price: Int,
+	val buyout_price: Int?,
 	val visible: Boolean,
 	val minimal_reputation: Int,
 	val note: String,
@@ -26,5 +25,6 @@ data class Auction private constructor(
 	val updated: Instant,
 	val note_raw: String,
 	val is_direct_sell: Boolean,
-	val id: IdAuction
+	val id: IdAuction,
+	val minimal_increment: Int? = null
 )
