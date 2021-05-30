@@ -1,6 +1,6 @@
 package payload.request
 
-import enums.*
+import enums.AuthType
 import kotlinx.serialization.Serializable
 
 @Serializable

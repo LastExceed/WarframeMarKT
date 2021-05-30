@@ -1,9 +1,6 @@
 package payload.response.common
 
-import enums.IdOrder
-import enums.OrderType
-import enums.Platform
-import enums.Region
+import enums.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 import payload.response.*

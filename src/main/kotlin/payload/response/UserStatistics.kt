@@ -1,10 +1,7 @@
 package payload.response
 
-import enums.OrderType
-import enums.Platform
-import enums.Region
-import kotlinx.datetime.*
-import java.util.*
+import enums.*
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

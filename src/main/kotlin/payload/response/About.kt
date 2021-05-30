@@ -1,4 +1,5 @@
 package payload.response
+
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,9 +1,6 @@
 package payload.response.common
 
-import enums.IdUser
-import enums.Region
-import enums.ResourceLocation
-import enums.Status
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable

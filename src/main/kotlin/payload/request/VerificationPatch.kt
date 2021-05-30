@@ -1,7 +1,6 @@
 package payload.request
 
-import enums.Platform
-import enums.Region
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,8 +1,7 @@
 package payload.response
 
-import enums.IdSnapshot
-import enums.OrderType
-import kotlinx.datetime.*
+import enums.*
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

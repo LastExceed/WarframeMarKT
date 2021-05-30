@@ -7,7 +7,6 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import payload.request.*
 import payload.response.*
-import payload.response.common.Order
 import payload.response.common.UserShort
 import kotlin.reflect.full.memberProperties
 

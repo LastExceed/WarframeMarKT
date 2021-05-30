@@ -1,7 +1,6 @@
 package payload.response
 
-import payload.response.common.Review
-import payload.response.common.CurrentUser
+import payload.response.common.*
 import kotlinx.serialization.Serializable
 
 @Serializable

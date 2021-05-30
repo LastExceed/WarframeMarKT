@@ -1,7 +1,6 @@
 package payload.request
 
-import enums.IdChat
-import enums.IdUser
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable

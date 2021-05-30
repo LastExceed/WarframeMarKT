@@ -1,9 +1,8 @@
 package payload.response
 
-import enums.IdAuction
-import enums.IdBid
-import kotlinx.datetime.*
+import enums.*
 import payload.response.common.UserShort
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

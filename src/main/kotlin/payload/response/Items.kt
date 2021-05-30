@@ -1,8 +1,6 @@
 package payload.response
 
-import enums.IdItem
-import enums.ItemUrlName
-import enums.ResourceLocation
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,6 +1,6 @@
 package payload.response
 
-import enums.*
+import enums.IdChat
 import kotlinx.serialization.Serializable
 
 @Serializable

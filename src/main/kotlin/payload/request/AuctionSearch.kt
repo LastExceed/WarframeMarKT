@@ -1,7 +1,7 @@
 package payload.request
 
 import enums.*
-import kotlinx.serialization.*
+import kotlinx.serialization.Serializable
 
 @Serializable
 abstract class AuctionSearch(val type: AuctionType) {

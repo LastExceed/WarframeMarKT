@@ -1,10 +1,8 @@
 package payload.response
 
-import enums.IdChat
-import enums.IdMessage
-import enums.IdUser
-import kotlinx.datetime.*
+import enums.*
 import payload.response.common.UserShort
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

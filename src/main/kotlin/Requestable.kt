@@ -1,12 +1,4 @@
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.module.kotlin.*
-import io.ktor.client.features.cookies.cookies
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import payload.*
-import java.lang.reflect.*
-
+import io.ktor.client.HttpClient
 
 internal interface Requestable {
 	val httpClient: HttpClient

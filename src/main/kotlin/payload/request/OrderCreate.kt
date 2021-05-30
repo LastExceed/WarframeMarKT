@@ -1,7 +1,6 @@
 package payload.request
 
-import enums.IdItem
-import enums.OrderType
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable

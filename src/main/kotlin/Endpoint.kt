@@ -1,11 +1,8 @@
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.module.kotlin.*
 import io.ktor.client.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import payload.*
-import java.lang.reflect.*
+import payload.PayloadContainer
 
 abstract class Endpoint internal constructor(private val parent: Endpoint?) : Requestable {
 	override val httpClient: HttpClient
