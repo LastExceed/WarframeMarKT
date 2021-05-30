@@ -52,7 +52,7 @@ api.warframe.market
             /signout                 GET
             /register                POST
         /im
-            /chats                   GET
+            /chats                   GET POST
                 /{chat_id}           GET DELETE
             /ignore                  GET CREATE
                 /{user_id}           DELETE
