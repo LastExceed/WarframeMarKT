@@ -95,7 +95,7 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun get() = requestUnwrapped<List<User>>(HttpMethod.Get)
 				override suspend fun create(payload: IgnoreCreate) = requestUnwrapped<IgnoreCreated>(HttpMethod.Post, payload)
 
-				class IGNORE(user_id: String) : Endpoint(im), Delete<IgnoreDeleted> {
+				class IGNORE(user_id: String) : Endpoint(ignore), Delete<IgnoreDeleted> {
 					override val pathName = user_id
 
 					override suspend fun delete() = requestUnwrapped<IgnoreDeleted>(HttpMethod.Delete)
