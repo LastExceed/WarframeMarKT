@@ -33,17 +33,17 @@ object WarframeMarket : Endpoint(null) {
 		object auctions : Endpoint(v1), Get<Auctions> {
 			override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
 
-			object create : Endpoint(auctions), Create<AuctionCreate, Auction> {
-				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<Auction>(HttpMethod.Post, payload)
+			object create : Endpoint(auctions), Create<AuctionCreate, AuctionEntry> {
+				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionEntry>(HttpMethod.Post, payload)
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<Auction>, Update<AuctionUpdate, Auction> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionEntry>, Update<AuctionUpdate, AuctionEntry> {
 					override val pathName = auction_id
 
-					override suspend fun get() = requestUnwrapped<Auction>(HttpMethod.Get)
-					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<Auction>(HttpMethod.Delete, payload)
-					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, "$url/close")
+					override suspend fun get() = requestUnwrapped<AuctionEntry>(HttpMethod.Get)
+					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionEntry>(HttpMethod.Put, payload)
+					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
 
 					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
