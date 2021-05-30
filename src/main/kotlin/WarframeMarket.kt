@@ -61,7 +61,7 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object search : Endpoint(auctions) {
-				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<AuctionClosed>(HttpMethod.Get) {
+				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<Auctions>(HttpMethod.Get) {
 					searchParameters::class.memberProperties.forEach { property ->
 						property.getter.call(searchParameters)?.let { value ->
 							parameter(property.name, value)
@@ -73,8 +73,9 @@ object WarframeMarket : Endpoint(null) {
 
 		object auth : Endpoint(v1) {
 			suspend fun signIn(payload: SigninCredentials) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/signin")
-			suspend fun signOut() = requestUnwrapped<HttpResponse>(HttpMethod.Get, url = "$url/signout") //returns a profile with all values null
-			suspend fun register(): Nothing = TODO()
+			suspend fun signOut() = requestUnwrapped<ProfilePrivate>(HttpMethod.Get, url = "$url/signout")
+			suspend fun register(payload: Registration) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/registration")
+			suspend fun restore(payload: Registration) = requestUnwrapped<Unit>(HttpMethod.Post, payload, "$url/restore")
 			suspend fun changePassword(payload: PasswordChange) = requestUnwrapped<String>(HttpMethod.Post, payload, v1.url + "/settings/account/change_password")
 		}
 
@@ -82,10 +83,10 @@ object WarframeMarket : Endpoint(null) {
 			object chats : Endpoint(im), Get<Chats> {
 				override suspend fun get() = requestUnwrapped<Chats>(HttpMethod.Get)
 
-				class CHAT(chat_id: String) : Endpoint(chats), Get<List<Chats.Chat.Message>>, Delete<ChatDeleted> {
+				class CHAT(chat_id: String) : Endpoint(chats), Get<Messages>, Delete<ChatDeleted> {
 					override val pathName = chat_id
 
-					override suspend fun get() = requestUnwrapped<List<Chats.Chat.Message>>(HttpMethod.Get)
+					override suspend fun get() = requestUnwrapped<Messages>(HttpMethod.Get)
 					override suspend fun delete() = requestUnwrapped<ChatDeleted>(HttpMethod.Delete)
 				}
 			}
@@ -140,8 +141,8 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object customization : Endpoint(profile) {
-				object about : Endpoint(customization), Update<AboutUpdate, About> {
-					override suspend fun update(payload: AboutUpdate) = requestUnwrapped<About>(HttpMethod.Delete, payload)
+				object about : Endpoint(customization), Create<AboutUpdate, About> {
+					override suspend fun create(payload: AboutUpdate) = requestUnwrapped<About>(HttpMethod.Post, payload)
 				}
 
 				object avatar : Endpoint(customization), Create<Nothing, ProfilePrivate> {
@@ -149,15 +150,15 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreate, Order> {
-				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)
-				override suspend fun create(payload: OrderCreate) = requestUnwrapped<Order>(HttpMethod.Post, payload)
+			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreate, OrderCreated> {
+				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)  //TODO: this endpoint is broken (api returns {}) maybe deprecated ?
+				override suspend fun create(payload: OrderCreate) = requestUnwrapped<OrderCreated>(HttpMethod.Post, payload)
 
 				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
 					override val pathName = order_id
 					override suspend fun update(payload: OrderUpdate) = requestUnwrapped<OrderUpdated>(HttpMethod.Delete, payload)
 					override suspend fun delete() = requestUnwrapped<OrderDeleted>(HttpMethod.Delete)
-					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, orders.url + "/close/" + pathName)
+					suspend fun close() = requestUnwrapped<OrderClosed>(HttpMethod.Put, url = orders.url + "/close/" + pathName)
 				}
 			}
 
