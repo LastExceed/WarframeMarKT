@@ -64,7 +64,7 @@ object WarframeMarket : Endpoint(null) {
 				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<Auctions>(HttpMethod.Get) {
 					searchParameters::class.memberProperties.forEach { property ->
 						property.getter.call(searchParameters)?.let { value ->
-							parameter(property.name, value)
+							parameter(property.name, if (value is List<*>) value.joinToString(",") else value) //KycKyc plz y u make me do dis
 						}
 					}
 				}
