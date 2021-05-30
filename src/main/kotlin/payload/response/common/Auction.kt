@@ -1,7 +1,6 @@
 package payload.response.common
 
-import enums.IdAuction
-import enums.Platform
+import enums.*
 import kotlinx.datetime.*
 import payload.common.AuctionItem
 import java.util.*
@@ -16,11 +15,11 @@ data class Auction private constructor(
 	val item: AuctionItem,
 	val private: Boolean,
 	val starting_price: Int,
-	val owner: User,
+	val owner: UserShort,//TODO: userId when personal, UserShort when public
 	val platform: Platform,
 	val closed: Boolean,
-	val top_bid: Int,
-	val winner: User?,
+	val top_bid: Int?,
+	val winner: IdUser?,//maybe here too ?
 	val is_marked_for: String?, //unknown
 	val marked_operation_at: String?, //unknown
 	val created: Instant,

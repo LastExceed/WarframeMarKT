@@ -19,9 +19,7 @@ data class Order private constructor(
 	val region: Region,
 	val visible: Boolean,
 	val mod_rank: Int? = null, //missing if not a mod
-	val item: String? = null, //missing if specified in request
-	val user: User? = null, //missing if specified in request
-	val closed_date: String? = null //missing if not closed
-) {
-	data class ItemId(val value: String)
-}
+	val item: Item.Item.SetItem? = null, //missing if specified in request
+	val user: UserShort? = null, //missing if specified in request
+	val closed_date: Instant? = null //missing if not closed
+)
