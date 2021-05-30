@@ -37,4 +37,7 @@ enum class RivenAttributeName {
 	status_duration,
 	toxin_damage,
 	zoom,
+	// for search
+	none,
+	has
 }

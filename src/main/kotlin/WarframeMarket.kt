@@ -216,8 +216,8 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun get() = requestUnwrapped<RivenItems>(HttpMethod.Get)
 			}
 
-			object attributes : Endpoint(riven), Get<RivenItems> {
-				override suspend fun get() = requestUnwrapped<RivenItems>(HttpMethod.Get)
+			object attributes : Endpoint(riven), Get<RivenAttributes> {
+				override suspend fun get() = requestUnwrapped<RivenAttributes>(HttpMethod.Get)
 			}
 		}
 	}
