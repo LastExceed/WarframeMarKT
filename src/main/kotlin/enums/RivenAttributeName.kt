@@ -4,7 +4,7 @@ import kotlinx.serialization.*
 
 @Suppress("EnumEntryName")
 @Serializable
-enum class RivenAttribute {
+enum class RivenAttributeName {
 	@SerialName("base_damage_/_melee_damage")base_damage_OR_melee_damage,
 	@SerialName("fire_rate_/_attack_speed")`fire_rate_OR_attack_speed`,
 	ammo_maximum,

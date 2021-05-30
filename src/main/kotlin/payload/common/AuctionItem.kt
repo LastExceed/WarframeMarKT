@@ -22,7 +22,7 @@ data class AuctionItemRiven(
 
 	@Serializable
 	data class Attribute(
-		val url_name: RivenAttribute,
+		val url_name: RivenAttributeName,
 		val positive: Boolean,
 		val value: Float
 	)

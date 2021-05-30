@@ -210,5 +210,15 @@ object WarframeMarket : Endpoint(null) {
 				suspend fun patch(payload: VerificationPatch) = requestUnwrapped<VerificationPatched>(HttpMethod.Patch, payload)
 			}
 		}
+
+		object riven : Endpoint(v1) {
+			object items : Endpoint(riven), Get<RivenItems> {
+				override suspend fun get() = requestUnwrapped<RivenItems>(HttpMethod.Get)
+			}
+
+			object attributes : Endpoint(riven), Get<RivenItems> {
+				override suspend fun get() = requestUnwrapped<RivenItems>(HttpMethod.Get)
+			}
+		}
 	}
 }

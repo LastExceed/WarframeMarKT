@@ -11,5 +11,7 @@ typealias IdOrder = String
 typealias IdReview = String
 typealias IdSnapshot = String
 typealias IdUser = String
+typealias IdRivenItem = String
+typealias IdRivenAttribute = String
 typealias ItemUrlName = String
 typealias ResourceLocation = String
