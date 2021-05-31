@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfilePublic private constructor(val profile: Profile) {
-	//TODO: inherit from User?
+
 	@Serializable
 	data class Profile private constructor(
 		val region: Region,

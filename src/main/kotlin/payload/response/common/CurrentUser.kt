@@ -5,7 +5,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CurrentUser private constructor( //TODO: inherit from user ?
+data class CurrentUser private constructor(
 	val reputation: Int,
 	val region: Region,
 	val check_code: String?,
