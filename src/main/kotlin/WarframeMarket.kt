@@ -150,7 +150,7 @@ object WarframeMarket : Endpoint(null) {
 			}
 
 			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreate, OrderCreated> {
-				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)  //TODO: this endpoint is broken (api returns {}) maybe deprecated ?
+				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)
 				override suspend fun create(payload: OrderCreate) = requestUnwrapped<OrderCreated>(HttpMethod.Post, payload)
 
 				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
