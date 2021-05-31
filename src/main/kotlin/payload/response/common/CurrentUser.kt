@@ -37,6 +37,6 @@ data class CurrentUser private constructor(
 	data class PatreonProfile(
 		val patreon_founder: Boolean,
 		val subscription: Boolean,
-		val patreon_badge: String //TODO: enum
+		val patreon_badge: String
 	)
 }
