@@ -183,7 +183,7 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun create(payload: ReviewCreate) = requestUnwrapped<ReviewCreated>(HttpMethod.Post, payload)
 
 					inner class REVIEW(override val pathName: String) : Endpoint(this), Update<ReviewUpdate, ReviewUpdated>, Delete<ReviewDeleted> {
-						override suspend fun update(payload: ReviewUpdate) = requestUnwrapped<ReviewUpdated>(HttpMethod.Delete, payload)
+						override suspend fun update(payload: ReviewUpdate) = requestUnwrapped<ReviewUpdated>(HttpMethod.Put, payload)
 						override suspend fun delete() = requestUnwrapped<ReviewDeleted>(HttpMethod.Delete)
 					}
 				}
