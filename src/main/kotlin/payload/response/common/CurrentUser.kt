@@ -5,7 +5,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CurrentUser private constructor( //TODO: inherit from user ?
+data class CurrentUser private constructor(
 	val reputation: Int,
 	val region: Region,
 	val check_code: String?,
@@ -37,6 +37,6 @@ data class CurrentUser private constructor( //TODO: inherit from user ?
 	data class PatreonProfile(
 		val patreon_founder: Boolean,
 		val subscription: Boolean,
-		val patreon_badge: String //TODO: enum
+		val patreon_badge: String
 	)
 }

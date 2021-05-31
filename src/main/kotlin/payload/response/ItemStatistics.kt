@@ -24,7 +24,7 @@ data class ItemStatistics private constructor(
 			val median: Float
 			val mod_rank: Int?
 			val id: IdSnapshot
-			val moving_avg: Float? //TODO: only sometimes present, figure out when
+			val moving_avg: Float?
 		}
 
 		@Serializable

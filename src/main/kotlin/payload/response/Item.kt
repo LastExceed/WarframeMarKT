@@ -38,7 +38,7 @@ data class Item private constructor(val item: Item) {
 			val rarity: Rarity? = null //missing in OrderCreate
 		) {
 			@Serializable
-			data class Lang private constructor( //TODO: probably need subclassing here
+			data class Lang private constructor(
 				val wiki_link: String? = null,
 				val item_name: String, //OrderCreate only has this
 				val description: String? = null,

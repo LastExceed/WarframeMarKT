@@ -14,11 +14,11 @@ data class Auction private constructor(
 	val item: AuctionItem,
 	val private: Boolean,
 	val starting_price: Int,
-	val owner: UserShort,//TODO: userId when personal, UserShort when public
+	val owner: UserShort,
 	val platform: Platform,
 	val closed: Boolean,
 	val top_bid: Int?,
-	val winner: IdUser?,//maybe here too ?
+	val winner: IdUser?,
 	val is_marked_for: String?, //unknown
 	val marked_operation_at: String?, //unknown
 	val created: Instant,

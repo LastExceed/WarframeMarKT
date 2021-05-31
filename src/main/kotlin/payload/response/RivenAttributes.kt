@@ -17,7 +17,7 @@ data class RivenAttributes(
 		val positive_is_negative: Boolean,
 		val exclusive_to: List<RivenType>? = null, //missing if available to all types
 		val effect: String,
-		val units: RivenAttributeUnit? = null, //todo: investigate when this is null/missing
+		val units: RivenAttributeUnit? = null,
 		val negative_only: Boolean,
 		val search_only: Boolean
 	)

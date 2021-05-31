@@ -145,12 +145,12 @@ object WarframeMarket : Endpoint(null) {
 				}
 
 				object avatar : Endpoint(customization), Create<Nothing, ProfilePrivate> {
-					override suspend fun create(payload: Nothing) = TODO() //body is a binary image
+					override suspend fun create(payload: Nothing) = TODO("not implemented")
 				}
 			}
 
 			object orders : Endpoint(profile), Get<OwnOrders>, Create<OrderCreate, OrderCreated> {
-				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)  //TODO: this endpoint is broken (api returns {}) maybe deprecated ?
+				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)
 				override suspend fun create(payload: OrderCreate) = requestUnwrapped<OrderCreated>(HttpMethod.Post, payload)
 
 				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {

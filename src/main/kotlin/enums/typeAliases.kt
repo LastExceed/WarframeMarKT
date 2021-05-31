@@ -1,6 +1,5 @@
 package enums
 
-//TODO: use inline classes instead of typealiases for *actual* type saftey
 typealias IdAuction = String
 typealias IdBid = String
 typealias IdChat = String

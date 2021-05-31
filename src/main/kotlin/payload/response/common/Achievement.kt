@@ -9,5 +9,5 @@ data class Achievement private constructor(
 	val icon: ResourceLocation,
 	val description: String,
 	val exposed: Boolean,
-	val type: String //TODO: enum?
+	val type: String
 )

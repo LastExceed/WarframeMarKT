@@ -8,7 +8,7 @@ enum class RivenAttributeName {
 	@SerialName("base_damage_/_melee_damage")base_damage_OR_melee_damage,
 	@SerialName("fire_rate_/_attack_speed")`fire_rate_OR_attack_speed`,
 	ammo_maximum,
-	chance_to_gain_combo_count,//TODO: wtf KycKyc
+	chance_to_gain_combo_count,
 	chance_to_gain_extra_combo_count,
 	channeling_damage,
 	channeling_efficiency,
