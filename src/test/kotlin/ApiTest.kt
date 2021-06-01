@@ -81,7 +81,6 @@ class ApiTest {
 		fun showsUp() {
 			assertNoExSuspend {
 				val reviews = WarframeMarket.v1.profile.USER("KycKyc").reviews.get()
-				//TODO: split
 				assumeTrue { this@Reviews::reviewId.isInitialized }
 				assertEquals(reviews.own_review!!.id, reviewId)
 			}
@@ -134,7 +133,6 @@ class ApiTest {
 		@Order(3)
 		fun chatShowsUp() {
 			val chats = assertNoExSuspend { WarframeMarket.v1.im.chats.get() }
-			//TODO: split test here ?
 			assumeTrue(this::chatId.isInitialized)
 			assertTrue(chats.chats.any { it.id == chatId })
 		}
@@ -168,7 +166,6 @@ class ApiTest {
 		@Order(6)
 		fun ignoreShowsUp() {
 			val ignores = assertNoExSuspend { WarframeMarket.v1.im.ignore.get() }
-			//TODO split test here ?
 			assumeTrue(ignoreCreated)
 			assertTrue(ignores.any { it.id == userId })
 		}
@@ -265,7 +262,6 @@ class ApiTest {
 		@Order(2)
 		fun showsUpPublic() {
 			val auctions = assertNoExSuspend { WarframeMarket.v1.auctions.get() }
-			//TODO: split here
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
@@ -274,7 +270,6 @@ class ApiTest {
 		@Order(2)
 		fun showsUpPrivate() {
 			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
-			//TODO: split here
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
@@ -407,7 +402,6 @@ class ApiTest {
 		//@Test //TODO: endpoint broken
 		fun showsUp() {
 			val ownOrders = assertNoExSuspend { WarframeMarket.v1.profile.orders.get() }
-			//TODO: split
 			assumeTrue(this::orderId.isInitialized)
 			assertTrue(ownOrders.orders.any { it.id == orderId }) //broken
 		}
