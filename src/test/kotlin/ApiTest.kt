@@ -399,11 +399,12 @@ class ApiTest {
 			orderId = orderUpdated.order_id
 		}
 
-		//@Test //TODO: endpoint broken
+		@Test
+		@Ignore("this endpoint is currently broken server side")
 		fun showsUp() {
 			val ownOrders = assertNoExSuspend { WarframeMarket.v1.profile.orders.get() }
 			assumeTrue(this::orderId.isInitialized)
-			assertTrue(ownOrders.orders.any { it.id == orderId }) //broken
+			assertTrue(ownOrders.orders.any { it.id == orderId })
 		}
 
 		@Test
@@ -426,7 +427,8 @@ class ApiTest {
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 	inner class Settings {
-		//@Test
+		@Test
+		@Ignore("usage instructions unknown")
 		fun pushNotificationCreate() {
 			assertNoExSuspend {
 				WarframeMarket.v1.settings.notifications.push.create(
@@ -444,7 +446,8 @@ class ApiTest {
 			}
 		}
 
-		//@Test //TODO: figure out what this is
+		@Test
+		@Ignore("see pushNotificationCreate")
 		fun pushNotificationDelete() {
 			assertNoExSuspend { WarframeMarket.v1.settings.notifications.push.delete() }
 		}
