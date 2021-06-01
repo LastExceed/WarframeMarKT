@@ -19,22 +19,6 @@ private fun <T> assertNoExSuspend(block: suspend CoroutineScope.() -> T) = asser
 class ApiTest {
 	var signedIn = false
 
-	@Test
-	@BeforeAll
-	fun signIn() {
-		assertNoExSuspend {
-			WarframeMarket.v1.auth.signIn(
-				SigninCredentials(
-					AuthType.cookie,
-					"",
-					"", //TODO: provide login credentials somehow
-					""
-				)
-			)
-			signedIn = true
-		}
-	}
-
 	@Nested
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -57,6 +41,87 @@ class ApiTest {
 		@Test
 		fun userStatistics() {
 			assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").statistics.get() }
+		}
+	}
+
+	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
+	inner class Auth {
+		@Test
+		@Order(1)
+		@Ignore("don't create a new account as long as this is getting tested against the live server")
+		fun register() {
+			assertNoExSuspend {
+				WarframeMarket.v1.auth.register(
+					Registration(
+						AuthType.cookie,
+						"someone@example.com",
+						"3X@MPL3_P@55W0RD",
+						"3X@MPL3_P@55W0RD",
+						Region.en,
+						"example device",
+						"ReCaptcha"
+					)
+				)
+			}
+		}
+
+		@Test
+		@Order(2)
+		@Ignore("don't restore the password as long as this is getting tested against the live server")
+		fun restore() {
+			assertNoExSuspend {
+				WarframeMarket.v1.auth.restore(
+					Registration(
+						AuthType.cookie,
+						"someone@example.com",
+						"3X@MPL3_P@55W0RD",
+						"3X@MPL3_P@55W0RD",
+						Region.en,
+						"example device",
+						"ReCaptcha"
+					)
+				)
+			}
+		}
+
+		@Test
+		@Order(3)
+		fun signIn() {
+			assertNoExSuspend {
+				WarframeMarket.v1.auth.signIn(
+					SigninCredentials(
+						AuthType.cookie,
+						"someone@example.com",
+						"3X@MPL3_P@55W0RD",
+						"example device"
+					)
+				)
+				signedIn = true
+			}
+		}
+
+		@Test
+		@Order(4)
+		@Ignore("don't change the password as long as this is getting tested against the live server")
+		fun changePassword() {
+			assumeTrue(signedIn)
+			assertNoExSuspend { WarframeMarket.v1.auth.changePassword(PasswordChange("", "", "")) }
+		}
+
+		@Test
+		@Ignore("can't figure how to make this run last")
+		fun signOut() {
+			assumeTrue(signedIn)
+			assertNoExSuspend { WarframeMarket.v1.auth.signOut() }
+		}
+
+		@Test
+		@Ignore("this endpoint is currently broken server side")
+		fun profile() {
+			assumeTrue(signedIn)
+			assertNoExSuspend { WarframeMarket.v1.profile.get() }
 		}
 	}
 
@@ -471,22 +536,12 @@ class ApiTest {
 					AboutUpdate("Junior student at the Orokin Tryhard Academy of Tau")
 				)
 			}
+		}
 
+		@Test
+		@Ignore("not implemented")
+		fun changeAvatar() {
+			assertNoExSuspend { WarframeMarket.v1.profile.customization.avatar.create(TODO("not implemented")) }
 		}
 	}
-
-	//@Test
-	//@Order(Int.MAX_VALUE)
-	@AfterAll //TODO: this aint working apparently
-	fun signOut() {
-		assumeTrue(signedIn)
-		assertNoExSuspend { WarframeMarket.v1.auth.signOut() }
-	}
-
-	//TODO
-	//registration
-	//restore
-	//change pw
-	//avatar create
-	//WarframeMarket.v1.profile.get()
 }
