@@ -328,43 +328,51 @@ class ApiTest {
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 	inner class ItemsAndOrders {
+		lateinit var itemUrlName: ItemUrlName
+
 		@Test
+		@Order(1)
 		fun items() {
-			assertNoExSuspend { WarframeMarket.v1.items.get() } //TODO: contains ?
+			val items = assertNoExSuspend { WarframeMarket.v1.items.get() }
+			val maimingStrike = assertNotNull(items.items.find { it.item_name == "Maiming Strike" })
+			itemUrlName = maimingStrike.url_name
 		}
 
 		lateinit var itemId: IdItem
 
 		@Test
-		@Order(1)
-		fun item() { //TODO: get ItemUrlName generically
-			val item = assertNoExSuspend { WarframeMarket.v1.items.ITEM("maiming_strike").get() }
+		@Order(2)
+		fun item() {
+			assumeTrue(this::itemUrlName.isInitialized)
+			val item = assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).get() }
 			itemId = item.item.id
 		}
 
 		@Test
-		@Order(2)
+		@Order(3)
 		fun orders() {
 			assumeTrue(this::itemId.isInitialized)
-			assertNoExSuspend { WarframeMarket.v1.items.ITEM("maiming_strike").orders.get() }
+			assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).orders.get() }
 		}
 
 		@Test
-		@Order(2)
+		@Order(3)
 		fun ordersTop() {
-			assertNoExSuspend { WarframeMarket.v1.items.ITEM("maiming_strike").orders.top.get() }
+			assumeTrue(this::itemUrlName.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).orders.top.get() }
 		}
 
 		@Test
-		@Order(2)
+		@Order(3)
 		fun statistics() {
-			assertNoExSuspend { WarframeMarket.v1.items.ITEM("maiming_strike").statistics.get() }
+			assumeTrue(this::itemUrlName.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).statistics.get() }
 		}
 
 		lateinit var orderId: IdOrder
 
 		@Test
-		@Order(2)
+		@Order(3)
 		fun create() {
 			assumeTrue(signedIn)
 			assumeTrue(this::itemId.isInitialized)
@@ -383,7 +391,7 @@ class ApiTest {
 		}
 
 		@Test
-		@Order(3)
+		@Order(4)
 		fun update() {
 			assumeTrue(this::orderId.isInitialized)
 			val orderUpdated = assertNoExSuspend {
@@ -409,14 +417,14 @@ class ApiTest {
 		}
 
 		@Test
-		@Order(4)
+		@Order(5)
 		fun close() {
 			assumeTrue(this::orderId.isInitialized)
 			assertNoExSuspend { WarframeMarket.v1.profile.orders.ORDER(orderId).close() }
 		}
 
 		@Test
-		@Order(5)
+		@Order(6)
 		fun delete() {
 			create()
 			assumeTrue(this::orderId.isInitialized)
