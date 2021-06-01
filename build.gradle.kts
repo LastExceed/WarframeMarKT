@@ -29,7 +29,14 @@ dependencies {
 	).forEach {
 		implementation("io.ktor", "ktor-client-$it", "1.5.4")
 	}
+	testImplementation(kotlin("test"))
 }
+
+tasks.test {
+	useJUnitPlatform()
+}
+
+// ====== MavenCentral stuff ======
 
 val sourcesJar = tasks.register<Jar>("sourcesJar") {
 	archiveClassifier.set("sources")
