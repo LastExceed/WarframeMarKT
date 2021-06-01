@@ -78,7 +78,7 @@ class ApiTest {
 
 		@Test
 		@Order(2)
-		fun get() {
+		fun showsUp() {
 			assertNoExSuspend {
 				val reviews = WarframeMarket.v1.profile.USER("KycKyc").reviews.get()
 				//TODO: split
@@ -283,18 +283,14 @@ class ApiTest {
 		@Order(2)
 		fun get() {
 			assumeTrue(this::auctionId.isInitialized)
-			assertNoExSuspend {
-				WarframeMarket.v1.auctions.entry.ENTRY(auctionId).get()
-			}
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).get() }
 		}
 
 		@Test
 		@Order(2)
 		fun getBids() {
 			assumeTrue(this::auctionId.isInitialized)
-			assertNoExSuspend {
-				WarframeMarket.v1.auctions.entry.ENTRY(auctionId).bids.get()
-			}
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).bids.get() }
 		}
 
 		@Test
