@@ -72,19 +72,7 @@ class ApiTest {
 		@Order(2)
 		@Ignore("don't restore the password as long as this is getting tested against the live server")
 		fun restore() {
-			assertNoExSuspend {
-				WarframeMarket.v1.auth.restore(
-					Registration(
-						AuthType.cookie,
-						"someone@example.com",
-						"3X@MPL3_P@55W0RD",
-						"3X@MPL3_P@55W0RD",
-						Region.en,
-						"example device",
-						"ReCaptcha"
-					)
-				)
-			}
+			assertNoExSuspend { WarframeMarket.v1.auth.restore(Restoration("someone@example.com")) }
 		}
 
 		@Test
