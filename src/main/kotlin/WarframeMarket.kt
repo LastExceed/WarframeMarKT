@@ -73,7 +73,7 @@ object WarframeMarket : Endpoint(null) {
 			suspend fun signIn(payload: SigninCredentials) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/signin")
 			suspend fun signOut() = requestUnwrapped<ProfilePrivate>(HttpMethod.Get, url = "$url/signout")
 			suspend fun register(payload: Registration) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/registration")
-			suspend fun restore(payload: Registration) = requestUnwrapped<Unit>(HttpMethod.Post, payload, "$url/restore")
+			suspend fun restore(payload: Restoration) = requestUnwrapped<Unit>(HttpMethod.Post, payload, "$url/restore")
 			suspend fun changePassword(payload: PasswordChange) = requestUnwrapped<String>(HttpMethod.Post, payload, v1.url + "/settings/account/change_password")
 		}
 
