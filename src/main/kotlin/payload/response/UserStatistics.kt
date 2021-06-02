@@ -5,8 +5,9 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserStatistics private constructor(val closed_orders: List<ClosedOrder>) {
-
+data class UserStatistics private constructor(
+	val closed_orders: List<ClosedOrder>
+) {
 	@Serializable
 	data class ClosedOrder private constructor(
 		val item: Map<String, String>,

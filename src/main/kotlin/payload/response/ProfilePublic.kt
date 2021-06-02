@@ -6,8 +6,9 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProfilePublic private constructor(val profile: Profile) {
-
+data class ProfilePublic private constructor(
+	val profile: Profile
+) {
 	@Serializable
 	data class Profile private constructor(
 		val region: Region,

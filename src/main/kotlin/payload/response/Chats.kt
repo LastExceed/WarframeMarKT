@@ -6,8 +6,9 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Chats private constructor(val chats: List<Chat>) {
-
+data class Chats private constructor(
+	val chats: List<Chat>
+) {
 	@Serializable
 	data class Chat private constructor(
 		val last_update: Instant,

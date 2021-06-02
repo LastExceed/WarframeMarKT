@@ -4,7 +4,9 @@ import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Items private constructor(val items: List<ItemShort>) {
+data class Items private constructor(
+	val items: List<ItemShort>
+) {
 	@Serializable
 	data class ItemShort private constructor(
 		val url_name: ItemUrlName,
