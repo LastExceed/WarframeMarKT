@@ -73,7 +73,7 @@ object WarframeMarket : Endpoint(null) {
 			suspend fun signIn(payload: SigninCredentials) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/signin")
 			suspend fun signOut() = requestUnwrapped<ProfilePrivate>(HttpMethod.Get, url = "$url/signout")
 			suspend fun register(payload: Registration) = requestUnwrapped<ProfilePrivate>(HttpMethod.Post, payload, "$url/registration")
-			suspend fun restore(payload: Registration) = requestUnwrapped<Unit>(HttpMethod.Post, payload, "$url/restore")
+			suspend fun restore(payload: Restoration) = requestUnwrapped<Unit>(HttpMethod.Post, payload, "$url/restore")
 			suspend fun changePassword(payload: PasswordChange) = requestUnwrapped<String>(HttpMethod.Post, payload, v1.url + "/settings/account/change_password")
 		}
 
@@ -155,7 +155,7 @@ object WarframeMarket : Endpoint(null) {
 
 				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
 					override val pathName = order_id
-					override suspend fun update(payload: OrderUpdate) = requestUnwrapped<OrderUpdated>(HttpMethod.Delete, payload)
+					override suspend fun update(payload: OrderUpdate) = requestUnwrapped<OrderUpdated>(HttpMethod.Put, payload)
 					override suspend fun delete() = requestUnwrapped<OrderDeleted>(HttpMethod.Delete)
 					suspend fun close() = requestUnwrapped<OrderClosed>(HttpMethod.Put, url = orders.url + "/close/" + pathName)
 				}
