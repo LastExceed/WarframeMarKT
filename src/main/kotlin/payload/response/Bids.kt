@@ -6,8 +6,9 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Bids private constructor(val bids: List<Bid>) {
-
+data class Bids private constructor(
+	val bids: List<Bid>
+) {
 	@Serializable
 	data class Bid private constructor(
 		val value: Int,
