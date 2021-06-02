@@ -252,7 +252,7 @@ class ApiTest {
 				WarframeMarket.v1.auctions.search.get(
 					AuctionSearchRiven(
 						BuyOutPolicy.direct,
-						SortingStyle.positive_attr_asc,
+						SortingStyleRiven.positive_attr_asc,
 						"kuva_bramma",
 						listOf(RivenAttributeName.critical_damage),
 						listOf(RivenAttributeName.damage_vs_corpus),
@@ -273,7 +273,7 @@ class ApiTest {
 				WarframeMarket.v1.auctions.search.get(
 					AuctionSearchLich(
 						BuyOutPolicy.direct,
-						SortingStyle.positive_attr_asc,
+						SortingStyleLich.damage_desc,
 						"kuva_bramma",
 						Element.cold,
 						true
