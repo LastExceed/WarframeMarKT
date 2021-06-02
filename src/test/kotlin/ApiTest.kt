@@ -129,7 +129,8 @@ class ApiTest {
 		@Test
 		@Order(1)
 		fun create() {
-			assertNoExSuspend { reviewId = WarframeMarket.v1.profile.USER("KycKyc").review.create(ReviewCreate("test review", 1)).own_review.id!! }
+			val reviewCreated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.create(ReviewCreate("test review", 1)) }
+			reviewId = assertNotNull(reviewCreated.own_review.id)
 		}
 
 		@Test
@@ -138,7 +139,7 @@ class ApiTest {
 			assertNoExSuspend {
 				val reviews = WarframeMarket.v1.profile.USER("KycKyc").reviews.get()
 				assumeTrue { this@Reviews::reviewId.isInitialized }
-				assertEquals(reviews.own_review!!.id, reviewId)
+				assertEquals(reviews.own_review?.id, reviewId)
 			}
 		}
 
@@ -147,7 +148,7 @@ class ApiTest {
 		fun update() {
 			assumeTrue { this::reviewId.isInitialized }
 			val reviewUpdated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.REVIEW(reviewId).update(ReviewUpdate("test review 2")) }
-			reviewId = reviewUpdated.review.id!! //this technically isn't necessary as the id doesn't change here, but this is probably a server side bug
+			reviewId = assertNotNull(reviewUpdated.review.id) //this technically isn't necessary as the id doesn't change here, but that's probably a server side bug
 		}
 
 		@Test
