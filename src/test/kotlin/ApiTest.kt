@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assumptions.*
 import payload.common.*
 import payload.request.*
+import java.io.File
 import kotlin.test.*
 import kotlin.test.Test
 
@@ -89,12 +90,14 @@ class ApiTest {
 		@Test
 		@Order(3)
 		fun signIn() {
+			val (email, password) = File("market_credentials").readLines().let { it[0] to it[1] }
+
 			assertNoExSuspend {
 				WarframeMarket.v1.auth.signIn(
 					SigninCredentials(
 						AuthType.cookie,
-						"someone@example.com",
-						"3X@MPL3_P@55W0RD",
+						email,
+						password,
 						"example device"
 					)
 				)
