@@ -13,7 +13,7 @@ abstract class AuctionSearch(val type: AuctionType) {
 @Serializable
 data class AuctionSearchLich(
 	override val buyout_policy: BuyOutPolicy?,
-	override val sort_by: SortingStyle?,
+	override val sort_by: SortingStyleLich?,
 	override val weapon_url_name: ItemUrlName?,
 	val element: Element?,
 	val having_ephemera: Boolean
@@ -22,7 +22,7 @@ data class AuctionSearchLich(
 @Serializable
 data class AuctionSearchRiven(
 	override val buyout_policy: BuyOutPolicy?,
-	override val sort_by: SortingStyle?,
+	override val sort_by: SortingStyleRiven?,
 	override val weapon_url_name: ItemUrlName?,
 	val positive_stats: List<RivenAttributeName>?,
 	val negative_stats: List<RivenAttributeName>?,
