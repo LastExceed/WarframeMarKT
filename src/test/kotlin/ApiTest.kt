@@ -18,7 +18,7 @@ private fun <T> assertNoExSuspend(block: suspend CoroutineScope.() -> T) = asser
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class ApiTest {
-	var signedIn = false
+	private var signedIn = false
 
 	@Nested
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -124,7 +124,7 @@ class ApiTest {
 			assumeTrue(signedIn)
 		}
 
-		lateinit var reviewId: IdReview
+		private lateinit var reviewId: IdReview
 
 		@Test
 		@Order(1)
@@ -167,7 +167,7 @@ class ApiTest {
 			assumeTrue(signedIn)
 		}
 
-		lateinit var userId: IdUser
+		private lateinit var userId: IdUser
 
 		@Test
 		@Order(1)
@@ -176,7 +176,7 @@ class ApiTest {
 			userId = profilePublic.profile.id
 		}
 
-		lateinit var chatId: IdChat
+		private lateinit var chatId: IdChat
 
 		@Test
 		@Order(2)
@@ -282,7 +282,7 @@ class ApiTest {
 			}
 		}
 
-		lateinit var auctionId: IdAuction
+		private lateinit var auctionId: IdAuction
 
 		@Test
 		@Order(1)
@@ -376,7 +376,7 @@ class ApiTest {
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 	inner class ItemsAndOrders {
-		lateinit var itemUrlName: ItemUrlName
+		private lateinit var itemUrlName: ItemUrlName
 
 		@Test
 		@Order(1)
@@ -386,7 +386,7 @@ class ApiTest {
 			itemUrlName = maimingStrike.url_name
 		}
 
-		lateinit var itemId: IdItem
+		private lateinit var itemId: IdItem
 
 		@Test
 		@Order(2)
@@ -417,7 +417,7 @@ class ApiTest {
 			assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).statistics.get() }
 		}
 
-		lateinit var orderId: IdOrder
+		private lateinit var orderId: IdOrder
 
 		@Test
 		@Order(3)
