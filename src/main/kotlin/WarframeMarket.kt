@@ -28,19 +28,19 @@ object WarframeMarket : Endpoint(null) {
 	}
 
 	object v1 : Endpoint(WarframeMarket) {
-		object auctions : Endpoint(v1), Get<Auctions> {
-			override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+		object auctions : Endpoint(v1), Get<AuctionsMixed> {
+			override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
 
-			object create : Endpoint(auctions), Create<AuctionCreate, AuctionEntry> {
-				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionEntry>(HttpMethod.Post, payload)
+			object create : Endpoint(auctions), Create<AuctionCreate, AuctionCreated> {
+				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionEntry>, Update<AuctionUpdate, AuctionEntry> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionRetrieved>, Update<AuctionUpdate, AuctionCreated> {
 					override val pathName = auction_id
 
-					override suspend fun get() = requestUnwrapped<AuctionEntry>(HttpMethod.Get)
-					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionEntry>(HttpMethod.Put, payload)
+					override suspend fun get() = requestUnwrapped<AuctionRetrieved>(HttpMethod.Get)
+					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionCreated>(HttpMethod.Put, payload)
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
 
@@ -54,12 +54,12 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun get() = requestUnwrapped<AuctionsParticipant>(HttpMethod.Get)
 			}
 
-			object popular : Endpoint(auctions), Get<Auctions> {
-				override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+			object popular : Endpoint(auctions), Get<AuctionsMixed> {
+				override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
 			}
 
 			object search : Endpoint(auctions) {
-				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<Auctions>(HttpMethod.Get) {
+				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<AuctionsExpanded>(HttpMethod.Get) {
 					searchParameters::class.memberProperties.forEach { property ->
 						property.getter.call(searchParameters)?.let { value ->
 							parameter(property.name, if (value is List<*>) value.joinToString(",") else value) //KycKyc plz y u make me do dis
