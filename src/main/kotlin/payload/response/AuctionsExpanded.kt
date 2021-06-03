@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 import payload.response.common.*
 
 @Serializable
-data class Auctions private constructor(
-	val auctions: List<AuctionEntry>
+data class AuctionsExpanded private constructor(
+	val auctions: List<AuctionEntryExpanded>
 )
