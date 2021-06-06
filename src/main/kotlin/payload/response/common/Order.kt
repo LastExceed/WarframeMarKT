@@ -48,7 +48,7 @@ data class OrderFromProfile private constructor(
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
 
-	val item: Item.Item.SetItem?,
+	val item: Item.Item.SetItem,
 ) : Order()
 
 @Serializable
@@ -64,8 +64,8 @@ data class OrderFromProfileStatistics private constructor(
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
 
-	val item: Item.Item.SetItem?,
-	val closed_date: Instant? //missing if not closed
+	val item: Item.Item.SetItem,
+	val closed_date: Instant
 ) : Order()
 
 @Serializable
@@ -81,5 +81,5 @@ data class OrderFromClosure private constructor(
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
 
-	val item: IdItem?
+	val item: IdItem
 ) : Order()
