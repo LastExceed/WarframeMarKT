@@ -1,9 +1,9 @@
 package payload.response
 
-import enums.IdOrder
 import kotlinx.serialization.Serializable
+import payload.response.common.OrderFromProfile
 
 @Serializable
 data class OrderUpdated private constructor(
-	val order_id: IdOrder
+	val order: OrderFromProfile
 )

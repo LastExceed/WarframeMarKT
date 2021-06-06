@@ -1,9 +1,9 @@
 package payload.response
 
-import payload.response.common.Order
 import kotlinx.serialization.Serializable
+import payload.response.common.OrderFromClosure
 
 @Serializable
 data class OrderClosed private constructor(
-	val order: Order?
+	val order: OrderFromClosure?
 )

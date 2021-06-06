@@ -453,7 +453,7 @@ class ApiTest {
 					)
 				)
 			}
-			orderId = orderUpdated.order_id
+			orderId = orderUpdated.order.id
 		}
 
 		@Test
