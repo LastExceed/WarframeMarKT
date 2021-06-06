@@ -1,9 +1,9 @@
 package payload.response
 
-import payload.response.common.Order
 import kotlinx.serialization.Serializable
+import payload.response.common.*
 
 @Serializable
 data class OrderCreated private constructor(
-	val order: Order
+	val order: OrderFromProfile
 )

@@ -1,9 +1,9 @@
 package payload.response
 
 import kotlinx.serialization.Serializable
-import payload.response.common.Order
+import payload.response.common.OrderFromItem
 
 @Serializable
 data class ItemOrders private constructor(
-	val orders: List<Order>
+	val orders: List<OrderFromItem>
 )
