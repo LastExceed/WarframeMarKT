@@ -54,10 +54,6 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			object participant : Endpoint(auctions), Get<AuctionsParticipant> {
-				override suspend fun get() = requestUnwrapped<AuctionsParticipant>(HttpMethod.Get)
-			}
-
 			object popular : Endpoint(auctions), Get<AuctionsMixed> {
 				override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
 			}
@@ -141,6 +137,10 @@ object WarframeMarket : Endpoint(null) {
 
 			object auctions : Endpoint(profile), Get<Auctions> {
 				override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+
+				object participant : Endpoint(auctions), Get<AuctionsParticipant> {
+					override suspend fun get() = requestUnwrapped<AuctionsParticipant>(HttpMethod.Get)
+				}
 			}
 
 			object customization : Endpoint(profile) {
