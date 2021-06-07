@@ -247,6 +247,13 @@ class ApiTest {
 		}
 
 		@Test
+		fun participant() {
+			assertNoExSuspend {
+				WarframeMarket.v1.profile.auctions.participant.get()
+			}
+		}
+
+		@Test
 		fun searchRiven() {
 			assertNoExSuspend {
 				WarframeMarket.v1.auctions.search.get(
