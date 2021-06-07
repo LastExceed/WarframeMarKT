@@ -180,6 +180,7 @@ object WarframeMarket : Endpoint(null) {
 
 				val achievements = Achievements(this)
 				val orders = Orders(this)
+				val auctions = Auctions(this)
 				val review = Review(this)
 				val reviews = Reviews(this)
 				val statistics = Statistics(this)
@@ -190,6 +191,10 @@ object WarframeMarket : Endpoint(null) {
 
 				class Orders internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserOrders> {
 					override suspend fun get() = requestUnwrapped<UserOrders>(HttpMethod.Get)
+				}
+
+				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions> {
+					override suspend fun get() = requestUnwrapped<payload.response.Auctions>(HttpMethod.Get)
 				}
 
 				class Review internal constructor(parent: Endpoint) : Endpoint(parent), Create<ReviewCreate, ReviewCreated> {
