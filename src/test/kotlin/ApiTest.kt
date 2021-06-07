@@ -385,6 +385,14 @@ class ApiTest {
 
 		@Test
 		@Order(4)
+		@Ignore("no participants")
+		fun win() {
+			assumeTrue(this::auctionId.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).win.create(AuctionWin("winner_id")) }
+		}
+
+		@Test
+		@Order(5)
 		fun close() {
 			assumeTrue(this::auctionId.isInitialized)
 			assertNoExSuspend {
