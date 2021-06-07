@@ -360,6 +360,13 @@ class ApiTest {
 		}
 
 		@Test
+		@Order(2)
+		fun getBans() {
+			assumeTrue(this::auctionId.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).bans.get() }
+		}
+
+		@Test
 		@Order(3)
 		fun update() {
 			assumeTrue(this::auctionId.isInitialized)
