@@ -17,6 +17,7 @@ sealed class Order {
 	abstract val region: Region
 	abstract val visible: Boolean
 	abstract val mod_rank: Int? //missing if not a mod
+	abstract val subtype: String? //eg relic refinement, missing if not applicable
 }
 
 @Serializable
@@ -30,7 +31,8 @@ data class OrderFromItem private constructor(
 	override val quantity: Int,
 	override val region: Region,
 	override val visible: Boolean,
-	override val mod_rank: Int? = null, //missing if not a mod
+	override val mod_rank: Int? = null,
+	override val subtype: String? = null,
 
 	val user: UserShort? = null
 ) : Order()
@@ -47,6 +49,7 @@ data class OrderFromProfile private constructor(
 	override val region: Region,
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
+	override val subtype: String? = null,
 
 	val item: Item.Item.SetItem,
 ) : Order()
@@ -63,6 +66,7 @@ data class OrderFromRecent private constructor(
 	override val region: Region,
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
+	override val subtype: String? = null,
 
 	val item: Item.Item.SetItem,
 	val user: UserShort? = null
@@ -80,6 +84,7 @@ data class OrderFromProfileStatistics private constructor(
 	override val region: Region,
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
+	override val subtype: String? = null,
 
 	val item: Item.Item.SetItem,
 	val closed_date: Instant
@@ -97,6 +102,7 @@ data class OrderFromClosure private constructor(
 	override val region: Region,
 	override val visible: Boolean,
 	override val mod_rank: Int? = null,
+	override val subtype: String? = null,
 
 	val item: IdItem
 ) : Order()
