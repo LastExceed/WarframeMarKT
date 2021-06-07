@@ -32,7 +32,7 @@ data class OrderFromItem private constructor(
 	override val visible: Boolean,
 	override val mod_rank: Int? = null, //missing if not a mod
 
-	val user: UserShort? = null //missing if specified in request
+	val user: UserShort? = null
 ) : Order()
 
 @Serializable
@@ -49,6 +49,23 @@ data class OrderFromProfile private constructor(
 	override val mod_rank: Int? = null,
 
 	val item: Item.Item.SetItem,
+) : Order()
+
+@Serializable
+data class OrderFromRecent private constructor(
+	override val creation_date: Instant,
+	override val id: IdOrder,
+	override val last_update: Instant,
+	override val order_type: OrderType,
+	override val platform: Platform,
+	override val platinum: Float,
+	override val quantity: Int,
+	override val region: Region,
+	override val visible: Boolean,
+	override val mod_rank: Int? = null,
+
+	val item: Item.Item.SetItem,
+	val user: UserShort? = null
 ) : Order()
 
 @Serializable

@@ -28,6 +28,10 @@ object WarframeMarket : Endpoint(null) {
 	}
 
 	object v1 : Endpoint(WarframeMarket) {
+		object most_recent : Endpoint(v1), Get<RecentOrders> {
+			override suspend fun get() = requestUnwrapped<RecentOrders>(HttpMethod.Get)
+		}
+
 		object auctions : Endpoint(v1), Get<AuctionsMixed> {
 			override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
 
