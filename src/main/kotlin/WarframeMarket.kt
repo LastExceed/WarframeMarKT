@@ -47,9 +47,14 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionCreated>(HttpMethod.Put, payload)
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
+					val win = Win(this)
 
 					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
 						override suspend fun get() = requestUnwrapped<payload.response.Bids>(HttpMethod.Get)
+					}
+
+					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionCreated> {
+						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
 					}
 				}
 			}
