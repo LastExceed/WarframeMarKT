@@ -165,6 +165,15 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
+			object statistics : Endpoint(profile) {
+				object remove : Endpoint(statistics) {
+					class ORDER(order_id: String) : Endpoint(remove), Delete<OrderDeleted> {
+						override val pathName = order_id
+						override suspend fun delete() = requestUnwrapped<OrderDeleted>(HttpMethod.Delete)
+					}
+				}
+			}
+
 			class USER(username: String) : Endpoint(profile), Get<ProfilePublic> {
 				override val pathName = username
 				override suspend fun get() = requestUnwrapped<ProfilePublic>(HttpMethod.Get)
