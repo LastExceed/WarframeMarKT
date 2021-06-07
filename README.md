@@ -42,9 +42,12 @@ api.warframe.market
             /create                  POST
             /entry
                 /{auction_id}        GET PUT
+                    /ban
+                        /{ban_id}    DELETE
+                    /bans            GET
                     /bids            GET
                     /close           PUT
-            /participant             GET
+                    /win             POST
             /popular                 GET
             /search                  GET
         /auth
@@ -54,8 +57,9 @@ api.warframe.market
         /im
             /chats                   GET POST
                 /{chat_id}           GET DELETE
-            /ignore                  GET CREATE
+            /ignore                  GET POST
                 /{user_id}           DELETE
+        /most_recent                 GET
         /items                       GET
             /{item_url_name}         GET
                 /orders              GET
@@ -65,6 +69,7 @@ api.warframe.market
             /ducats                  GET
         /profile                     GET
             /auctions                GET
+                /participant         GET
             /customization            
                 /about               PUT
                 /avatar              POST
@@ -72,8 +77,12 @@ api.warframe.market
                 /close
                     /{order_id}      PUT
                 /{order_id}          PUT DELETE
+            /statistics
+                /remove
+                    /{order_id}      DELETE
             /{username}              GET
                 /achievements        GET
+                /auctions            GET
                 /orders              GET
                 /review              POST
                     /{review_id}     PUT DELETE
