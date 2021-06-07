@@ -60,7 +60,8 @@ object WarframeMarket : Endpoint(null) {
 					}
 
 					class Ban internal constructor(parent: Endpoint) : Endpoint(parent) {
-						inner class BAN() : Endpoint(this), Delete<BanDeleted> {
+						inner class BAN(ban_id: String) : Endpoint(this), Delete<BanDeleted> {
+							override val pathName = ban_id
 							override suspend fun delete() = requestUnwrapped<BanDeleted>(HttpMethod.Delete)
 						}
 					}
