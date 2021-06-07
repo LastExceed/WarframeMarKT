@@ -55,8 +55,8 @@ object WarframeMarket : Endpoint(null) {
 						override suspend fun get() = requestUnwrapped<payload.response.Bids>(HttpMethod.Get)
 					}
 
-					class Bans internal constructor(parent: Endpoint) : Endpoint(parent), Get<Bans> {
-						override suspend fun get() = requestUnwrapped<Bans>(HttpMethod.Get)
+					class Bans internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bans> {
+						override suspend fun get() = requestUnwrapped<payload.response.Bans>(HttpMethod.Get)
 					}
 
 					class Ban internal constructor(parent: Endpoint) : Endpoint(parent) {
