@@ -240,6 +240,13 @@ class ApiTest {
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 	inner class Auctions {
 		@Test
+		fun recent() {
+			assertNoExSuspend {
+				WarframeMarket.v1.auctions.get()
+			}
+		}
+
+		@Test
 		fun popular() {
 			assertNoExSuspend {
 				WarframeMarket.v1.auctions.popular.get()
@@ -325,7 +332,7 @@ class ApiTest {
 		@Test
 		@Order(2)
 		fun showsUpPublic() {
-			val auctions = assertNoExSuspend { WarframeMarket.v1.auctions.get() }
+			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
@@ -333,7 +340,7 @@ class ApiTest {
 		@Test
 		@Order(2)
 		fun showsUpPrivate() {
-			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
+			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
