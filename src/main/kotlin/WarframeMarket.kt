@@ -48,6 +48,7 @@ object WarframeMarket : Endpoint(null) {
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
 					val bans = Bans(this)
+					val ban = Ban(this)
 					val win = Win(this)
 
 					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
@@ -56,6 +57,12 @@ object WarframeMarket : Endpoint(null) {
 
 					class Bans internal constructor(parent: Endpoint) : Endpoint(parent), Get<Bans> {
 						override suspend fun get() = requestUnwrapped<Bans>(HttpMethod.Get)
+					}
+
+					class Ban internal constructor(parent: Endpoint) : Endpoint(parent) {
+						inner class BAN() : Endpoint(this), Delete<BanDeleted> {
+							override suspend fun delete() = requestUnwrapped<BanDeleted>(HttpMethod.Delete)
+						}
 					}
 
 					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionCreated> {
