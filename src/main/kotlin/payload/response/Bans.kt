@@ -15,6 +15,6 @@ data class Bans(
 		val user: UserShort,
 		val reason: String,
 		val created: Instant,
-		val id: IdUser
+		val id: IdBan
 	)
 }
