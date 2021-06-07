@@ -457,11 +457,10 @@ class ApiTest {
 		}
 
 		@Test
-		@Ignore("this endpoint is currently broken server side")
 		fun showsUp() {
-			val ownOrders = assertNoExSuspend { WarframeMarket.v1.profile.orders.get() }
+			val recentOrders = assertNoExSuspend { WarframeMarket.v1.most_recent.get() }
 			assumeTrue(this::orderId.isInitialized)
-			assertTrue(ownOrders.orders.any { it.id == orderId })
+			assertTrue((recentOrders.buy_orders + recentOrders.sell_orders).any { it.id == orderId })
 		}
 
 		@Test
