@@ -471,12 +471,24 @@ class ApiTest {
 			assertNoExSuspend { WarframeMarket.v1.profile.orders.ORDER(orderId).close() }
 		}
 
+		lateinit var transactionId: IdOrder
+
 		@Test
 		@Order(7)
 		fun showsUpPrivate() {
 			val userStatistics = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").statistics.get() }
+			assumeTrue(this::itemId.isInitialized)
 			assumeTrue(this::orderId.isInitialized)
-			assertTrue(userStatistics.closed_orders.any { it.id == orderId })
+			val transaction = userStatistics.closed_orders.find { it.item.id == itemId }
+			assertTrue(transaction != null)
+			transactionId = transaction.id
+		}
+
+		@Test
+		@Order(8)
+		fun deleteTransaction() {
+			assumeTrue(this::transactionId.isInitialized)
+			val userStatistics = assertNoExSuspend { WarframeMarket.v1.profile.statistics.remove.ORDER(transactionId).delete() }
 		}
 
 		@Test
