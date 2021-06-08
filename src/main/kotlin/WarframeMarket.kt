@@ -28,6 +28,10 @@ object WarframeMarket : Endpoint(null) {
 	}
 
 	object v1 : Endpoint(WarframeMarket) {
+		object most_recent : Endpoint(v1), Get<RecentOrders> {
+			override suspend fun get() = requestUnwrapped<RecentOrders>(HttpMethod.Get)
+		}
+
 		object auctions : Endpoint(v1), Get<AuctionsMixed> {
 			override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
 
@@ -43,15 +47,29 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionCreated>(HttpMethod.Put, payload)
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
+					val bans = Bans(this)
+					val ban = Ban(this)
+					val win = Win(this)
 
 					class Bids internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bids> {
 						override suspend fun get() = requestUnwrapped<payload.response.Bids>(HttpMethod.Get)
 					}
-				}
-			}
 
-			object participant : Endpoint(auctions), Get<AuctionsParticipant> {
-				override suspend fun get() = requestUnwrapped<AuctionsParticipant>(HttpMethod.Get)
+					class Bans internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Bans> {
+						override suspend fun get() = requestUnwrapped<payload.response.Bans>(HttpMethod.Get)
+					}
+
+					class Ban internal constructor(parent: Endpoint) : Endpoint(parent) {
+						inner class BAN(ban_id: String) : Endpoint(this), Delete<BanDeleted> {
+							override val pathName = ban_id
+							override suspend fun delete() = requestUnwrapped<BanDeleted>(HttpMethod.Delete)
+						}
+					}
+
+					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionCreated> {
+						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
+					}
+				}
 			}
 
 			object popular : Endpoint(auctions), Get<AuctionsMixed> {
@@ -137,6 +155,10 @@ object WarframeMarket : Endpoint(null) {
 
 			object auctions : Endpoint(profile), Get<Auctions> {
 				override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+
+				object participant : Endpoint(auctions), Get<AuctionsMixed> {
+					override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+				}
 			}
 
 			object customization : Endpoint(profile) {
@@ -161,12 +183,22 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
+			object statistics : Endpoint(profile) {
+				object remove : Endpoint(statistics) {
+					class ORDER(order_id: String) : Endpoint(remove), Delete<OrderDeleted> {
+						override val pathName = order_id
+						override suspend fun delete() = requestUnwrapped<OrderDeleted>(HttpMethod.Delete)
+					}
+				}
+			}
+
 			class USER(username: String) : Endpoint(profile), Get<ProfilePublic> {
 				override val pathName = username
 				override suspend fun get() = requestUnwrapped<ProfilePublic>(HttpMethod.Get)
 
 				val achievements = Achievements(this)
 				val orders = Orders(this)
+				val auctions = Auctions(this)
 				val review = Review(this)
 				val reviews = Reviews(this)
 				val statistics = Statistics(this)
@@ -177,6 +209,10 @@ object WarframeMarket : Endpoint(null) {
 
 				class Orders internal constructor(parent: Endpoint) : Endpoint(parent), Get<UserOrders> {
 					override suspend fun get() = requestUnwrapped<UserOrders>(HttpMethod.Get)
+				}
+
+				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions> {
+					override suspend fun get() = requestUnwrapped<payload.response.Auctions>(HttpMethod.Get)
 				}
 
 				class Review internal constructor(parent: Endpoint) : Endpoint(parent), Create<ReviewCreate, ReviewCreated> {

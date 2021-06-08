@@ -35,8 +35,9 @@ data class Item private constructor(
 			val id: IdItem,
 			val icon: ResourceLocation,
 			val url_name: ItemUrlName,
-			val mod_max_rank: Int?,
-			val rarity: Rarity? = null //missing in OrderCreate
+			val mod_max_rank: Int? = null,
+			val rarity: Rarity? = null, //missing in OrderCreate
+			val subtypes: List<String>? = null //for relic refinement - enum ?
 		) {
 			@Serializable
 			data class Lang private constructor(

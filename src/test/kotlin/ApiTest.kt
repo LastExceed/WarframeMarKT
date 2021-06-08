@@ -240,9 +240,23 @@ class ApiTest {
 	@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 	inner class Auctions {
 		@Test
+		fun recent() {
+			assertNoExSuspend {
+				WarframeMarket.v1.auctions.get()
+			}
+		}
+
+		@Test
 		fun popular() {
 			assertNoExSuspend {
 				WarframeMarket.v1.auctions.popular.get()
+			}
+		}
+
+		@Test
+		fun participant() {
+			assertNoExSuspend {
+				WarframeMarket.v1.profile.auctions.participant.get()
 			}
 		}
 
@@ -318,7 +332,7 @@ class ApiTest {
 		@Test
 		@Order(2)
 		fun showsUpPublic() {
-			val auctions = assertNoExSuspend { WarframeMarket.v1.auctions.get() }
+			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
@@ -326,7 +340,7 @@ class ApiTest {
 		@Test
 		@Order(2)
 		fun showsUpPrivate() {
-			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
+			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
 			assertTrue(auctions.auctions.any { it.id == auctionId })
 		}
@@ -343,6 +357,13 @@ class ApiTest {
 		fun getBids() {
 			assumeTrue(this::auctionId.isInitialized)
 			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).bids.get() }
+		}
+
+		@Test
+		@Order(2)
+		fun getBans() {
+			assumeTrue(this::auctionId.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).bans.get() }
 		}
 
 		@Test
@@ -364,6 +385,14 @@ class ApiTest {
 
 		@Test
 		@Order(4)
+		@Ignore("no participants")
+		fun win() {
+			assumeTrue(this::auctionId.isInitialized)
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).win.create(AuctionWin("winner_id")) }
+		}
+
+		@Test
+		@Order(5)
 		fun close() {
 			assumeTrue(this::auctionId.isInitialized)
 			assertNoExSuspend {
@@ -457,24 +486,43 @@ class ApiTest {
 		}
 
 		@Test
-		@Ignore("this endpoint is currently broken server side")
-		fun showsUp() {
-			val ownOrders = assertNoExSuspend { WarframeMarket.v1.profile.orders.get() }
+		@Order(5)
+		fun showsUpPublic() {
+			val recentOrders = assertNoExSuspend { WarframeMarket.v1.most_recent.get() }
 			assumeTrue(this::orderId.isInitialized)
-			assertTrue(ownOrders.orders.any { it.id == orderId })
+			assertTrue((recentOrders.buy_orders + recentOrders.sell_orders).any { it.id == orderId })
 		}
 
 		@Test
-		@Order(5)
+		@Order(6)
 		fun close() {
 			assumeTrue(this::orderId.isInitialized)
 			assertNoExSuspend { WarframeMarket.v1.profile.orders.ORDER(orderId).close() }
 		}
 
+		lateinit var transactionId: IdOrder
+
 		@Test
-		@Order(6)
+		@Order(7)
+		fun showsUpPrivate() {
+			val userStatistics = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").statistics.get() }
+			assumeTrue(this::itemId.isInitialized)
+			assumeTrue(this::orderId.isInitialized)
+			val transaction = userStatistics.closed_orders.find { it.item.id == itemId }
+			assertTrue(transaction != null)
+			transactionId = transaction.id
+		}
+
+		@Test
+		@Order(8)
+		fun deleteTransaction() {
+			assumeTrue(this::transactionId.isInitialized)
+			val userStatistics = assertNoExSuspend { WarframeMarket.v1.profile.statistics.remove.ORDER(transactionId).delete() }
+		}
+
+		@Test
+		@Order(8)
 		fun delete() {
-			create()
 			assumeTrue(this::orderId.isInitialized)
 			assertNoExSuspend { WarframeMarket.v1.profile.orders.ORDER(orderId).delete() }
 		}

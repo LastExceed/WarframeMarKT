@@ -2,6 +2,7 @@ package enums
 
 typealias IdAuction = String
 typealias IdBid = String
+typealias IdBan = String
 typealias IdChat = String
 typealias IdDucats = String
 typealias IdItem = String
