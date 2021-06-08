@@ -13,12 +13,12 @@ data class ItemShort private constructor(
 
 @Serializable
 data class ItemDescriptor(
-	val items_in_set: List<SetItem>,
+	val items_in_set: List<ItemFull>,
 	val id: IdItem
 )
 
 @Serializable
-data class SetItem private constructor(
+data class ItemFull private constructor(
 	val mastery_level: Int? = null, //prime gear only
 	val sub_icon: ResourceLocation?,
 	val ducats: Int? = null, //prime parts only

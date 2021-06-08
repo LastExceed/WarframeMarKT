@@ -3,7 +3,6 @@ package payload.response.common
 import enums.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
-import payload.response.*
 
 @Serializable
 sealed class OrderShort {
@@ -55,7 +54,7 @@ data class OrderFromProfile private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: SetItem,
+	val item: ItemFull,
 ) : Order()
 
 @Serializable
@@ -72,7 +71,7 @@ data class OrderFromRecent private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: SetItem,
+	val item: ItemFull,
 	val user: UserShort? = null
 ) : Order()
 
@@ -87,7 +86,7 @@ data class OrderFromProfileStatistics private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: SetItem,
+	val item: ItemFull,
 	val closed_date: Instant
 ) : OrderShort()
 
