@@ -11,5 +11,5 @@ data class UserShort private constructor(
 	var avatar: ResourceLocation?,
 	var id: IdUser,
 	var reputation: Double,
-	var last_seen: String? = null, //missing in Chats
+	var last_seen: String
 )
