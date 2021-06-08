@@ -21,6 +21,7 @@ sealed interface Order : OrderShort {
 	val visible: Boolean
 }
 
+@Serializable
 data class OrderFromItem private constructor(
 	override val creation_date: Instant,
 	override val id: IdOrder,
