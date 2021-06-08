@@ -16,7 +16,7 @@ data class UserShort private constructor(
 )
 
 @Serializable
-data class UserProfile private constructor(
+data class UserProfilePublic private constructor(
 	val avatar: ResourceLocation?,
 	val background: String?,
 	val id: IdUser,

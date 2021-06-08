@@ -5,5 +5,5 @@ import payload.response.common.*
 
 @Serializable
 data class ProfilePublic private constructor(
-	val profile: UserProfile
+	val profile: UserProfilePublic
 )
