@@ -1,8 +1,37 @@
 package payload.response.common
 
 import enums.*
-import kotlinx.datetime.*
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+
+@Serializable
+data class UserShort private constructor(
+	var status: Status? = null,//missing in ignorecreate
+	var ingame_name: String,
+	var region: Region,
+	var avatar: ResourceLocation?,
+	var id: IdUser,
+	var reputation: Double,
+	var last_seen: String
+)
+
+@Serializable
+data class UserProfile private constructor(
+	val region: Region,
+	val about: String,
+	val id: IdUser,
+	val background: String?,
+	val own_profile: Boolean,
+	val status: Status,
+	val avatar: ResourceLocation,
+	val last_seen: Instant,
+	val platform: Platform,
+	val banned: Boolean,
+	val achievements: List<Achievement>,
+	val about_raw: String,
+	val ingame_name: String,
+	val reputation: Int
+)
 
 @Serializable
 data class CurrentUser private constructor(
