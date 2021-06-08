@@ -8,5 +8,5 @@ data class Reviews private constructor(
 	val reviews: List<Review>,
 	val total_review_count: Int,
 	val own_review: Review?,
-	val user: CurrentUser
+	val user: UserProfilePrivate
 )

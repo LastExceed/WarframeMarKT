@@ -35,7 +35,7 @@ data class UserProfilePublic private constructor(
 )
 
 @Serializable
-data class CurrentUser private constructor(
+data class UserProfilePrivate private constructor(
 	val avatar: ResourceLocation? = null, //missing when anonymous
 	val background: ResourceLocation? = null, //missing when non-existent
 	val id: IdUser,
