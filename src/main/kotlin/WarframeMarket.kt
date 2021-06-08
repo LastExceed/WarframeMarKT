@@ -7,7 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import payload.request.*
 import payload.response.*
-import payload.response.common.UserShortest
+import payload.response.common.*
 import kotlin.reflect.full.memberProperties
 
 //naming case conventions are intentionally violated because reflection is used to build url strings, which are case sensitive
@@ -32,8 +32,8 @@ object WarframeMarket : Endpoint(null) {
 			override suspend fun get() = requestUnwrapped<RecentOrders>(HttpMethod.Get)
 		}
 
-		object auctions : Endpoint(v1), Get<AuctionsMixed> {
-			override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+		object auctions : Endpoint(v1), Get<Auctions<AuctionEntryMixed>> {
+			override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 
 			object create : Endpoint(auctions), Create<AuctionCreate, AuctionCreated> {
 				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
@@ -72,12 +72,12 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			object popular : Endpoint(auctions), Get<AuctionsMixed> {
-				override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+			object popular : Endpoint(auctions), Get<Auctions<AuctionEntryMixed>> {
+				override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 			}
 
 			object search : Endpoint(auctions) {
-				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<AuctionsExpanded>(HttpMethod.Get) {
+				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<Auctions<AuctionEntryExpanded>>(HttpMethod.Get) {
 					searchParameters::class.memberProperties.forEach { property ->
 						property.getter.call(searchParameters)?.let { value ->
 							parameter(property.name, if (value is List<*>) value.joinToString(",") else value) //KycKyc plz y u make me do dis
@@ -153,11 +153,11 @@ object WarframeMarket : Endpoint(null) {
 		object profile : Endpoint(v1), Get<ProfilePrivate> {
 			override suspend fun get() = requestUnwrapped<ProfilePrivate>(HttpMethod.Get)
 
-			object auctions : Endpoint(profile), Get<Auctions> {
-				override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+			object auctions : Endpoint(profile), Get<Auctions<AuctionEntry>> {
+				override suspend fun get() = requestUnwrapped<Auctions<AuctionEntry>>(HttpMethod.Get)
 
-				object participant : Endpoint(auctions), Get<AuctionsMixed> {
-					override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+				object participant : Endpoint(auctions), Get<Auctions<AuctionEntryMixed>> {
+					override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 				}
 			}
 
@@ -211,8 +211,8 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun get() = requestUnwrapped<UserOrders>(HttpMethod.Get)
 				}
 
-				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions> {
-					override suspend fun get() = requestUnwrapped<payload.response.Auctions>(HttpMethod.Get)
+				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions<AuctionEntry>> {
+					override suspend fun get() = requestUnwrapped<payload.response.Auctions<AuctionEntry>>(HttpMethod.Get)
 				}
 
 				class Review internal constructor(parent: Endpoint) : Endpoint(parent), Create<ReviewCreate, ReviewCreated> {
