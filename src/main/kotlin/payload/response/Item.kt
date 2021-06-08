@@ -9,8 +9,8 @@ data class Item private constructor(
 ) {
 	@Serializable
 	data class Item(
-		var items_in_set: List<SetItem>,
-		var id: IdItem
+		val items_in_set: List<SetItem>,
+		val id: IdItem
 	) {
 		@Serializable
 		data class SetItem private constructor(
