@@ -33,32 +33,33 @@ data class ItemFull private constructor(
 	override val id: IdItem,
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,
-	val mastery_level: Int? = null, //prime gear only
-	val sub_icon: ResourceLocation?,
-	val ducats: Int? = null, //prime parts only
-	val tags: List<String>,
+	val ducats: Int? = null, //prime stuff only
+	val icon: ResourceLocation,
 	val icon_format: String,//enum?
-	val en: Lang,
-	val ru: Lang,
+	val mod_max_rank: Int? = null, //mods only
+	val subtypes: List<String>? = null, //for relic refinement - enum ?
+	val sub_icon: ResourceLocation?,
+	val tags: List<String>,
 	val de: Lang,
-	val `zh-hant`: Lang,
-	val `zh-hans`: Lang,
-	val sv: Lang,
+	val en: Lang,
+	val es: Lang,
 	val fr: Lang,
 	val ko: Lang,
-	val pt: Lang,
-	val es: Lang,
 	val pl: Lang,
-	val trading_tax: Int? = null, //missing in OrderCreate
-	val icon: ResourceLocation,
-	val mod_max_rank: Int? = null,
+	val pt: Lang,
+	val ru: Lang,
+	val sv: Lang,
+	val `zh-hant`: Lang,
+	val `zh-hans`: Lang,
+	val mastery_level: Int? = null,
+	//set_root
 	val rarity: Rarity? = null, //missing in OrderCreate
-	val subtypes: List<String>? = null //for relic refinement - enum ?
+	val trading_tax: Int? = null //missing in OrderCreate
 ) : ItemNamed() {
 	@Serializable
 	data class Lang private constructor(
-		val wiki_link: String? = null,
 		val item_name: String, //OrderCreate only has this
+		val wiki_link: String? = null,
 		val description: String? = null,
 		val drop: List<Drop>? = null,
 		val codex: String? = null, //in case of incomplete localization
