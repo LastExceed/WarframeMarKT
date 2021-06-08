@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserShort private constructor(
-	var avatar: ResourceLocation?,
-	var id: IdUser,
-	var ingame_name: String,
-	var last_seen: String,
-	var region: Region,
-	var reputation: Double,
-	var status: Status? = null//missing in ignorecreate
+	val avatar: ResourceLocation?,
+	val id: IdUser,
+	val ingame_name: String,
+	val last_seen: String,
+	val region: Region,
+	val reputation: Double,
+	val status: Status? = null//missing in ignorecreate
 )
 
 @Serializable
