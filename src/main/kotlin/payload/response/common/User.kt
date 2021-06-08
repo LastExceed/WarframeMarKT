@@ -5,6 +5,16 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class UserShortest(
+	val avatar: ResourceLocation?,
+	val id: IdUser,
+	val ingame_name: String,
+	val last_seen: String,
+	val region: Region,
+	val reputation: Double
+)
+
+@Serializable
 data class UserShort private constructor(
 	val avatar: ResourceLocation?,
 	val id: IdUser,
