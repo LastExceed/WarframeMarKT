@@ -52,7 +52,7 @@ data class ItemShort private constructor(
 ) : ItemNamed
 
 @Serializable
-open class ItemInOrder protected constructor(
+data class ItemInOrder private constructor(
 	override val id: IdItem,
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,

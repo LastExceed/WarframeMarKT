@@ -27,7 +27,7 @@ sealed interface UserTracked : UserSeen {
 }
 
 @Serializable
-data class UserShortest(
+data class UserShortest private constructor(
 	override val avatar: ResourceLocation?,
 	override val id: IdUser,
 	override val ingame_name: String,
@@ -99,7 +99,7 @@ data class UserProfilePrivate private constructor(
 	)
 
 	@Serializable
-	data class PatreonProfile(
+	data class PatreonProfile private constructor(
 		val patreon_founder: Boolean,
 		val subscription: Boolean,
 		val patreon_badge: String
