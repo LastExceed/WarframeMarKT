@@ -3,41 +3,37 @@ package payload.response.common
 import enums.*
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed class Item {
-	abstract val id: IdItem
+sealed interface Item {
+	val id: IdItem
 }
 
-@Serializable
-sealed class ItemNamed : Item() {
-	abstract val thumb: ResourceLocation
-	abstract val url_name: ItemUrlName
+sealed interface ItemNamed : Item {
+	val thumb: ResourceLocation
+	val url_name: ItemUrlName
 }
 
-@Serializable
-sealed class ItemData : ItemNamed() {
-	abstract val ducats: Int? //prime stuff only
-	abstract val icon: ResourceLocation
-	abstract val icon_format: String//enum?
-	abstract val mod_max_rank: Int? //mods only
-	abstract val subtypes: List<String>? //eg relic refinement - enum ?
-	abstract val sub_icon: ResourceLocation?
-	abstract val tags: List<String>
-	abstract val de: Lang
-	abstract val en: Lang
-	abstract val es: Lang
-	abstract val fr: Lang
-	abstract val ko: Lang
-	abstract val pl: Lang
-	abstract val pt: Lang
-	abstract val ru: Lang
-	abstract val sv: Lang
-	abstract val `zh-hant`: Lang
-	abstract val `zh-hans`: Lang
+sealed interface ItemData : ItemNamed {
+	val ducats: Int? //prime stuff only
+	val icon: ResourceLocation
+	val icon_format: String//enum?
+	val mod_max_rank: Int? //mods only
+	val subtypes: List<String>? //eg relic refinement - enum ?
+	val sub_icon: ResourceLocation?
+	val tags: List<String>
+	val de: Lang
+	val en: Lang
+	val es: Lang
+	val fr: Lang
+	val ko: Lang
+	val pl: Lang
+	val pt: Lang
+	val ru: Lang
+	val sv: Lang
+	val `zh-hant`: Lang
+	val `zh-hans`: Lang
 
-	@Serializable
-	sealed class Lang protected constructor() {
-		abstract val item_name: String
+	sealed interface Lang {
+		val item_name: String
 	}
 }
 
@@ -45,7 +41,7 @@ sealed class ItemData : ItemNamed() {
 data class ItemDescriptor private constructor(
 	override val id: IdItem,
 	val items_in_set: List<ItemFull>
-) : Item()
+) : Item
 
 @Serializable
 data class ItemShort private constructor(
@@ -53,7 +49,7 @@ data class ItemShort private constructor(
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,
 	val item_name: String
-) : ItemNamed()
+) : ItemNamed
 
 @Serializable
 open class ItemInOrder protected constructor(
@@ -78,11 +74,11 @@ open class ItemInOrder protected constructor(
 	override val sv: Lang,
 	override val `zh-hant`: Lang,
 	override val `zh-hans`: Lang,
-) : ItemData() {
+) : ItemData {
 	@Serializable
 	data class Lang private constructor(
 		override val item_name: String,
-	) : ItemData.Lang()
+	) : ItemData.Lang
 }
 
 @Serializable
@@ -113,7 +109,7 @@ data class ItemFull private constructor(
 	//set_root
 	val rarity: Rarity? = null,
 	val trading_tax: Int
-) : ItemData() {
+) : ItemData {
 	@Serializable
 	data class Lang private constructor(
 		override val item_name: String,
@@ -123,7 +119,7 @@ data class ItemFull private constructor(
 		val codex: String? = null, //in case of incomplete localization
 		val thumb: ResourceLocation? = null, //in case of incomplete localization
 		val icon: ResourceLocation? = null //in case of incomplete localization
-	) : ItemData.Lang() {
+	) : ItemData.Lang {
 		@Serializable
 		data class Drop private constructor(
 			val name: String,

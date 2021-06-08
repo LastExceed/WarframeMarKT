@@ -4,12 +4,12 @@ import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
-sealed class User {
-	abstract val avatar: ResourceLocation?
-	abstract val id: IdUser
-	abstract val ingame_name: String
-	abstract val region: Region
-	abstract val reputation: Int
+sealed interface User {
+	val avatar: ResourceLocation?
+	val id: IdUser
+	val ingame_name: String
+	val region: Region
+	val reputation: Int
 }
 
 sealed interface UserProfile {
@@ -18,12 +18,12 @@ sealed interface UserProfile {
 	val platform: Platform
 }
 
-sealed class UserSeen : User() {
-	abstract val last_seen: Instant
+sealed interface UserSeen : User {
+	val last_seen: Instant
 }
 
-sealed class UserPublic : UserSeen() {
-	abstract val status: Status
+sealed interface UserPublic : UserSeen {
+	val status: Status
 }
 
 @Serializable
@@ -34,7 +34,7 @@ data class UserShortest(
 	override val last_seen: Instant,
 	override val region: Region,
 	override val reputation: Int
-) : UserSeen()
+) : UserSeen
 
 @Serializable
 data class UserShort private constructor(
@@ -45,7 +45,7 @@ data class UserShort private constructor(
 	override val region: Region,
 	override val reputation: Int,
 	override val status: Status
-) : UserPublic()
+) : UserPublic
 
 @Serializable
 data class UserProfilePublic private constructor(
@@ -65,7 +65,7 @@ data class UserProfilePublic private constructor(
 	val about_raw: String,
 	val achievements: List<Achievement>,
 	val own_profile: Boolean
-) : UserPublic(), UserProfile
+) : UserPublic, UserProfile
 
 @Serializable
 data class UserProfilePrivate private constructor(
@@ -90,7 +90,7 @@ data class UserProfilePrivate private constructor(
 	val unread_messages: Int,
 	val verification: Boolean,
 	val written_reviews: Int
-) : User(), UserProfile {
+) : User, UserProfile {
 	@Serializable
 	data class LinkedAccounts private constructor(
 		val steam_profile: Boolean,

@@ -4,26 +4,23 @@ import enums.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 
-@Serializable
-sealed class OrderShort {
-	abstract val id: IdOrder
-	abstract val order_type: OrderType
-	abstract val platform: Platform
-	abstract val platinum: Float //sometimes there's .0 at the end. wtf KycKyc
-	abstract val quantity: Int
-	abstract val region: Region
-	abstract val mod_rank: Int? //missing if not a mod
-	abstract val subtype: String? //eg relic refinement, missing if not applicable
+sealed interface OrderShort {
+	val id: IdOrder
+	val order_type: OrderType
+	val platform: Platform
+	val platinum: Float //sometimes there's .0 at the end. wtf KycKyc
+	val quantity: Int
+	val region: Region
+	val mod_rank: Int? //missing if not a mod
+	val subtype: String? //eg relic refinement, missing if not applicable
 }
 
-@Serializable
-sealed class Order : OrderShort() {
-	abstract val creation_date: Instant
-	abstract val last_update: Instant
-	abstract val visible: Boolean
+sealed interface Order : OrderShort {
+	val creation_date: Instant
+	val last_update: Instant
+	val visible: Boolean
 }
 
-@Serializable
 data class OrderFromItem private constructor(
 	override val creation_date: Instant,
 	override val id: IdOrder,
@@ -38,7 +35,7 @@ data class OrderFromItem private constructor(
 	override val subtype: String? = null,
 
 	val user: UserShort? = null
-) : Order()
+) : Order
 
 @Serializable
 data class OrderFromProfile private constructor(
@@ -55,7 +52,7 @@ data class OrderFromProfile private constructor(
 	override val subtype: String? = null,
 
 	val item: ItemInOrder,
-) : Order()
+) : Order
 
 @Serializable
 data class OrderFromRecent private constructor(
@@ -73,7 +70,7 @@ data class OrderFromRecent private constructor(
 
 	val item: ItemInOrder,
 	val user: UserShort? = null
-) : Order()
+) : Order
 
 @Serializable
 data class OrderFromProfileStatistics private constructor(
@@ -88,7 +85,7 @@ data class OrderFromProfileStatistics private constructor(
 
 	val item: ItemInOrder,
 	val closed_date: Instant
-) : OrderShort()
+) : OrderShort
 
 @Serializable
 data class OrderFromClosure private constructor(
@@ -105,4 +102,4 @@ data class OrderFromClosure private constructor(
 	override val subtype: String? = null,
 
 	val item: IdItem
-) : Order()
+) : Order
