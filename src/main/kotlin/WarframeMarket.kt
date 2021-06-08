@@ -96,15 +96,15 @@ object WarframeMarket : Endpoint(null) {
 		}
 
 		object im : Endpoint(v1) {
-			object chats : Endpoint(im), Get<Chats>, Create<ChatCreate, ChatCreated> {
+			object chats : Endpoint(im), Get<Chats>, Create<ChatCreate, ChatRetrieved> {
 				override suspend fun get() = requestUnwrapped<Chats>(HttpMethod.Get)
-				override suspend fun create(payload: ChatCreate) = requestUnwrapped<ChatCreated>(HttpMethod.Post, payload)
+				override suspend fun create(payload: ChatCreate) = requestUnwrapped<ChatRetrieved>(HttpMethod.Post, payload)
 
-				class CHAT(chat_id: String) : Endpoint(chats), Get<Messages>, Delete<ChatDeleted> {
+				class CHAT(chat_id: String) : Endpoint(chats), Get<Messages>, Delete<ChatRetrieved> {
 					override val pathName = chat_id
 
 					override suspend fun get() = requestUnwrapped<Messages>(HttpMethod.Get)
-					override suspend fun delete() = requestUnwrapped<ChatDeleted>(HttpMethod.Delete)
+					override suspend fun delete() = requestUnwrapped<ChatRetrieved>(HttpMethod.Delete)
 				}
 			}
 

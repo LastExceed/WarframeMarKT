@@ -4,6 +4,6 @@ import enums.IdChat
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChatCreated(
+data class ChatRetrieved(
 	val chat_id: IdChat
 )
