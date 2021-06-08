@@ -106,7 +106,7 @@ data class ItemFull private constructor(
 	override val `zh-hans`: Lang,
 
 	val mastery_level: Int? = null,
-	//set_root
+	val set_root: Boolean? = null,
 	val rarity: Rarity? = null,
 	val trading_tax: Int
 ) : ItemData {
