@@ -22,7 +22,7 @@ sealed interface UserSeen : User {
 	val last_seen: Instant
 }
 
-sealed interface UserPublic : UserSeen {
+sealed interface UserTracked : UserSeen {
 	val status: Status
 }
 
@@ -45,7 +45,7 @@ data class UserShort private constructor(
 	override val region: Region,
 	override val reputation: Int,
 	override val status: Status
-) : UserPublic
+) : UserTracked
 
 @Serializable
 data class UserProfilePublic private constructor(
@@ -65,7 +65,7 @@ data class UserProfilePublic private constructor(
 	val about_raw: String,
 	val achievements: List<Achievement>,
 	val own_profile: Boolean
-) : UserPublic, UserProfile
+) : UserTracked, UserProfile
 
 @Serializable
 data class UserProfilePrivate private constructor(
