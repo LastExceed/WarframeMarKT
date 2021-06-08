@@ -4,63 +4,80 @@ import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
+sealed class User {
+	abstract val avatar: ResourceLocation?
+	abstract val id: IdUser
+	abstract val ingame_name: String
+	abstract val region: Region
+	abstract val reputation: Int
+}
+
+sealed interface UserProfile {
+	val background: ResourceLocation? //missing when non-existent
+	val banned: Boolean
+	val platform: Platform
+}
+
+sealed class UserSeen : User() {
+	abstract val last_seen: Instant
+}
+
+sealed class UserPublic : UserSeen() {
+	abstract val status: Status
+}
+
 @Serializable
 data class UserShortest(
-	val avatar: ResourceLocation?,
-	val id: IdUser,
-	val ingame_name: String,
-	val last_seen: String,
-	val region: Region,
-	val reputation: Double
-)
+	override val avatar: ResourceLocation?,
+	override val id: IdUser,
+	override val ingame_name: String,
+	override val last_seen: Instant,
+	override val region: Region,
+	override val reputation: Int
+) : UserSeen()
 
 @Serializable
 data class UserShort private constructor(
-	val avatar: ResourceLocation?,
-	val id: IdUser,
-	val ingame_name: String,
-	val last_seen: String,
-	val region: Region,
-	val reputation: Double,
-	val status: Status? = null//missing in ignorecreate
-)
+	override val avatar: ResourceLocation?,
+	override val id: IdUser,
+	override val ingame_name: String,
+	override val last_seen: Instant,
+	override val region: Region,
+	override val reputation: Int,
+	override val status: Status
+) : UserPublic()
 
 @Serializable
 data class UserProfilePublic private constructor(
-	val avatar: ResourceLocation?,
-	val background: String?,
-	val id: IdUser,
-	val ingame_name: String,
-	val last_seen: Instant,
-	val region: Region,
-	val reputation: Int,
-	val status: Status,
+	override val avatar: ResourceLocation?,
+	override val id: IdUser,
+	override val ingame_name: String,
+	override val last_seen: Instant,
+	override val region: Region,
+	override val reputation: Int,
+	override val status: Status,
+
+	override val background: String?,
+	override val banned: Boolean,
+	override val platform: Platform,
 
 	val about: String,
 	val about_raw: String,
 	val achievements: List<Achievement>,
-	val banned: Boolean,
-	val own_profile: Boolean,
-	val platform: Platform
-)
+	val own_profile: Boolean
+) : UserPublic(), UserProfile
 
 @Serializable
 data class UserProfilePrivate private constructor(
-	val avatar: ResourceLocation? = null, //missing when anonymous
-	val background: ResourceLocation? = null, //missing when non-existent
-	val id: IdUser,
-	val ingame_name: String? = null, //missing when anonymous
-	//lastseen
-	val region: Region,
-	val reputation: Int,
-	//status
+	override val avatar: ResourceLocation? = null, //missing when anonymous
+	override val id: IdUser,
+	override val ingame_name: String? = null, //missing when anonymous
+	override val region: Region,
+	override val reputation: Int,
 
-	//about
-	//about_raw
-	//achievements
-	val banned: Boolean,
-	//own_profile
-	val platform: Platform,
+	override val background: ResourceLocation? = null, //missing when non-existent
+	override val banned: Boolean,
+	override val platform: Platform,
 
 	val anonymous: Boolean,
 	val ban_reason: String? = null, //missing when not banned
@@ -73,7 +90,7 @@ data class UserProfilePrivate private constructor(
 	val unread_messages: Int,
 	val verification: Boolean,
 	val written_reviews: Int
-) {
+) : User(), UserProfile {
 	@Serializable
 	data class LinkedAccounts private constructor(
 		val steam_profile: Boolean,
