@@ -71,7 +71,7 @@ data class UserProfilePublic private constructor(
 data class UserProfilePrivate private constructor(
 	override val avatar: ResourceLocation? = null, //missing when anonymous
 	override val id: IdUser,
-	override val ingame_name: String? = null, //missing when anonymous
+	override val ingame_name: String = "", //missing when anonymous
 	override val region: Region,
 	override val reputation: Int,
 
