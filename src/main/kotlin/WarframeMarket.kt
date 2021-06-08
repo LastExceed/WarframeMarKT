@@ -35,16 +35,16 @@ object WarframeMarket : Endpoint(null) {
 		object auctions : Endpoint(v1), Get<Auctions<AuctionEntryMixed>> {
 			override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 
-			object create : Endpoint(auctions), Create<AuctionCreate, AuctionCreated> {
-				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
+			object create : Endpoint(auctions), Create<AuctionCreate, AuctionRetrieved<AuctionEntry>> {
+				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Post, payload)
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionRetrieved>, Update<AuctionUpdate, AuctionCreated> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionRetrieved<AuctionEntryExpanded>>, Update<AuctionUpdate, AuctionRetrieved<AuctionEntry>> {
 					override val pathName = auction_id
 
-					override suspend fun get() = requestUnwrapped<AuctionRetrieved>(HttpMethod.Get)
-					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionCreated>(HttpMethod.Put, payload)
+					override suspend fun get() = requestUnwrapped<AuctionRetrieved<AuctionEntryExpanded>>(HttpMethod.Get)
+					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Put, payload)
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
 					val bans = Bans(this)
@@ -66,8 +66,8 @@ object WarframeMarket : Endpoint(null) {
 						}
 					}
 
-					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionCreated> {
-						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
+					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionRetrieved<AuctionEntry>> {
+						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Post, payload)
 					}
 				}
 			}
