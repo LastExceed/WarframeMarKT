@@ -4,21 +4,35 @@ import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ItemShort private constructor(
-	val url_name: ItemUrlName,
-	val id: IdItem,
-	val item_name: String,
-	val thumb: ResourceLocation
-)
+sealed class Item {
+	abstract val id: IdItem
+}
 
 @Serializable
-data class ItemDescriptor(
-	val items_in_set: List<ItemFull>,
-	val id: IdItem
-)
+sealed class ItemNamed : Item() {
+	abstract val thumb: ResourceLocation
+	abstract val url_name: ItemUrlName
+}
+
+@Serializable
+data class ItemDescriptor private constructor(
+	override val id: IdItem,
+	val items_in_set: List<ItemFull>
+) : Item()
+
+@Serializable
+data class ItemShort private constructor(
+	override val id: IdItem,
+	override val thumb: ResourceLocation,
+	override val url_name: ItemUrlName,
+	val item_name: String
+) : ItemNamed()
 
 @Serializable
 data class ItemFull private constructor(
+	override val id: IdItem,
+	override val thumb: ResourceLocation,
+	override val url_name: ItemUrlName,
 	val mastery_level: Int? = null, //prime gear only
 	val sub_icon: ResourceLocation?,
 	val ducats: Int? = null, //prime parts only
@@ -36,14 +50,11 @@ data class ItemFull private constructor(
 	val es: Lang,
 	val pl: Lang,
 	val trading_tax: Int? = null, //missing in OrderCreate
-	val thumb: ResourceLocation,
-	val id: IdItem,
 	val icon: ResourceLocation,
-	val url_name: ItemUrlName,
 	val mod_max_rank: Int? = null,
 	val rarity: Rarity? = null, //missing in OrderCreate
 	val subtypes: List<String>? = null //for relic refinement - enum ?
-) {
+) : ItemNamed() {
 	@Serializable
 	data class Lang private constructor(
 		val wiki_link: String? = null,
