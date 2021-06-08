@@ -9,7 +9,7 @@ sealed interface User {
 	val id: IdUser
 	val ingame_name: String
 	val region: Region
-	val reputation: Int
+	val reputation: Float //sometimes has .0 at the end (server side bug)
 }
 
 sealed interface Profile {
@@ -33,7 +33,7 @@ data class UserShortest(
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
-	override val reputation: Int
+	override val reputation: Float
 ) : UserSeen
 
 @Serializable
@@ -43,7 +43,7 @@ data class UserShort private constructor(
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
-	override val reputation: Int,
+	override val reputation: Float,
 	override val status: Status
 ) : UserTracked
 
@@ -54,7 +54,7 @@ data class UserProfilePublic private constructor(
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
-	override val reputation: Int,
+	override val reputation: Float,
 	override val status: Status,
 
 	override val background: ResourceLocation? = null, //missing when non-existent
@@ -73,7 +73,7 @@ data class UserProfilePrivate private constructor(
 	override val id: IdUser,
 	override val ingame_name: String = "", //missing when anonymous
 	override val region: Region,
-	override val reputation: Int,
+	override val reputation: Float,
 
 	override val background: ResourceLocation? = null, //missing when non-existent
 	override val banned: Boolean,
