@@ -21,6 +21,16 @@ sealed interface Order : OrderShort {
 	val visible: Boolean
 }
 
+sealed interface OrderShortWithItem : OrderShort {
+	val item: ItemInOrder
+}
+
+sealed interface OrderWithItem : OrderShortWithItem, Order
+
+sealed interface OrderWithUser : Order {
+	val user: UserShort?
+}
+
 @Serializable
 data class OrderFromItem private constructor(
 	override val creation_date: Instant,
@@ -35,8 +45,8 @@ data class OrderFromItem private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val user: UserShort? = null
-) : Order
+	override val user: UserShort? = null
+) : OrderWithUser
 
 @Serializable
 data class OrderFromProfile private constructor(
@@ -52,8 +62,8 @@ data class OrderFromProfile private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: ItemInOrder,
-) : Order
+	override val item: ItemInOrder
+) : OrderWithItem
 
 @Serializable
 data class OrderFromRecent private constructor(
@@ -69,9 +79,9 @@ data class OrderFromRecent private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: ItemInOrder,
-	val user: UserShort? = null
-) : Order
+	override val item: ItemInOrder,
+	override val user: UserShort? = null
+) : OrderWithItem, OrderWithUser
 
 @Serializable
 data class OrderFromProfileStatistics private constructor(
@@ -84,9 +94,9 @@ data class OrderFromProfileStatistics private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: ItemInOrder,
+	override val item: ItemInOrder,
 	val closed_date: Instant
-) : OrderShort
+) : OrderShortWithItem
 
 @Serializable
 data class OrderFromClosure private constructor(
