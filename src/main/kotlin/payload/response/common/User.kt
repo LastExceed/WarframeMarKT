@@ -13,7 +13,7 @@ sealed interface User {
 }
 
 sealed interface UserProfile {
-	val background: ResourceLocation? //missing when non-existent
+	val background: ResourceLocation?
 	val banned: Boolean
 	val platform: Platform
 }
@@ -57,7 +57,7 @@ data class UserProfilePublic private constructor(
 	override val reputation: Int,
 	override val status: Status,
 
-	override val background: String?,
+	override val background: ResourceLocation? = null, //missing when non-existent
 	override val banned: Boolean,
 	override val platform: Platform,
 
