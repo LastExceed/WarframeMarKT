@@ -7,7 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import payload.request.*
 import payload.response.*
-import payload.response.common.UserShort
+import payload.response.common.*
 import kotlin.reflect.full.memberProperties
 
 //naming case conventions are intentionally violated because reflection is used to build url strings, which are case sensitive
@@ -32,19 +32,19 @@ object WarframeMarket : Endpoint(null) {
 			override suspend fun get() = requestUnwrapped<RecentOrders>(HttpMethod.Get)
 		}
 
-		object auctions : Endpoint(v1), Get<AuctionsMixed> {
-			override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+		object auctions : Endpoint(v1), Get<Auctions<AuctionEntryMixed>> {
+			override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 
-			object create : Endpoint(auctions), Create<AuctionCreate, AuctionCreated> {
-				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
+			object create : Endpoint(auctions), Create<AuctionCreate, AuctionRetrieved<AuctionEntry>> {
+				override suspend fun create(payload: AuctionCreate) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Post, payload)
 			}
 
 			object entry : Endpoint(auctions) {
-				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionRetrieved>, Update<AuctionUpdate, AuctionCreated> {
+				class ENTRY(auction_id: String) : Endpoint(entry), Get<AuctionRetrieved<AuctionEntryExpanded>>, Update<AuctionUpdate, AuctionRetrieved<AuctionEntry>> {
 					override val pathName = auction_id
 
-					override suspend fun get() = requestUnwrapped<AuctionRetrieved>(HttpMethod.Get)
-					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionCreated>(HttpMethod.Put, payload)
+					override suspend fun get() = requestUnwrapped<AuctionRetrieved<AuctionEntryExpanded>>(HttpMethod.Get)
+					override suspend fun update(payload: AuctionUpdate) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Put, payload)
 					suspend fun close() = requestUnwrapped<AuctionClosed>(HttpMethod.Put, url = "$url/close")
 					val bids = Bids(this)
 					val bans = Bans(this)
@@ -66,18 +66,18 @@ object WarframeMarket : Endpoint(null) {
 						}
 					}
 
-					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionCreated> {
-						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionCreated>(HttpMethod.Post, payload)
+					class Win internal constructor(parent: Endpoint) : Endpoint(parent), Create<AuctionWin, AuctionRetrieved<AuctionEntry>> {
+						override suspend fun create(payload: AuctionWin) = requestUnwrapped<AuctionRetrieved<AuctionEntry>>(HttpMethod.Post, payload)
 					}
 				}
 			}
 
-			object popular : Endpoint(auctions), Get<AuctionsMixed> {
-				override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+			object popular : Endpoint(auctions), Get<Auctions<AuctionEntryMixed>> {
+				override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 			}
 
 			object search : Endpoint(auctions) {
-				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<AuctionsExpanded>(HttpMethod.Get) {
+				suspend fun get(searchParameters: AuctionSearch) = requestUnwrapped<Auctions<AuctionEntryExpanded>>(HttpMethod.Get) {
 					searchParameters::class.memberProperties.forEach { property ->
 						property.getter.call(searchParameters)?.let { value ->
 							parameter(property.name, if (value is List<*>) value.joinToString(",") else value) //KycKyc plz y u make me do dis
@@ -96,20 +96,20 @@ object WarframeMarket : Endpoint(null) {
 		}
 
 		object im : Endpoint(v1) {
-			object chats : Endpoint(im), Get<Chats>, Create<ChatCreate, ChatCreated> {
+			object chats : Endpoint(im), Get<Chats>, Create<ChatCreate, ChatRetrieved> {
 				override suspend fun get() = requestUnwrapped<Chats>(HttpMethod.Get)
-				override suspend fun create(payload: ChatCreate) = requestUnwrapped<ChatCreated>(HttpMethod.Post, payload)
+				override suspend fun create(payload: ChatCreate) = requestUnwrapped<ChatRetrieved>(HttpMethod.Post, payload)
 
-				class CHAT(chat_id: String) : Endpoint(chats), Get<Messages>, Delete<ChatDeleted> {
+				class CHAT(chat_id: String) : Endpoint(chats), Get<Messages>, Delete<ChatRetrieved> {
 					override val pathName = chat_id
 
 					override suspend fun get() = requestUnwrapped<Messages>(HttpMethod.Get)
-					override suspend fun delete() = requestUnwrapped<ChatDeleted>(HttpMethod.Delete)
+					override suspend fun delete() = requestUnwrapped<ChatRetrieved>(HttpMethod.Delete)
 				}
 			}
 
-			object ignore : Endpoint(im), Get<List<UserShort>>, Create<IgnoreCreate, IgnoreCreated> {
-				override suspend fun get() = requestUnwrapped<List<UserShort>>(HttpMethod.Get)
+			object ignore : Endpoint(im), Get<List<UserShortest>>, Create<IgnoreCreate, IgnoreCreated> {
+				override suspend fun get() = requestUnwrapped<List<UserShortest>>(HttpMethod.Get)
 				override suspend fun create(payload: IgnoreCreate) = requestUnwrapped<IgnoreCreated>(HttpMethod.Post, payload)
 
 				class IGNORE(user_id: String) : Endpoint(ignore), Delete<IgnoreDeleted> {
@@ -123,9 +123,9 @@ object WarframeMarket : Endpoint(null) {
 		object items : Endpoint(v1), Get<Items> {
 			override suspend fun get() = requestUnwrapped<Items>(HttpMethod.Get)
 
-			class ITEM(url_name: String) : Endpoint(items), Get<Item> {
+			class ITEM(url_name: String) : Endpoint(items), Get<ItemRetrieved> {
 				override val pathName = url_name
-				override suspend fun get() = requestUnwrapped<Item>(HttpMethod.Get)
+				override suspend fun get() = requestUnwrapped<ItemRetrieved>(HttpMethod.Get)
 				val orders = Orders(this)
 				val statistics = Statistics(this)
 
@@ -153,11 +153,11 @@ object WarframeMarket : Endpoint(null) {
 		object profile : Endpoint(v1), Get<ProfilePrivate> {
 			override suspend fun get() = requestUnwrapped<ProfilePrivate>(HttpMethod.Get)
 
-			object auctions : Endpoint(profile), Get<Auctions> {
-				override suspend fun get() = requestUnwrapped<Auctions>(HttpMethod.Get)
+			object auctions : Endpoint(profile), Get<Auctions<AuctionEntry>> {
+				override suspend fun get() = requestUnwrapped<Auctions<AuctionEntry>>(HttpMethod.Get)
 
-				object participant : Endpoint(auctions), Get<AuctionsMixed> {
-					override suspend fun get() = requestUnwrapped<AuctionsMixed>(HttpMethod.Get)
+				object participant : Endpoint(auctions), Get<Auctions<AuctionEntryMixed>> {
+					override suspend fun get() = requestUnwrapped<Auctions<AuctionEntryMixed>>(HttpMethod.Get)
 				}
 			}
 
@@ -175,9 +175,9 @@ object WarframeMarket : Endpoint(null) {
 				override suspend fun get() = requestUnwrapped<OwnOrders>(HttpMethod.Get)
 				override suspend fun create(payload: OrderCreate) = requestUnwrapped<OrderCreated>(HttpMethod.Post, payload)
 
-				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderUpdated>, Delete<OrderDeleted> {
+				class ORDER(order_id: String) : Endpoint(orders), Update<OrderUpdate, OrderCreated>, Delete<OrderDeleted> {
 					override val pathName = order_id
-					override suspend fun update(payload: OrderUpdate) = requestUnwrapped<OrderUpdated>(HttpMethod.Put, payload)
+					override suspend fun update(payload: OrderUpdate) = requestUnwrapped<OrderCreated>(HttpMethod.Put, payload)
 					override suspend fun delete() = requestUnwrapped<OrderDeleted>(HttpMethod.Delete)
 					suspend fun close() = requestUnwrapped<OrderClosed>(HttpMethod.Put, url = orders.url + "/close/" + pathName)
 				}
@@ -211,8 +211,8 @@ object WarframeMarket : Endpoint(null) {
 					override suspend fun get() = requestUnwrapped<UserOrders>(HttpMethod.Get)
 				}
 
-				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions> {
-					override suspend fun get() = requestUnwrapped<payload.response.Auctions>(HttpMethod.Get)
+				class Auctions internal constructor(parent: Endpoint) : Endpoint(parent), Get<payload.response.Auctions<AuctionEntry>> {
+					override suspend fun get() = requestUnwrapped<payload.response.Auctions<AuctionEntry>>(HttpMethod.Get)
 				}
 
 				class Review internal constructor(parent: Endpoint) : Endpoint(parent), Create<ReviewCreate, ReviewCreated> {

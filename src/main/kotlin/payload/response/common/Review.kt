@@ -9,6 +9,6 @@ data class Review private constructor(
 	val text: String,
 	val hidden: Boolean,
 	val date: Instant,
-	val user_from: UserShort? = null, //null if own_review
+	val user_from: UserShortest? = null, //null if own_review
 	val id: String? = null //null if not own_review
 )
