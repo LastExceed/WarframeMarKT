@@ -123,9 +123,9 @@ object WarframeMarket : Endpoint(null) {
 		object items : Endpoint(v1), Get<Items> {
 			override suspend fun get() = requestUnwrapped<Items>(HttpMethod.Get)
 
-			class ITEM(url_name: String) : Endpoint(items), Get<Item> {
+			class ITEM(url_name: String) : Endpoint(items), Get<ItemRetrieved> {
 				override val pathName = url_name
-				override suspend fun get() = requestUnwrapped<Item>(HttpMethod.Get)
+				override suspend fun get() = requestUnwrapped<ItemRetrieved>(HttpMethod.Get)
 				val orders = Orders(this)
 				val statistics = Statistics(this)
 

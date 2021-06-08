@@ -55,7 +55,7 @@ data class OrderFromProfile private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: Item.Item.SetItem,
+	val item: ItemRetrieved.Item.SetItem,
 ) : Order()
 
 @Serializable
@@ -72,7 +72,7 @@ data class OrderFromRecent private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: Item.Item.SetItem,
+	val item: ItemRetrieved.Item.SetItem,
 	val user: UserShort? = null
 ) : Order()
 
@@ -87,7 +87,7 @@ data class OrderFromProfileStatistics private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: Item.Item.SetItem,
+	val item: ItemRetrieved.Item.SetItem,
 	val closed_date: Instant
 ) : OrderShort()
 
