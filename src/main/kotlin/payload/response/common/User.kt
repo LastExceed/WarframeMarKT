@@ -12,7 +12,7 @@ sealed interface User {
 	val reputation: Int
 }
 
-sealed interface UserProfile {
+sealed interface Profile {
 	val background: ResourceLocation?
 	val banned: Boolean
 	val platform: Platform
@@ -65,7 +65,7 @@ data class UserProfilePublic private constructor(
 	val about_raw: String,
 	val achievements: List<Achievement>,
 	val own_profile: Boolean
-) : UserTracked, UserProfile
+) : UserTracked, Profile
 
 @Serializable
 data class UserProfilePrivate private constructor(
@@ -90,7 +90,7 @@ data class UserProfilePrivate private constructor(
 	val unread_messages: Int,
 	val verification: Boolean,
 	val written_reviews: Int
-) : User, UserProfile {
+) : User, Profile {
 	@Serializable
 	data class LinkedAccounts private constructor(
 		val steam_profile: Boolean,
