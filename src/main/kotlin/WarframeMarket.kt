@@ -7,7 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import payload.request.*
 import payload.response.*
-import payload.response.common.UserShort
+import payload.response.common.UserShortest
 import kotlin.reflect.full.memberProperties
 
 //naming case conventions are intentionally violated because reflection is used to build url strings, which are case sensitive
@@ -108,8 +108,8 @@ object WarframeMarket : Endpoint(null) {
 				}
 			}
 
-			object ignore : Endpoint(im), Get<List<UserShort>>, Create<IgnoreCreate, IgnoreCreated> {
-				override suspend fun get() = requestUnwrapped<List<UserShort>>(HttpMethod.Get)
+			object ignore : Endpoint(im), Get<List<UserShortest>>, Create<IgnoreCreate, IgnoreCreated> {
+				override suspend fun get() = requestUnwrapped<List<UserShortest>>(HttpMethod.Get)
 				override suspend fun create(payload: IgnoreCreate) = requestUnwrapped<IgnoreCreated>(HttpMethod.Post, payload)
 
 				class IGNORE(user_id: String) : Endpoint(ignore), Delete<IgnoreDeleted> {
