@@ -6,54 +6,63 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserShort private constructor(
-	var status: Status? = null,//missing in ignorecreate
-	var ingame_name: String,
-	var region: Region,
 	var avatar: ResourceLocation?,
 	var id: IdUser,
+	var ingame_name: String,
+	var last_seen: String,
+	var region: Region,
 	var reputation: Double,
-	var last_seen: String
+	var status: Status? = null//missing in ignorecreate
 )
 
 @Serializable
 data class UserProfile private constructor(
-	val region: Region,
-	val about: String,
-	val id: IdUser,
+	val avatar: ResourceLocation?,
 	val background: String?,
-	val own_profile: Boolean,
-	val status: Status,
-	val avatar: ResourceLocation,
-	val last_seen: Instant,
-	val platform: Platform,
-	val banned: Boolean,
-	val achievements: List<Achievement>,
-	val about_raw: String,
+	val id: IdUser,
 	val ingame_name: String,
-	val reputation: Int
+	val last_seen: Instant,
+	val region: Region,
+	val reputation: Int,
+	val status: Status,
+
+	val about: String,
+	val about_raw: String,
+	val achievements: List<Achievement>,
+	val banned: Boolean,
+	val own_profile: Boolean,
+	val platform: Platform
 )
 
 @Serializable
 data class CurrentUser private constructor(
-	val reputation: Int,
-	val region: Region,
-	val check_code: String?,
-	val platform: Platform,
-	val ban_reason: String? = null, //missing when not banned
-	val has_mail: Boolean,
-	val role: Role,
-	val ingame_name: String? = null, //missing in signout
-	val anonymous: Boolean,
-	val verification: Boolean,
-	val unread_messages: Int,
-	val id: IdUser,
+	val avatar: ResourceLocation? = null, //missing when anonymous
 	val background: ResourceLocation? = null, //missing when non-existent
-	val ban_until: Instant? = null, //missing when not banned
+	val id: IdUser,
+	val ingame_name: String? = null, //missing when anonymous
+	//lastseen
+	val region: Region,
+	val reputation: Int,
+	//status
+
+	//about
+	//about_raw
+	//achievements
 	val banned: Boolean,
-	val patreon_profile: PatreonProfile? = null, //missing when not a patreon
+	//own_profile
+	val platform: Platform,
+
+	val anonymous: Boolean,
+	val ban_reason: String? = null, //missing when not banned
+	val ban_until: Instant? = null, //missing when not banned
+	val check_code: String?,
+	val has_mail: Boolean,
 	val linked_accounts: LinkedAccounts,
-	val written_reviews: Int,
-	val avatar: ResourceLocation? = null //missing in signout
+	val patreon_profile: PatreonProfile? = null, //missing when not a patreon
+	val role: Role,
+	val unread_messages: Int,
+	val verification: Boolean,
+	val written_reviews: Int
 ) {
 	@Serializable
 	data class LinkedAccounts private constructor(
