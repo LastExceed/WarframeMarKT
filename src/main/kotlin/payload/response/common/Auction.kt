@@ -29,6 +29,19 @@ sealed interface Auction {
 	val winner: Any?
 }
 
+sealed interface AuctionOwnerId : Auction {
+	override val owner: IdUser
+}
+sealed interface AuctionWinnerId : Auction {
+	override val winner: IdUser?
+}
+sealed interface AuctionOwnerShort : Auction {
+	override val owner: UserShort
+}
+sealed interface AuctionWinnerShort : Auction {
+	override val winner: UserShort?
+}
+
 @Serializable
 data class AuctionEntry private constructor(
 	override val buyout_price: Int?,
@@ -52,7 +65,7 @@ data class AuctionEntry private constructor(
 
 	override val owner: IdUser,
 	override val winner: IdUser?
-) : Auction
+) : AuctionOwnerId, AuctionWinnerId
 
 @Serializable
 data class AuctionEntryMixed private constructor(
@@ -77,7 +90,7 @@ data class AuctionEntryMixed private constructor(
 
 	override val owner: UserShort,
 	override val winner: IdUser?
-) : Auction
+) : AuctionOwnerShort, AuctionWinnerId
 
 @Serializable
 data class AuctionEntryExpanded private constructor(
@@ -102,4 +115,4 @@ data class AuctionEntryExpanded private constructor(
 
 	override val owner: UserShort,
 	override val winner: UserShort?
-) : Auction
+) : AuctionOwnerShort, AuctionWinnerShort
