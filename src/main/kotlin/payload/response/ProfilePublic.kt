@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfilePublic private constructor(
-	val profile: Profile
+	val profile: UserProfile
 ) {
 	@Serializable
-	data class Profile private constructor(
+	data class UserProfile private constructor(
 		val region: Region,
 		val about: String,
 		val id: IdUser,
