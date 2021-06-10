@@ -102,6 +102,6 @@ data class UserProfilePrivate private constructor(
 	data class PatreonProfile private constructor(
 		val patreon_founder: Boolean,
 		val subscription: Boolean,
-		val patreon_badge: String
+		val patreon_badge: PatreonBadge
 	)
 }
