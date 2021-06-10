@@ -35,5 +35,5 @@ data class AuctionItemLich(
 	val element: Element,
 	val damage: Float,
 	val having_ephemera: Boolean,
-	val quirk: String? = null
+	val quirk: Quirk? = null
 ) : AuctionItem()
