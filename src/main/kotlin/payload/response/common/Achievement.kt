@@ -1,6 +1,6 @@
 package payload.response.common
 
-import enums.ResourceLocation
+import enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -9,5 +9,5 @@ data class Achievement private constructor(
 	val icon: ResourceLocation,
 	val description: String,
 	val exposed: Boolean,
-	val type: String
+	val type: AchievementType
 )
