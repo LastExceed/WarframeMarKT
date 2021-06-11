@@ -290,7 +290,9 @@ class ApiTest {
 						SortingStyleLich.damage_desc,
 						"kuva_bramma",
 						Element.cold,
-						true
+						true,
+						25,
+						60
 					)
 				)
 			}

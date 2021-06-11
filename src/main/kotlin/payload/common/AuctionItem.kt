@@ -33,7 +33,7 @@ data class AuctionItemRiven(
 data class AuctionItemLich(
 	override val weapon_url_name: ItemUrlName,
 	val element: Element,
-	val damage: Float,
+	val damage: Int,
 	val having_ephemera: Boolean,
 	val quirk: Quirk? = null
 ) : AuctionItem()
