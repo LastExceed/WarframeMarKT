@@ -1,11 +1,12 @@
 package payload.response.common
 
-import kotlinx.datetime.*
+import enums.ReviewType
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Review private constructor(
-	val review_type: Int,
+	val review_type: ReviewType,
 	val text: String,
 	val hidden: Boolean,
 	val date: Instant,
