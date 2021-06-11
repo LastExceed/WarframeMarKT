@@ -16,7 +16,9 @@ data class AuctionSearchLich(
 	override val sort_by: SortingStyleLich?,
 	override val weapon_url_name: ItemUrlName?,
 	val element: Element?,
-	val having_ephemera: Boolean
+	val having_ephemera: Boolean,
+	val damage_min: Int,
+	val damage_max: Int,
 ) : AuctionSearch(AuctionType.lich)
 
 @Serializable
