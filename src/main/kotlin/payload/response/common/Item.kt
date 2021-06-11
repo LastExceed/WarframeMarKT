@@ -15,7 +15,7 @@ sealed interface ItemNamed : Item {
 sealed interface ItemData : ItemNamed {
 	val ducats: Int? //prime stuff only
 	val icon: ResourceLocation
-	val icon_format: String//enum?
+	val icon_format: IconFormat
 	val mod_max_rank: Int? //mods only
 	val subtypes: List<String>? //eg relic refinement - enum ?
 	val sub_icon: ResourceLocation?
@@ -58,7 +58,7 @@ data class ItemInOrder private constructor(
 	override val url_name: ItemUrlName,
 	override val ducats: Int? = null,
 	override val icon: ResourceLocation,
-	override val icon_format: String,
+	override val icon_format: IconFormat,
 	override val mod_max_rank: Int? = null,
 	override val subtypes: List<String>? = null,
 	override val sub_icon: ResourceLocation?,
@@ -88,7 +88,7 @@ data class ItemFull private constructor(
 	override val url_name: ItemUrlName,
 	override val ducats: Int? = null, //prime stuff only
 	override val icon: ResourceLocation,
-	override val icon_format: String,//enum?
+	override val icon_format: IconFormat,
 	override val mod_max_rank: Int? = null, //mods only
 	override val subtypes: List<String>? = null, //for relic refinement - enum ?
 	override val sub_icon: ResourceLocation?,
