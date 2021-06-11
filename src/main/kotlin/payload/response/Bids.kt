@@ -11,11 +11,11 @@ data class Bids private constructor(
 ) {
 	@Serializable
 	data class Bid private constructor(
+		override val id: IdBid,
 		val value: Int,
 		val created: Instant,
 		val updated: Instant,
 		val auction: IdAuction,
-		val user: UserShort,
-		val id: IdBid
+		val user: UserShort
 	) : IdCarrier
 }

@@ -5,7 +5,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.*
 
 sealed interface OrderShort : IdCarrier {
-	val id: IdOrder
+	override val id: IdOrder
 	val order_type: OrderType
 	val platform: Platform
 	val platinum: Float //sometimes there's .0 at the end. wtf KycKyc

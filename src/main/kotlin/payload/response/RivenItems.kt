@@ -9,13 +9,13 @@ data class RivenItems private constructor(
 ) {
 	@Serializable
 	data class RivenItem(
+		override val id: IdRivenItem,
 		val thumb: ResourceLocation,
 		val url_name: ItemUrlName,
 		val item_name: String,
 		val riven_type: RivenType,
 		val icon: ResourceLocation,
 		val group: WeaponGroup,
-		val icon_format: IconFormat,
-		val id: IdRivenItem
+		val icon_format: IconFormat
 	) : IdCarrier
 }

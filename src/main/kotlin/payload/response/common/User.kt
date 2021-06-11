@@ -5,8 +5,8 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 sealed interface User : IdCarrier {
+	override val id: IdUser
 	val avatar: ResourceLocation?
-	val id: IdUser
 	val ingame_name: String
 	val region: Region
 	val reputation: Float //sometimes has .0 at the end (server side bug)

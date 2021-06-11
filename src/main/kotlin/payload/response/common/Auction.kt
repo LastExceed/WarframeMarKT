@@ -6,6 +6,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
 sealed interface Auction : IdCarrier {
+	override val id: IdAuction
 	val buyout_price: Int?
 	val visible: Boolean
 	val minimal_reputation: Int
@@ -22,7 +23,6 @@ sealed interface Auction : IdCarrier {
 	val updated: Instant
 	val note_raw: String
 	val is_direct_sell: Boolean
-	val id: IdAuction
 	val minimal_increment: Int?
 
 	val owner: Any

@@ -8,9 +8,10 @@ import kotlinx.serialization.Serializable
 data class Ducats private constructor(
 	val previous_hour: List<Entry>,
 	val previous_day: List<Entry>
-) : IdCarrier {
+) {
 	@Serializable
 	data class Entry private constructor(
+		override val id: IdDucats,
 		val datetime: Instant,
 		val position_change_month: Int,
 		val position_change_week: Int,
@@ -22,7 +23,6 @@ data class Ducats private constructor(
 		val ducats: Int,
 		val item: String,//IdItem? ItemUrlName?
 		val median: Float,
-		val wa_price: Float,
-		val id: IdDucats
-	)
+		val wa_price: Float
+	) : IdCarrier
 }

@@ -4,7 +4,7 @@ import enums.*
 import kotlinx.serialization.Serializable
 
 sealed interface Item : IdCarrier {
-	val id: IdItem
+	override val id: IdItem
 }
 
 sealed interface ItemNamed : Item {

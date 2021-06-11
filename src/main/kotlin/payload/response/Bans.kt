@@ -11,10 +11,10 @@ data class Bans private constructor(
 ) {
 	@Serializable
 	data class Ban private constructor(
+		override val id: IdBan,
 		val auction: IdAuction,
 		val user: UserShort,
 		val reason: String,
-		val created: Instant,
-		val id: IdBan
+		val created: Instant
 	) : IdCarrier
 }
