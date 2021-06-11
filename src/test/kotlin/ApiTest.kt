@@ -129,7 +129,7 @@ class ApiTest {
 		@Test
 		@Order(1)
 		fun create() {
-			val reviewCreated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.create(ReviewCreate("test review", 1)) }
+			val reviewCreated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.create(ReviewCreate("test review for https://github.com/LastExceed/WarframeMarKT/", ReviewType.Review)) }
 			reviewId = assertNotNull(reviewCreated.own_review.id)
 		}
 
