@@ -6,7 +6,7 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 
 @Serializable(ReviewTypeAsIntSerializer::class)
-enum class ReviewType(val serializedForm: Int) {
+enum class ReviewType(internal val serializedForm: Int) {
 	Review(1),
 	Report(-1);
 
