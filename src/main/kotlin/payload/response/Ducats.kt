@@ -1,6 +1,6 @@
 package payload.response
 
-import enums.IdDucats
+import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class Ducats private constructor(
 	val previous_hour: List<Entry>,
 	val previous_day: List<Entry>
-) {
+) : IdCarrier {
 	@Serializable
 	data class Entry private constructor(
 		val datetime: Instant,

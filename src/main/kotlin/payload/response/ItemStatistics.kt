@@ -14,7 +14,7 @@ data class ItemStatistics private constructor(
 		val `90days`: List<T>,
 		val `48hours`: List<T>
 	) {
-		interface Snapshot {
+		interface Snapshot : IdCarrier {
 			val datetime: Instant
 			val volume: Int
 			val min_price: Float

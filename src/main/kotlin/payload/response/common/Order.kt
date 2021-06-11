@@ -4,7 +4,7 @@ import enums.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 
-sealed interface OrderShort {
+sealed interface OrderShort : IdCarrier {
 	val id: IdOrder
 	val order_type: OrderType
 	val platform: Platform

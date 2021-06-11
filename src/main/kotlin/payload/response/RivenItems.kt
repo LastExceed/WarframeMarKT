@@ -17,5 +17,5 @@ data class RivenItems private constructor(
 		val group: WeaponGroup,
 		val icon_format: IconFormat,
 		val id: IdRivenItem
-	)
+	) : IdCarrier
 }

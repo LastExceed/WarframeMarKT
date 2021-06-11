@@ -5,7 +5,7 @@ import payload.common.AuctionItem
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
-sealed interface Auction {
+sealed interface Auction : IdCarrier {
 	val buyout_price: Int?
 	val visible: Boolean
 	val minimal_reputation: Int

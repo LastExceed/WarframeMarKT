@@ -21,6 +21,8 @@ typealias IdRivenAttribute = Id<RivenAttributes.RivenAttribute>
 typealias ItemUrlName = String
 typealias ResourceLocation = String
 
+interface IdCarrier
+
 @JvmInline
 @Serializable
-value class Id<T>(val value: String)
+value class Id<T : IdCarrier>(val value: String)

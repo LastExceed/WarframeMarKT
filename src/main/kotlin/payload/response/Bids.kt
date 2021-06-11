@@ -17,5 +17,5 @@ data class Bids private constructor(
 		val auction: IdAuction,
 		val user: UserShort,
 		val id: IdBid
-	)
+	) : IdCarrier
 }

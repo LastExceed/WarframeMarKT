@@ -3,7 +3,7 @@ package payload.response.common
 import enums.*
 import kotlinx.serialization.Serializable
 
-sealed interface Item {
+sealed interface Item : IdCarrier {
 	val id: IdItem
 }
 

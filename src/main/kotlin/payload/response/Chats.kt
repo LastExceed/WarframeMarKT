@@ -17,7 +17,7 @@ data class Chats private constructor(
 		val unread_count: Int,
 		val chat_name: String,//username
 		val id: IdChat
-	) {
+	) : IdCarrier {
 		@Serializable
 		data class Message private constructor(
 			val message: String,
@@ -26,6 +26,6 @@ data class Chats private constructor(
 			val chat_id: IdChat,
 			val id: IdMessage,
 			val raw_message: String? = null
-		)
+		) : IdCarrier
 	}
 }

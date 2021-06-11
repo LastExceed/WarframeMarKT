@@ -4,7 +4,7 @@ import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
-sealed interface User {
+sealed interface User : IdCarrier {
 	val avatar: ResourceLocation?
 	val id: IdUser
 	val ingame_name: String

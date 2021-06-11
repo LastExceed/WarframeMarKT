@@ -16,5 +16,5 @@ data class Bans private constructor(
 		val reason: String,
 		val created: Instant,
 		val id: IdBan
-	)
+	) : IdCarrier
 }
