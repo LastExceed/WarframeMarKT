@@ -21,5 +21,7 @@ enum class Quirk {
 	prone_to_vertigo,
 	pyromaniac,
 	trophy_hunter,
-	vain
+	vain,
+
+	none
 }
