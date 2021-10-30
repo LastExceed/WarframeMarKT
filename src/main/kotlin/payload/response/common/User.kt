@@ -95,7 +95,8 @@ data class UserProfilePrivate private constructor(
 	data class LinkedAccounts private constructor(
 		val steam_profile: Boolean,
 		val patreon_profile: Boolean,
-		val xbox_profile: Boolean
+		val xbox_profile: Boolean,
+		val discord_profile: Boolean
 	)
 
 	@Serializable
