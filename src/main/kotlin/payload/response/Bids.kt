@@ -1,9 +1,9 @@
 package payload.response
 
 import enums.*
-import payload.response.common.UserShort
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import payload.response.common.*
 
 @Serializable
 data class Bids private constructor(
@@ -11,11 +11,11 @@ data class Bids private constructor(
 ) {
 	@Serializable
 	data class Bid private constructor(
+		override val id: Id<Bid>,
 		val value: Int,
 		val created: Instant,
 		val updated: Instant,
-		val auction: IdAuction,
-		val user: UserShort,
-		val id: IdBid
-	)
+		val auction: Id<Auction>,
+		val user: UserShort
+	) : IdCarrier
 }

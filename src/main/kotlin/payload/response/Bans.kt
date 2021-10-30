@@ -3,7 +3,7 @@ package payload.response
 import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import payload.response.common.UserShort
+import payload.response.common.*
 
 @Serializable
 data class Bans private constructor(
@@ -11,10 +11,10 @@ data class Bans private constructor(
 ) {
 	@Serializable
 	data class Ban private constructor(
-		val auction: IdAuction,
+		override val id: Id<Ban>,
+		val auction: Id<Auction>,
 		val user: UserShort,
 		val reason: String,
-		val created: Instant,
-		val id: IdBan
-	)
+		val created: Instant
+	) : IdCarrier
 }

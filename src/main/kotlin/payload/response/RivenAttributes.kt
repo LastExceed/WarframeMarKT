@@ -9,7 +9,7 @@ data class RivenAttributes private constructor(
 ) {
 	@Serializable
 	data class RivenAttribute(
-		val id: IdRivenAttribute,
+		override val id: Id<RivenAttribute>,
 		val url_name: RivenAttributeName,
 		val group: RivenAttributeGroup,
 		val prefix: String?,
@@ -20,5 +20,5 @@ data class RivenAttributes private constructor(
 		val units: RivenAttributeUnit? = null,
 		val negative_only: Boolean,
 		val search_only: Boolean
-	)
+	) : IdCarrier
 }

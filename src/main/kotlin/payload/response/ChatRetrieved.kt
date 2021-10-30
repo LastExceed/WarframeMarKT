@@ -1,9 +1,9 @@
 package payload.response
 
-import enums.IdChat
+import enums.Id
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChatRetrieved private constructor(
-	val chat_id: IdChat
+	val chat_id: Id<Chats.Chat>
 )

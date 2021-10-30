@@ -4,8 +4,8 @@ import enums.*
 import kotlinx.datetime.*
 import kotlinx.serialization.*
 
-sealed interface OrderShort {
-	val id: IdOrder
+sealed interface OrderShort : IdCarrier {
+	override val id: Id<Order>
 	val order_type: OrderType
 	val platform: Platform
 	val platinum: Float //sometimes there's .0 at the end. wtf KycKyc
@@ -34,7 +34,7 @@ sealed interface OrderWithUser : Order {
 @Serializable
 data class OrderFromItem private constructor(
 	override val creation_date: Instant,
-	override val id: IdOrder,
+	override val id: Id<Order>,
 	override val last_update: Instant,
 	override val order_type: OrderType,
 	override val platform: Platform,
@@ -51,7 +51,7 @@ data class OrderFromItem private constructor(
 @Serializable
 data class OrderFromProfile private constructor(
 	override val creation_date: Instant,
-	override val id: IdOrder,
+	override val id: Id<Order>,
 	override val last_update: Instant,
 	override val order_type: OrderType,
 	override val platform: Platform,
@@ -68,7 +68,7 @@ data class OrderFromProfile private constructor(
 @Serializable
 data class OrderFromRecent private constructor(
 	override val creation_date: Instant,
-	override val id: IdOrder,
+	override val id: Id<Order>,
 	override val last_update: Instant,
 	override val order_type: OrderType,
 	override val platform: Platform,
@@ -85,7 +85,7 @@ data class OrderFromRecent private constructor(
 
 @Serializable
 data class OrderFromProfileStatistics private constructor(
-	override val id: IdOrder,
+	override val id: Id<Order>,
 	override val order_type: OrderType,
 	override val platform: Platform,
 	override val platinum: Float,
@@ -101,7 +101,7 @@ data class OrderFromProfileStatistics private constructor(
 @Serializable
 data class OrderFromClosure private constructor(
 	override val creation_date: Instant,
-	override val id: IdOrder,
+	override val id: Id<Order>,
 	override val last_update: Instant,
 	override val order_type: OrderType,
 	override val platform: Platform,
@@ -112,5 +112,5 @@ data class OrderFromClosure private constructor(
 	override val mod_rank: Int? = null,
 	override val subtype: String? = null,
 
-	val item: IdItem
+	val item: Id<Item>
 ) : Order

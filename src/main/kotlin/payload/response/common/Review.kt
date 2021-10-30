@@ -1,15 +1,15 @@
 package payload.response.common
 
-import enums.ReviewType
+import enums.*
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Review private constructor(
+	override val id: Id<Review>,
 	val review_type: ReviewType,
 	val text: String,
 	val hidden: Boolean,
 	val date: Instant,
-	val user_from: UserShortest? = null, //null if own_review
-	val id: String? = null //null if not own_review
-)
+	val user_from: UserShortest? = null //null if own_review
+) : IdCarrier
