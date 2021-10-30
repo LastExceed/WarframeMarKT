@@ -1,9 +1,9 @@
 package payload.response
 
 import enums.*
-import payload.response.common.UserShort
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import payload.response.common.*
 
 @Serializable
 data class Chats private constructor(
@@ -11,7 +11,7 @@ data class Chats private constructor(
 ) {
 	@Serializable
 	data class Chat private constructor(
-		override val id: IdChat,
+		override val id: Id<Chat>,
 		val last_update: Instant,
 		val chat_with: List<UserShort>,
 		val messages: List<Message>,
@@ -20,11 +20,11 @@ data class Chats private constructor(
 	) : IdCarrier {
 		@Serializable
 		data class Message private constructor(
-			override val id: IdMessage,
+			override val id: Id<Message>,
 			val message: String,
-			val message_from: IdUser,
+			val message_from: Id<User>,
 			val send_date: Instant,
-			val chat_id: IdChat,
+			val chat_id: Id<Chat>,
 			val raw_message: String? = null
 		) : IdCarrier
 	}

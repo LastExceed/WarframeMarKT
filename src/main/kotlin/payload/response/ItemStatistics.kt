@@ -15,7 +15,7 @@ data class ItemStatistics private constructor(
 		val `48hours`: List<T>
 	) {
 		interface Snapshot : IdCarrier {
-			override val id: IdSnapshot
+			override val id: Id<Snapshot>
 			val datetime: Instant
 			val volume: Int
 			val min_price: Float
@@ -37,7 +37,7 @@ data class ItemStatistics private constructor(
 			override val wa_price: Float,
 			override val median: Float,
 			override val mod_rank: Int?,
-			override val id: IdSnapshot,
+			override val id: Id<Snapshot>,
 			override val moving_avg: Float? = null,
 
 			val open_price: Float,
@@ -56,7 +56,7 @@ data class ItemStatistics private constructor(
 			override val wa_price: Float,
 			override val median: Float,
 			override val mod_rank: Int,
-			override val id: IdSnapshot,
+			override val id: Id<Snapshot>,
 			override val moving_avg: Float? = null,
 
 			val order_type: OrderType

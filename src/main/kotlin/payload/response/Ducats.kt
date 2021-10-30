@@ -11,7 +11,7 @@ data class Ducats private constructor(
 ) {
 	@Serializable
 	data class Entry private constructor(
-		override val id: IdDucats,
+		override val id: Id<Entry>,
 		val datetime: Instant,
 		val position_change_month: Int,
 		val position_change_week: Int,

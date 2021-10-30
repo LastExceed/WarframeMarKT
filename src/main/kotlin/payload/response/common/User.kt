@@ -5,7 +5,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 sealed interface User : IdCarrier {
-	override val id: IdUser
+	override val id: Id<User>
 	val avatar: ResourceLocation?
 	val ingame_name: String
 	val region: Region
@@ -29,7 +29,7 @@ sealed interface UserTracked : UserSeen {
 @Serializable
 data class UserShortest private constructor(
 	override val avatar: ResourceLocation?,
-	override val id: IdUser,
+	override val id: Id<User>,
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
@@ -39,7 +39,7 @@ data class UserShortest private constructor(
 @Serializable
 data class UserShort private constructor(
 	override val avatar: ResourceLocation?,
-	override val id: IdUser,
+	override val id: Id<User>,
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
@@ -50,7 +50,7 @@ data class UserShort private constructor(
 @Serializable
 data class UserProfilePublic private constructor(
 	override val avatar: ResourceLocation?,
-	override val id: IdUser,
+	override val id: Id<User>,
 	override val ingame_name: String,
 	override val last_seen: Instant,
 	override val region: Region,
@@ -70,7 +70,7 @@ data class UserProfilePublic private constructor(
 @Serializable
 data class UserProfilePrivate private constructor(
 	override val avatar: ResourceLocation? = null, //missing when anonymous
-	override val id: IdUser,
+	override val id: Id<User>,
 	override val ingame_name: String = "", //missing when anonymous
 	override val region: Region,
 	override val reputation: Float,

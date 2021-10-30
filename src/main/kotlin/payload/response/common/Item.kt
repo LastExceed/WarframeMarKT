@@ -4,7 +4,7 @@ import enums.*
 import kotlinx.serialization.Serializable
 
 sealed interface Item : IdCarrier {
-	override val id: IdItem
+	override val id: Id<Item>
 }
 
 sealed interface ItemNamed : Item {
@@ -39,13 +39,13 @@ sealed interface ItemData : ItemNamed {
 
 @Serializable
 data class ItemDescriptor private constructor(
-	override val id: IdItem,
+	override val id: Id<Item>,
 	val items_in_set: List<ItemFull>
 ) : Item
 
 @Serializable
 data class ItemShort private constructor(
-	override val id: IdItem,
+	override val id: Id<Item>,
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,
 	val item_name: String
@@ -53,7 +53,7 @@ data class ItemShort private constructor(
 
 @Serializable
 data class ItemInOrder private constructor(
-	override val id: IdItem,
+	override val id: Id<Item>,
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,
 	override val ducats: Int? = null,
@@ -85,7 +85,7 @@ data class ItemInOrder private constructor(
 
 @Serializable
 data class ItemFull private constructor(
-	override val id: IdItem,
+	override val id: Id<Item>,
 	override val thumb: ResourceLocation,
 	override val url_name: ItemUrlName,
 	override val ducats: Int? = null, //prime stuff only

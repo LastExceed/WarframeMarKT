@@ -6,7 +6,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 
 sealed interface Auction : IdCarrier {
-	override val id: IdAuction
+	override val id: Id<Auction>
 	val buyout_price: Int?
 	val visible: Boolean
 	val minimal_reputation: Int
@@ -30,10 +30,10 @@ sealed interface Auction : IdCarrier {
 }
 
 sealed interface AuctionOwnerId : Auction {
-	override val owner: IdUser
+	override val owner: Id<User>
 }
 sealed interface AuctionWinnerId : Auction {
-	override val winner: IdUser?
+	override val winner: Id<User>?
 }
 sealed interface AuctionOwnerShort : Auction {
 	override val owner: UserShort
@@ -60,11 +60,11 @@ data class AuctionEntry private constructor(
 	override val updated: Instant,
 	override val note_raw: String,
 	override val is_direct_sell: Boolean,
-	override val id: IdAuction,
+	override val id: Id<Auction>,
 	override val minimal_increment: Int? = null,
 
-	override val owner: IdUser,
-	override val winner: IdUser?
+	override val owner: Id<User>,
+	override val winner: Id<User>?
 ) : AuctionOwnerId, AuctionWinnerId
 
 @Serializable
@@ -85,11 +85,11 @@ data class AuctionEntryMixed private constructor(
 	override val updated: Instant,
 	override val note_raw: String,
 	override val is_direct_sell: Boolean,
-	override val id: IdAuction,
+	override val id: Id<Auction>,
 	override val minimal_increment: Int? = null,
 
 	override val owner: UserShort,
-	override val winner: IdUser?
+	override val winner: Id<User>?
 ) : AuctionOwnerShort, AuctionWinnerId
 
 @Serializable
@@ -110,7 +110,7 @@ data class AuctionEntryExpanded private constructor(
 	override val updated: Instant,
 	override val note_raw: String,
 	override val is_direct_sell: Boolean,
-	override val id: IdAuction,
+	override val id: Id<Auction>,
 	override val minimal_increment: Int? = null,
 
 	override val owner: UserShort,

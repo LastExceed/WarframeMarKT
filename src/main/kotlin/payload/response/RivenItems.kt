@@ -9,7 +9,7 @@ data class RivenItems private constructor(
 ) {
 	@Serializable
 	data class RivenItem(
-		override val id: IdRivenItem,
+		override val id: Id<RivenItem>,
 		val thumb: ResourceLocation,
 		val url_name: ItemUrlName,
 		val item_name: String,
