@@ -132,13 +132,16 @@ class ApiTest {
 			assumeTrue(signedIn)
 		}
 
-		private lateinit var reviewId: IdReview
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var reviewId: String
 
 		@Test
 		@Order(1)
 		fun create() {
 			val reviewCreated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.create(ReviewCreate("test review for https://github.com/LastExceed/WarframeMarKT/", ReviewType.Review)) }
-			reviewId = assertNotNull(reviewCreated.own_review.id)
+			reviewId = assertNotNull(reviewCreated.own_review.id.value)
 		}
 
 		@Test
@@ -147,7 +150,7 @@ class ApiTest {
 			assertNoExSuspend {
 				val reviews = WarframeMarket.v1.profile.USER("KycKyc").reviews.get()
 				assumeTrue { this@Reviews::reviewId.isInitialized }
-				assertEquals(reviews.own_review?.id, reviewId)
+				assertEquals(reviews.own_review?.id?.value, reviewId)
 			}
 		}
 
@@ -156,7 +159,7 @@ class ApiTest {
 		fun update() {
 			assumeTrue { this::reviewId.isInitialized }
 			val reviewUpdated = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").review.REVIEW(reviewId).update(ReviewUpdate("test review 2")) }
-			reviewId = assertNotNull(reviewUpdated.review.id) //this technically isn't necessary as the id doesn't change here, but that's probably a server side bug
+			reviewId = assertNotNull(reviewUpdated.review.id.value) //this technically isn't necessary as the id doesn't change here, but that's probably a server side bug
 		}
 
 		@Test
@@ -175,23 +178,29 @@ class ApiTest {
 			assumeTrue(signedIn)
 		}
 
-		private lateinit var userId: IdUser
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var userId: String
 
 		@Test
 		@Order(1)
 		fun getProfile() {
 			val profilePublic = assertNoExSuspend { WarframeMarket.v1.profile.USER("KycKyc").get() }
-			userId = profilePublic.profile.id
+			userId = profilePublic.profile.id.value
 		}
 
-		private lateinit var chatId: IdChat
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var chatId: String
 
 		@Test
 		@Order(2)
 		fun chatCreate() {
 			assumeTrue(this@Im::userId.isInitialized)
-			val chatCreated = assertNoExSuspend { WarframeMarket.v1.im.chats.create(ChatCreate(userId)) }
-			chatId = chatCreated.chat_id
+			val chatCreated = assertNoExSuspend { WarframeMarket.v1.im.chats.create(ChatCreate(Id(userId))) }
+			chatId = chatCreated.chat_id.value
 		}
 
 		@Test
@@ -199,7 +208,7 @@ class ApiTest {
 		fun chatShowsUp() {
 			val chats = assertNoExSuspend { WarframeMarket.v1.im.chats.get() }
 			assumeTrue(this::chatId.isInitialized)
-			assertTrue(chats.chats.any { it.id == chatId })
+			assertTrue(chats.chats.any { it.id.value == chatId })
 		}
 
 		@Test
@@ -223,7 +232,7 @@ class ApiTest {
 		fun ignoreCreate() {
 			chatCreate() //creating a second time since ignoring requires having a chat open with that user and closes it in the process
 			assumeTrue(this::chatId.isInitialized)
-			assertNoExSuspend { WarframeMarket.v1.im.ignore.create(IgnoreCreate(userId, chatId)) }
+			assertNoExSuspend { WarframeMarket.v1.im.ignore.create(IgnoreCreate(Id(userId), Id(chatId))) }
 			ignoreCreated = true
 		}
 
@@ -232,7 +241,7 @@ class ApiTest {
 		fun ignoreShowsUp() {
 			val ignores = assertNoExSuspend { WarframeMarket.v1.im.ignore.get() }
 			assumeTrue(ignoreCreated)
-			assertTrue(ignores.any { it.id == userId })
+			assertTrue(ignores.any { it.id.value == userId })
 		}
 
 		@Test
@@ -306,7 +315,10 @@ class ApiTest {
 			}
 		}
 
-		private lateinit var auctionId: IdAuction
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var auctionId: String
 
 		@Test
 		@Order(1)
@@ -336,7 +348,7 @@ class ApiTest {
 					)
 				)
 			}
-			auctionId = auctionEntry.auction.id
+			auctionId = auctionEntry.auction.id.value
 		}
 
 		@Test
@@ -344,7 +356,7 @@ class ApiTest {
 		fun showsUpPublic() {
 			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
-			assertTrue(auctions.auctions.any { it.id == auctionId })
+			assertTrue(auctions.auctions.any { it.id.value == auctionId })
 		}
 
 		@Test
@@ -352,7 +364,7 @@ class ApiTest {
 		fun showsUpPrivate() {
 			val auctions = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").auctions.get() }
 			assumeTrue(this::auctionId.isInitialized)
-			assertTrue(auctions.auctions.any { it.id == auctionId })
+			assertTrue(auctions.auctions.any { it.id.value == auctionId })
 		}
 
 		@Test
@@ -398,7 +410,7 @@ class ApiTest {
 		@Ignore("no participants")
 		fun win() {
 			assumeTrue(this::auctionId.isInitialized)
-			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).win.create(AuctionWin("winner_id")) }
+			assertNoExSuspend { WarframeMarket.v1.auctions.entry.ENTRY(auctionId).win.create(AuctionWin(Id("winner_id"))) }
 		}
 
 		@Test
@@ -425,14 +437,17 @@ class ApiTest {
 			itemUrlName = maimingStrike.url_name
 		}
 
-		private lateinit var itemId: IdItem
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var itemId: String
 
 		@Test
 		@Order(2)
 		fun item() {
 			assumeTrue(this::itemUrlName.isInitialized)
 			val item = assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).get() }
-			itemId = item.item.id
+			itemId = item.item.id.value
 		}
 
 		@Test
@@ -456,7 +471,10 @@ class ApiTest {
 			assertNoExSuspend { WarframeMarket.v1.items.ITEM(itemUrlName).statistics.get() }
 		}
 
-		private lateinit var orderId: IdOrder
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		private lateinit var orderId: String
 
 		@Test
 		@Order(3)
@@ -467,14 +485,14 @@ class ApiTest {
 				WarframeMarket.v1.profile.orders.create(
 					OrderCreate(
 						OrderType.sell,
-						itemId,
+						Id(itemId),
 						999,
 						1,
 						3
 					)
 				)
 			}
-			orderId = orderCreated.order.id
+			orderId = orderCreated.order.id.value
 		}
 
 		@Test
@@ -484,7 +502,7 @@ class ApiTest {
 			val orderUpdated = assertNoExSuspend {
 				WarframeMarket.v1.profile.orders.ORDER(orderId).update(
 					OrderUpdate(
-						orderId,
+						Id(orderId),
 						false,
 						888,
 						2,
@@ -492,7 +510,7 @@ class ApiTest {
 					)
 				)
 			}
-			orderId = orderUpdated.order.id
+			orderId = orderUpdated.order.id.value
 		}
 
 		@Test
@@ -501,6 +519,7 @@ class ApiTest {
 			val recentOrders = assertNoExSuspend { WarframeMarket.v1.most_recent.get() }
 			assumeTrue(this::orderId.isInitialized)
 			//assertTrue((recentOrders.buy_orders + recentOrders.sell_orders).any { it.id == orderId })
+			//actually doesn't show up, maybe delayed?
 		}
 
 		@Test
@@ -510,7 +529,10 @@ class ApiTest {
 			assertNoExSuspend { WarframeMarket.v1.profile.orders.ORDER(orderId).close() }
 		}
 
-		lateinit var transactionId: IdOrder
+		/**
+		 * inner type of Id<*> because https://youtrack.jetbrains.com/issue/KT-23814
+		 */
+		lateinit var transactionId: String
 
 		@Test
 		@Order(7)
@@ -518,9 +540,9 @@ class ApiTest {
 			val userStatistics = assertNoExSuspend { WarframeMarket.v1.profile.USER("LastExceed").statistics.get() }
 			assumeTrue(this::itemId.isInitialized)
 			assumeTrue(this::orderId.isInitialized)
-			val transaction = userStatistics.closed_orders.find { it.item.id == itemId }
+			val transaction = userStatistics.closed_orders.find { it.item.id.value == itemId }
 			assertTrue(transaction != null)
-			transactionId = transaction.id
+			transactionId = transaction.id.value
 		}
 
 		@Test
