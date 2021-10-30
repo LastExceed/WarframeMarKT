@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class AuctionType {
 	riven,
-	lich
+	lich,
+	sister
 }

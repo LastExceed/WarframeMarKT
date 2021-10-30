@@ -74,6 +74,8 @@ data class ItemInOrder private constructor(
 	override val sv: Lang,
 	override val `zh-hant`: Lang,
 	override val `zh-hans`: Lang,
+
+	val quantity_for_set: Int? = null
 ) : ItemData {
 	@Serializable
 	data class Lang private constructor(

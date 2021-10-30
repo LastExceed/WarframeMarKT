@@ -9,6 +9,14 @@ sealed class AuctionItem {
 }
 
 @Serializable
+sealed class AuctionItemKingpin : AuctionItem() {
+	abstract val element: Element
+	abstract val damage: Int
+	abstract val having_ephemera: Boolean
+	abstract val quirk: Quirk?
+}
+
+@Serializable
 @SerialName("riven")
 data class AuctionItemRiven(
 	override val weapon_url_name: ItemUrlName,
@@ -32,8 +40,18 @@ data class AuctionItemRiven(
 @SerialName("lich")
 data class AuctionItemLich(
 	override val weapon_url_name: ItemUrlName,
-	val element: Element,
-	val damage: Int,
-	val having_ephemera: Boolean,
-	val quirk: Quirk? = null
-) : AuctionItem()
+	override val element: Element,
+	override val damage: Int,
+	override val having_ephemera: Boolean,
+	override val quirk: Quirk? = null
+) : AuctionItemKingpin()
+
+@Serializable
+@SerialName("sister")
+data class AuctionItemSister( // currently exactly the same as lich, but that can change any time
+	override val weapon_url_name: ItemUrlName,
+	override val element: Element,
+	override val damage: Int,
+	override val having_ephemera: Boolean,
+	override val quirk: Quirk? = null
+) : AuctionItemKingpin()
