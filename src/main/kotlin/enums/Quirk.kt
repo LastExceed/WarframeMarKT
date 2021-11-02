@@ -13,6 +13,7 @@ enum class Quirk {
 	fear_of_children,
 	fear_of_kubrows,
 	fear_of_space_travel,
+	hatred_of_grineer,
 	hatred_of_corpus,
 	hatred_of_infested,
 	loner,
