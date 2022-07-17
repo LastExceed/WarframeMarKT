@@ -1,3 +1,5 @@
+*@Contributors: This project has suffered massively from language limitations, most notably type erasure, lack of a `self` type and lack of multi-inheritance. The result of this is a lot of unavoidable code duplication, which adds a lot of code dept to the project. This problem could be circumvented with code generation, but that ends up adding more complexity (even in terms of LoC) than the copypasta already does. Kotlin/JVM turned out to be a bad choice for this project, a monomorphizing language with compile time de/serialization would have made things a lot easier. Kotlinx.Serialization provides this to some extent, but not enough to solve the problem in this case*
+
 # WarframeMarKT
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.lastexceed/WarframeMarKT)
 
